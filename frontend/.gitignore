@@ -1,0 +1,8 @@
+system-config.js*
+node_modules
+jspm_packages
+bower_components
+aot/*
+dist/*
+typings/*
+yarn.lock
