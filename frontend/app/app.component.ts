@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
+
+import './rxjs-operators';
+
+
 @Component({
-  selector: 'my-app',
-  template: '<h1>My First Angular App1</h1>'
+  selector: 'budget-app',
+  templateUrl: '/app/app.component.html',
+  styleUrls: ['../app/app.component.css'] //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
 })
+
 export class AppComponent { }
