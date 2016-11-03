@@ -7,7 +7,7 @@ import { User }           from './user';
 
 @Injectable()
 export class UserService {
-  private createAccUrl = 'api/createAcc';  // URL to web API
+  private createAccUrl = 'http://localhost:5000/api/user';  // URL to web API
   
   constructor (private http: Http) {}
     createAcc (username: string, password: string): Observable<User> {
