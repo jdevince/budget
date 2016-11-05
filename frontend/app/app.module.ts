@@ -4,21 +4,28 @@ import { FormsModule }   from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent }   from './app.component';
+import { BudgetComponent } from './budget/budget.component';
+import { HomepageComponent } from './homepage/homepage.component';
+import { LoginComponent } from './user/login.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
-import { CreateAccFormComponent } from './user/create-acc-form.component';
-import { LoginFormComponent } from './user/login-form.component';
+import { SignUpComponent } from './user/signup.component';
+
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   imports:      [ 
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    AppRoutingModule
   ],
   declarations: [ 
     AppComponent,
+    BudgetComponent,
+    HomepageComponent,
+    LoginComponent,
     MenuBarComponent,
-    CreateAccFormComponent,
-    LoginFormComponent
+    SignUpComponent
   ],
   bootstrap:    [ AppComponent ]
 })

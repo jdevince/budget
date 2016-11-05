@@ -4,13 +4,13 @@ import { UserService } from './user.service';
 
 @Component({
   moduleId: module.id,
-  selector: 'create-acc-form',
+  selector: 'signup',
   providers: [UserService],
-  templateUrl: '/app/user/create-acc-form.component.html',
-  styleUrls: ['../../app/user/create-acc-form.component.css'] //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
+  templateUrl: '/app/user/signup.component.html',
+  styleUrls: ['../../app/user/signup.component.css'] //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
 })
 
-export class CreateAccFormComponent { 
+export class SignUpComponent { 
 
   constructor(
     private userService: UserService
