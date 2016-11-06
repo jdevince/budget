@@ -10,6 +10,11 @@ import { LoginComponent } from './user/login.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { SignUpComponent } from './user/signup.component';
 
+import { IncomesComponent } from './budget/incomes.component';
+import { ExpensesComponent } from './budget/expenses.component';
+import { SavingsComponent } from './budget/savings.component';
+import { InputSectionComponent } from './budget/input-section.component';
+
 import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
@@ -25,7 +30,11 @@ import { AppRoutingModule } from './app-routing.module';
     HomepageComponent,
     LoginComponent,
     MenuBarComponent,
-    SignUpComponent
+    SignUpComponent,
+    IncomesComponent,
+    ExpensesComponent,
+    SavingsComponent,
+    InputSectionComponent
   ],
   bootstrap:    [ AppComponent ]
 })
