@@ -10,10 +10,10 @@ import { LoginComponent } from './user/login.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { SignUpComponent } from './user/signup.component';
 
-import { IncomesComponent } from './budget/incomes.component';
-import { ExpensesComponent } from './budget/expenses.component';
-import { SavingsComponent } from './budget/savings.component';
 import { InputSectionComponent } from './budget/input-section.component';
+
+import { CustomCurrencyFormatterDirective } from './budget/currency-formatter.directive';
+import { CustomCurrencyPipe } from './budget/custom-currency.pipe';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -31,10 +31,9 @@ import { AppRoutingModule } from './app-routing.module';
     LoginComponent,
     MenuBarComponent,
     SignUpComponent,
-    IncomesComponent,
-    ExpensesComponent,
-    SavingsComponent,
-    InputSectionComponent
+    InputSectionComponent,
+    CustomCurrencyFormatterDirective,
+    CustomCurrencyPipe
   ],
   bootstrap:    [ AppComponent ]
 })

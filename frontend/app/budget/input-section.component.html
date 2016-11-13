@@ -1,17 +1,45 @@
-<div class="input-section">
+<div class="input-section col-md-4">
     <h1>{{type}}</h1>
-    <div class="headers">
-        <h2>Label</h2>
-        <h2>Monthly</h2>
-        <h2>Annually</h2>
-        <h2 *ngIf="showPreTaxCheckbox">Pre Tax?</h2>
-    </div>
-    <div class="data">
-        <div *ngFor="let row of rows">
-            <input type="text" value={{row.label}} />
-            <input type="number" value={{row.monthly}} />
-            <input type="number" value={{row.annually}} />
-            <input *ngIf="showPreTaxCheckbox" type="checkbox" />
-        </div>
-    </div>
+    <table class="table">
+        <tr>
+            <th>Label</th>
+            <th>Monthly</th>
+            <th>Annually</th>
+            <th *ngIf="showPreTaxCheckbox">Pre Tax?</th>
+        </tr>
+        <tr *ngFor="let row of rows" class="form-group">
+            <td>
+                <input type="text" class="form-control" value={{row.label}} />
+            </td>
+            <td>
+                <input type="text" (blur)="row.monthly=$event.target.value" class="form-control" value="{{row.monthly}}" customCurrencyFormatter />
+            </td>
+            <td>
+                <input type="text" (blur)="row.annually=$event.target.value" class="form-control" value={{row.annually}} customCurrencyFormatter />
+            </td>
+            <td *ngIf="showPreTaxCheckbox">
+                <input type="checkbox" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <button (click)="addRow()">Add Row</button>
+            </td>
+            <td></td>
+            <td></td>
+            <td *ngIf="showPreTaxCheckbox"></td> 
+        </tr>
+        <tr>
+            <td>
+                <h2>Total:</h2>
+            </td>
+            <td>
+                <h2>{{ getMonthlyTotal() }}</h2>
+            </td>
+            <td>
+                <h2>{{ getAnnuallyTotal() }}</h2>
+            </td>
+            <td *ngIf="showPreTaxCheckbox"></td> 
+        </tr>
+    </table>
 </div>
