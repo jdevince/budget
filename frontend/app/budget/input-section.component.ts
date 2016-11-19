@@ -1,13 +1,14 @@
 import { Component, Input } from '@angular/core';
 import { Row } from './row';
 import { CustomCurrencyPipe } from './custom-currency.pipe';
+import { InputSectionService } from './input-section.service';
 
 @Component({
   moduleId: module.id,
   selector: 'input-section',
   templateUrl: '/app/budget/input-section.component.html',
   styleUrls: ['../../app/budget/input-section.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
-  providers: [CustomCurrencyPipe]
+  providers: [CustomCurrencyPipe, InputSectionService]
 })
 
 export class InputSectionComponent {
@@ -21,20 +22,19 @@ export class InputSectionComponent {
         this.showPreTaxCheckbox = (enablePreTaxCheckbox === "true");
     }
 
+    constructor(private inputSectionService: InputSectionService) { }
+
     ngOnInit() : void {
-        //TODO: Replace with service
-        this.rows = new Array<Row>();
-        this.rows.push(new Row("Primary Job", 8750, true));
-        this.rows.push(new Row("Secondary Job", 1000, true));
+        this.rows = this.inputSectionService.getRows(this.type);
     }
 
     addRow() {
-        let newRow = new Row(null, null, null);
+        let newRow = new Row(null, 0, false);
         this.rows.push(newRow);
     }
 
     getMonthlyTotal() {
-        var total = 0;
+        let total = 0;
 
         for (let row of this.rows) {
             total += row.getMonthlyNumber();

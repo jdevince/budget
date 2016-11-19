@@ -8,29 +8,29 @@ export class Row {
     preTax: boolean;
 
     get monthly() : string {
-        if (this._monthly !== undefined && this._monthly !==null) {
-            return this._currencyPipe.transform(this._monthly);
-        }
-        else {
-            return null;
-        }
+        return this._currencyPipe.transform(this._monthly);
     }
 
     set monthly(amount: string) {
-        this._monthly = parseFloat(amount);
+        if (amount === "") {
+            this._monthly = 0;
+        }
+        else {
+            this._monthly = parseFloat(amount);
+        }
     }
 
     get annually() : string {
-        if (this._monthly !== undefined && this._monthly !==null) {
-            return this._currencyPipe.transform(this._monthly * 12);
-        }
-        else {
-            return null;
-        }
+        return this._currencyPipe.transform(this._monthly * 12);
     }
 
     set annually(amount: string) {
-        this._monthly = parseFloat(amount) / 12;
+        if (amount === "") {
+            this._monthly = 0;
+        }
+        else {
+            this._monthly = parseFloat(amount) / 12;
+        }
     }
 
     constructor(label: string, monthly: number, preTax: boolean) {

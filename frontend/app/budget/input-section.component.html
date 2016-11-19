@@ -34,10 +34,10 @@
                 <h2>Total:</h2>
             </td>
             <td>
-                <h2>{{ getMonthlyTotal() }}</h2>
+                <h2>{{ getMonthlyTotal() | currency : 'USD' : true : '1.2-2' }}</h2>
             </td>
             <td>
-                <h2>{{ getAnnuallyTotal() }}</h2>
+                <h2>{{ getAnnuallyTotal() | currency : 'USD' : true : '1.2-2' }}</h2>
             </td>
             <td *ngIf="showPreTaxCheckbox"></td> 
         </tr>

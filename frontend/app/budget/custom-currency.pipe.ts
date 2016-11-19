@@ -10,7 +10,7 @@ export class CustomCurrencyPipe implements PipeTransform {
   private THOUSANDS_SEPARATOR: string;
 
   constructor() {
-    // TODO comes from configuration settings
+    // TODO come from configuration settings
     this.SYMBOL = "$ ";
     this.DECIMAL_SEPARATOR = ".";
     this.THOUSANDS_SEPARATOR = ",";
@@ -19,17 +19,18 @@ export class CustomCurrencyPipe implements PipeTransform {
   transform(value: number | string, fractionSize: number = 2): string {
     let [ integer, fraction = "" ] = (value || "").toString()
       .split(this.DECIMAL_SEPARATOR);
-
-    fraction = fractionSize > 0
+    fraction = (fractionSize > 0)
       ? this.DECIMAL_SEPARATOR + (fraction + PADDING).substring(0, fractionSize)
       : "";
 
-    integer = integer.replace(/\B(?=(\d{3})+(?!\d))/g, this.THOUSANDS_SEPARATOR);
+    integer = (integer !== "")
+      ? integer.replace(/\B(?=(\d{3})+(?!\d))/g, this.THOUSANDS_SEPARATOR)
+      : "0";
 
     return this.SYMBOL + integer + fraction;
   }
 
-  parse(value: string, fractionSize: number = 2): number {
+  parse(value: string, fractionSize: number = 2): number {       
     value = value.replace(this.SYMBOL,"");
     let [ integer, fraction = "" ] = (value || "").split(this.DECIMAL_SEPARATOR);
 
