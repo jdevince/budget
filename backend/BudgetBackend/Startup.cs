@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BudgetBackend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using BudgetBackend.Models;
 
 namespace BudgetBackend
 {
@@ -49,7 +45,10 @@ namespace BudgetBackend
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+
+            //Set CORS
             app.UseCors("CorsPolicy");
+
             app.UseMvc();
             
         }

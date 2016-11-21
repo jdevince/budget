@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { User } from './user';
 import { UserService } from './user.service';
 
@@ -13,20 +15,32 @@ import { UserService } from './user.service';
 export class SignUpComponent { 
 
   constructor(
-    private userService: UserService
+    private userService: UserService,
+    private router: Router
   ) {}
   
-  model = new User("","");
+  model = new User(null,null,null);
 
   onSubmit() { 
     this.createAcc(this.model.username, this.model.password);
   }
 
   private createAcc(username: string, password: string) {
-    if ((!username)||(!password)) { return; }
+    if ((!username)||(!password)) { 
+      return; 
+    }
+
     this.userService.createAcc(username, password)
                       .subscribe(
+                        user  =>  { 
+                          this.model; 
+                          this.userService.login(this.model.username, this.model.password)
+                          .subscribe((result) => {
+                            if (result) {
+                              this.router.navigate(['/budget']);
+                            }
+                          }); }, 
                         error =>  console.log(<any>error)
-                      )
+                      );             
   }
 }

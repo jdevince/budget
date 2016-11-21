@@ -1,4 +1,4 @@
-﻿{
+{
   "dependencies": {
     "Microsoft.NETCore.App": {
       "version": "1.0.1",
@@ -19,7 +19,9 @@
     "Microsoft.EntityFrameworkCore.Design": {
       "version": "1.0.0-preview2-final",
       "type": "build"
-    }
+    },
+    "Microsoft.IdentityModel.Tokens": "5.0.0",
+    "System.IdentityModel.Tokens.Jwt": "5.0.0"
   },
 
   "tools": {

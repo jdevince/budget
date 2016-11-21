@@ -1,3 +1,4 @@
 <a routerLink="/">Annual Budget</a>
-<a routerLink="login">Login</a>
-<a routerLink="signup">Sign Up</a>
+<a *ngIf="!userLoggedIn" (click)="setLoginStatus()" routerLink="login">Login</a>
+<a *ngIf="!userLoggedIn" (click)="setLoginStatus()" routerLink="signup">Sign Up</a>
+<a *ngIf="userLoggedIn" (click)="logOut()" routerLink="">Log Out</a>
