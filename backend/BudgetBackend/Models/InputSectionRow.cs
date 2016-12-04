@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace BudgetBackend.Models
 {
-    public interface IUserRepository
+    public class InputSectionRow
     {
-        void CreateAccount(User user);
-        bool ValidateUser(User user);
+        public string label;
+        public double monthly;
+        public bool? preTax;
     }
 }

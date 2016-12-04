@@ -84,8 +84,12 @@ export class UserService {
   }
 
   private updateLoggedIn() {
-      this.loggedIn = !!localStorage.getItem('accessToken');
+      this.loggedIn = !!this.getAccessToken();
       this.loggedInChange.next(this.loggedIn);
+  }
+
+  getAccessToken(): string {
+    return localStorage.getItem('accessToken');
   }
 
 }

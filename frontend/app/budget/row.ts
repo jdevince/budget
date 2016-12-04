@@ -33,7 +33,7 @@ export class Row {
         }
     }
 
-    constructor(label: string, monthly: number, preTax: boolean) {
+    constructor(label: string, monthly: number, preTax: boolean = null) {
         this.label = label;
         this._monthly = monthly;
         this.preTax = preTax;

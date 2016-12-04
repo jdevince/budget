@@ -25,7 +25,11 @@ export class InputSectionComponent {
     constructor(private inputSectionService: InputSectionService) { }
 
     ngOnInit() : void {
-        this.rows = this.inputSectionService.getRows(this.type);
+        this.inputSectionService.getRows(this.type)
+                                    .subscribe(
+                                        rows    =>  this.rows = rows,
+                                        error   =>  console.log(<any>error)
+                                    );
     }
 
     addRow() {
@@ -36,8 +40,10 @@ export class InputSectionComponent {
     getMonthlyTotal() {
         let total = 0;
 
-        for (let row of this.rows) {
-            total += row.getMonthlyNumber();
+        if (this.rows !== undefined) {
+            for (let row of this.rows) {
+                total += row.getMonthlyNumber();
+            }
         }
 
         return total;

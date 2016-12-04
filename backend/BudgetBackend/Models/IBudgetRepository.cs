@@ -1,13 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace BudgetBackend.Models
 {
-    public interface IUserRepository
+    public interface IBudgetRepository
     {
-        void CreateAccount(User user);
-        bool ValidateUser(User user);
+        JsonResult Load(string username);
     }
 }

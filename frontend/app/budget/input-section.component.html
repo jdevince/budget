@@ -18,7 +18,7 @@
                 <input type="text" (blur)="row.annually=$event.target.value" class="form-control" value={{row.annually}} customCurrencyFormatter />
             </td>
             <td *ngIf="showPreTaxCheckbox">
-                <input type="checkbox" />
+                <input type="checkbox" [(ngModel)]="row.preTax" />
             </td>
         </tr>
         <tr>

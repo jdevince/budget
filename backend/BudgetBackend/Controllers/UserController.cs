@@ -10,14 +10,13 @@ namespace BudgetBackend.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        public UserController(IUserRepository user)
+        public UserController(IUserRepository userRepository)
         {
-            NewUser = user;
-
+            this._userRepository = userRepository;
             this._tokenProvider = InitTokenProvider();
         }
 
-        public IUserRepository NewUser { get; set; }
+        private IUserRepository _userRepository { get; set; }
         private TokenProvider _tokenProvider;
 
         [HttpPost("create")]
@@ -28,14 +27,14 @@ namespace BudgetBackend.Controllers
                 return BadRequest();
             }
            
-            NewUser.CreateAccount(user);
+            _userRepository.CreateAccount(user);
             return Ok(user);
         }
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] User user)
         {
-            if (ValidateUser(user))
+            if (_userRepository.ValidateUser(user))
             {
                 TokenResponse tokenResponse = this._tokenProvider.GenerateToken(user);
                 return Ok(tokenResponse);
@@ -44,18 +43,6 @@ namespace BudgetBackend.Controllers
             {
                 return Unauthorized();
             }
-        }
-
-        [HttpGet]
-        public string GetAllUsers()
-        {
-            string result = "";
-            SqliteDbContext db = new SqliteDbContext();
-            foreach (User user in db.Users)
-            {
-                result += user.username + ", ";
-            }
-            return result;
         }
 
         private TokenProvider InitTokenProvider()
@@ -76,29 +63,6 @@ namespace BudgetBackend.Controllers
             TokenProvider tokenProvider = new TokenProvider(Options.Create(options));
 
             return tokenProvider;
-        }
-
-        private static bool ValidateUser(User user)
-        {
-            if (user == null)
-            {
-                return false;
-            }
-
-            SqliteDbContext db = new SqliteDbContext();
-            var query = from u in db.Users
-                        where u.username == user.username && u.password == user.password
-                        select u;
-            try
-            {
-                query.Single();
-            }
-            catch
-            {
-                return false;
-            }
-
-            return true;
         }
     }
 }

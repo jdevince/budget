@@ -38,6 +38,7 @@ namespace BudgetBackend
             
 
             services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<IBudgetRepository, BudgetRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

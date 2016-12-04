@@ -13,5 +13,28 @@ namespace BudgetBackend.Models
             db.Add(user);
             db.SaveChanges();
         }
+
+        public bool ValidateUser(User user)
+        {
+            if (user == null)
+            {
+                return false;
+            }
+
+            SqliteDbContext db = new SqliteDbContext();
+            var query = from u in db.Users
+                        where u.username == user.username && u.password == user.password
+                        select u;
+            try
+            {
+                query.Single();
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }
