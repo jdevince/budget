@@ -2,6 +2,7 @@ import { Injectable }     from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 
 import { Observable }     from 'rxjs/Observable';
+import { Subject }        from 'rxjs/Subject';
 
 import { User }           from './user';
 
@@ -10,9 +11,11 @@ export class UserService {
   private loggedIn = false;
   private createAccUrl = 'http://localhost:5000/api/user/create';  // URL to web API
   private loginUrl = 'http://localhost:5000/api/user/login';
+  
+  loggedInChange: Subject<boolean> = new Subject<boolean>();
 
-  constructor (private http: Http) {
-      this.loggedIn = !!localStorage.getItem('accessToken');
+  constructor (private http: Http) { 
+    this.updateLoggedIn();  
   }
 
   createAcc (username: string, password: string): Observable<User> {
@@ -27,24 +30,20 @@ export class UserService {
   }
 
   login(username: string, password: string): Observable<boolean> {
-    console.log("login");
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let body = JSON.stringify({ "username" : username, "password": password });
     let options = new RequestOptions({ headers: headers });
 
-    return this.http
+    var httpCall = this.http
                   .post(this.loginUrl, body, options)
-                  .map(this.setLoggedIn)
+                  .map(this.setAccessToken)
                   .catch(this.handleError);
-  }
 
-  logout() {
-    localStorage.removeItem('accessToken');
-    this.loggedIn = false;
-  }
-
-  isLoggedIn() {
-    return this.loggedIn;
+    httpCall.subscribe(
+      result => this.updateLoggedIn()
+    );              
+      
+    return httpCall;       
   }
 
   private extractData(res: Response) {
@@ -61,18 +60,32 @@ export class UserService {
     return Observable.throw(errMsg);
   }
 
-  private setLoggedIn(res: any) {
+  private setAccessToken(res: any) {
     if (res.ok) {
       let body = res.json();
       
       if (body.accessToken) {
         //Log In Successful
-        localStorage.setItem('accessToken', body.accessToken);
-        this.loggedIn = true;
+        localStorage.setItem('accessToken', body.accessToken);     
 
         return true;
       }
     }
     return false;
   }
+
+  logout() {
+    localStorage.removeItem('accessToken');
+    this.updateLoggedIn();
+  }
+
+  isLoggedIn() {
+    return this.loggedIn;
+  }
+
+  private updateLoggedIn() {
+      this.loggedIn = !!localStorage.getItem('accessToken');
+      this.loggedInChange.next(this.loggedIn);
+  }
+
 }
