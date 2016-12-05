@@ -8,18 +8,22 @@ namespace BudgetBackend.Models
 {
     public class BudgetRepository : IBudgetRepository
     {
-        public JsonResult Load(string username)
+        public JsonResult Load(string username, string type)
         {
-            var t = new InputSectionRow();
-            t.label = "label1";
-            t.monthly = 100;
-            t.preTax = true;
+            List<InputSectionRow> rows = new List<InputSectionRow>();
 
-            List<InputSectionRow> x = new List<InputSectionRow>();
-            x.Add(t);
-            x.Add(t);
+            SqliteDbContext db = new SqliteDbContext();
+            var query = from isr in db.InputSectionRows
+                        join u in db.Users on isr.userId equals u.id
+                        where isr.type == type && u.username == username
+                        select isr;
 
-            return new JsonResult(x);
+            foreach(InputSectionRow row in query)
+            {
+                rows.Add(row);
+            }
+
+            return new JsonResult(rows);
         }
     }
 }

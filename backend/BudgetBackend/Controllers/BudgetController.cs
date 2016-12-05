@@ -26,6 +26,7 @@ namespace BudgetBackend.Controllers
         public IActionResult Get()
         {
             string username= null;
+            string type = this.Request.Query["type"];
             string authHeader = this.Request.Headers["Authorization"];
 
             if (authHeader != null && authHeader.StartsWith("Bearer"))
@@ -37,7 +38,7 @@ namespace BudgetBackend.Controllers
                 JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(jwtTokenString);
                 username = jwtToken.Subject;
 
-                return Ok(_budgetRepository.Load(username));
+                return Ok(_budgetRepository.Load(username, type));
             }
 
             return Unauthorized();

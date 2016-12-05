@@ -40,15 +40,14 @@ export class InputSectionService {
         else {
             //If user is logged in, return user's saved data
 
-            //Check if cached data is available
-
             //Load from server
+            let requestURL = 'http://localhost:5000/api/budget/load?type=' + type; 
             let headers = new Headers({ 'Content-Type': 'application/json' });
             headers.append('Authorization', 'Bearer ' + this.userService.getAccessToken());
             let options = new RequestOptions({ headers: headers });
 console.log("called");
             return this.http
-                  .get('http://localhost:5000/api/budget/load', options)
+                  .get(requestURL, options)
                   .map(this.extractRows)
                   //.catch(this.handleError);
         }        

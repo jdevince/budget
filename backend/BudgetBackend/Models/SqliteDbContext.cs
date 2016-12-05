@@ -10,6 +10,7 @@ namespace BudgetBackend.Models
     public class SqliteDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<InputSectionRow> InputSectionRows { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
