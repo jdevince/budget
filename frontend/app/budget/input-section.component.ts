@@ -32,12 +32,18 @@ export class InputSectionComponent {
                                     );
     }
 
-    addRow() {
-        let newRow = new Row(null, 0, false);
+    addRow(): void {
+        let preTaxDefault: boolean = this.showPreTaxCheckbox ? false : null;
+        let newRow = new Row(null, 0, preTaxDefault);
         this.rows.push(newRow);
     }
 
-    getMonthlyTotal() {
+    deleteRow(row: Row): void {
+        let index = this.rows.indexOf(row);
+        this.rows.splice(index, 1);
+    }
+
+    getMonthlyTotal(): number {
         let total = 0;
 
         if (this.rows !== undefined) {
@@ -49,7 +55,7 @@ export class InputSectionComponent {
         return total;
     }
 
-    getAnnuallyTotal() {
+    getAnnuallyTotal(): number {
         return this.getMonthlyTotal() * 12
     }
  }

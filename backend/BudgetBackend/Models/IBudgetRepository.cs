@@ -9,5 +9,6 @@ namespace BudgetBackend.Models
     public interface IBudgetRepository
     {
         JsonResult Load(string username, string type);
+        bool Save(int userId, InputSectionRow[] rows);
     }
 }

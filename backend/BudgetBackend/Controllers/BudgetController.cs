@@ -14,20 +14,48 @@ namespace BudgetBackend.Controllers
     [Route("api/[controller]")]
     public class BudgetController : Controller
     {
-        public BudgetController(IBudgetRepository budgetRepository)
+        public BudgetController(IBudgetRepository budgetRepository, IUserRepository userRepository)
         {
             this._budgetRepository = budgetRepository;
+            this._userRepository = userRepository;
         }
 
         private IBudgetRepository _budgetRepository;
+        private IUserRepository _userRepository;
 
-        // GET: api/budget/load
+        //GET: api/budget/load
         [HttpGet("load")]
-        public IActionResult Get()
+        public IActionResult Load()
         {
-            string username= null;
             string type = this.Request.Query["type"];
             string authHeader = this.Request.Headers["Authorization"];
+            string username = getUsername(authHeader);
+
+            if (username != null)
+            {
+                return Ok(_budgetRepository.Load(username, type));
+            }
+
+            return Unauthorized();
+        }
+
+        //POST: api/budget/save
+        [HttpPost("save")]
+        public IActionResult Save([FromBody] InputSectionRow[] rows)
+        {
+            bool success;
+            string authHeader = this.Request.Headers["Authorization"];
+            string username = getUsername(authHeader);
+            int userId = _userRepository.GetUserId(username);
+
+            success = _budgetRepository.Save(userId, rows);
+
+            return Ok();
+        }
+
+        private string getUsername(string authHeader)
+        {
+            string username = null;
 
             if (authHeader != null && authHeader.StartsWith("Bearer"))
             {
@@ -37,11 +65,9 @@ namespace BudgetBackend.Controllers
 
                 JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(jwtTokenString);
                 username = jwtToken.Subject;
-
-                return Ok(_budgetRepository.Load(username, type));
             }
 
-            return Unauthorized();
+            return username;
         }
     }
 }

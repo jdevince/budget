@@ -36,5 +36,14 @@ namespace BudgetBackend.Models
 
             return true;
         }
+
+        public int GetUserId(string username)
+        {
+            SqliteDbContext db = new SqliteDbContext();
+            var query = from u in db.Users
+                        where u.username == username
+                        select u;
+            return query.Single().id;
+        }
     }
 }

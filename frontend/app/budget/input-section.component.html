@@ -9,7 +9,7 @@
         </tr>
         <tr *ngFor="let row of rows" class="form-group">
             <td>
-                <input type="text" class="form-control" value={{row.label}} />
+                <input type="text" class="form-control" [(ngModel)]="row.label"/>
             </td>
             <td>
                 <input type="text" (blur)="row.monthly=$event.target.value" class="form-control" value="{{row.monthly}}" customCurrencyFormatter />
@@ -19,6 +19,9 @@
             </td>
             <td *ngIf="showPreTaxCheckbox">
                 <input type="checkbox" [(ngModel)]="row.preTax" />
+            </td>
+            <td>
+                <button (click)="deleteRow(row)">Delete Row</button>            
             </td>
         </tr>
         <tr>

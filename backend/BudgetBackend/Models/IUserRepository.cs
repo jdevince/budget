@@ -9,5 +9,6 @@ namespace BudgetBackend.Models
     {
         void CreateAccount(User user);
         bool ValidateUser(User user);
+        int GetUserId(string username);
     }
 }

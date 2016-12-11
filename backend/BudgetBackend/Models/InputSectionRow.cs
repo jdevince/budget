@@ -16,8 +16,11 @@ namespace BudgetBackend.Models
         public int id { get; set; }
         [ForeignKey("User")]
         public int userId { get; set; }
-        public string type { get; set; }
 
+        [DataMember]
+        public string type { get; set; }
+        [DataMember]
+        public int rowNum { get; set; }
         [DataMember]
         public string label { get; set; }
         [DataMember]
