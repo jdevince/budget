@@ -9,6 +9,25 @@ import { BudgetService } from './budget.service';
 })
 
 export class TaxesComponent {
+    public readonly FilingStatusOptions: string[] = [
+        "Single",
+        "Married Filing Jointly",
+        "Head of Household",
+        "Married Filing Separately",
+        "Widow(er) with Dependent Child"
+    ]
+    public filingStatus: number = 0; //Default to "Single"
+
+    public exemptions: number = 1;
+
+    public readonly PrimaryDeductionTypes: string[] = [
+        "Standard Deduction",
+        "Itemized Deductions"
+    ]
+    public primaryDeductionType: number = 0;
+
+    public deductions: [string, number][] = [[this.PrimaryDeductionTypes[this.primaryDeductionType], 6300]]
+
     public zipcode: string;
     public federalTax: string;
     public ficaTax: string;
@@ -29,3 +48,4 @@ export class TaxesComponent {
     }
 
 }
+

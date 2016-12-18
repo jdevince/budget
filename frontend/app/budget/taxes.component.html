@@ -1,18 +1,40 @@
 <div class="taxes col-md-4">
     <h1>Taxes</h1>
-    <div class="taxableIncome">
-        <h2>Income after pre-tax:</h2>
-        <h2>{{incomeMinusPreTax | customCurrency}}</h2>
-        <button>+Advanced</button>
-    </div>
-    <div class="taxableIncome">
-        <h2>Taxable Income:</h2>
-        <h2>{{taxableIncome | customCurrency}}</h2>
-    </div>
     <table class="table">
         <tr>
-            <td>Zipcode:</td>
+            <td>Income after pre-tax:</td>
+            <td colspan="2">{{incomeMinusPreTax | customCurrency}}</td>
+        </tr>
+        <tr>
+            <td>Filing status:</td>
+            <td colspan="2">
+                <select [(ngModel)]="filingStatus">
+                    <option *ngFor="let status of FilingStatusOptions" [value]="FilingStatusOptions.indexOf(status)">{{status}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Exemptions:</td>
+            <td colspan="2">
+                <input type="number" [(ngModel)]="exemptions" min="1" max="30" step="1" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3">Deductions:</td>
+        </tr>
+        <tr>
+            <td></td>
             <td>
+                <select [(ngModel)]="primaryDeductionType">
+                    <option *ngFor="let type of PrimaryDeductionTypes" [value]="PrimaryDeductionTypes.indexOf(type)">{{type}}</option>
+                </select>
+            </td>
+            <td>
+                <input type="number" [(ngModel)]="deductions[0][1]" />
+            </td>
+        <tr>
+            <td>Zipcode:</td>
+            <td colspan="2">
                 <input type="text" [(ngModel)]="zipcode" />
             </td>
         </tr>
@@ -23,31 +45,31 @@
         </tr>
         <tr>
             <td>Federal:</td>
-            <td>
+            <td colspan="2">
                 <input type="number" [(ngModel)]="federalTax" />
             </td>
         </tr>
         <tr>
             <td>FICA:</td>
-            <td>
+            <td colspan="2">
                 <input type="number" [(ngModel)]="ficaTax" />
             </td>
         </tr>
         <tr>
             <td>State:</td>
-            <td>
+            <td colspan="2">
                 <input type="number" [(ngModel)]="stateTax" />
             </td>
         </tr>
         <tr>
             <td>Local:</td>
-            <td>
+            <td colspan="2">
                 <input type="number" [(ngModel)]="localTax" />
             </td>
         </tr>
         <tr>
             <td>Total:</td>
-            <td>
+            <td colspan="2">
                 <input type="number" [(ngModel)]="totalTax" />
             </td>
         </tr>
