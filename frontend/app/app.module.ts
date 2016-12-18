@@ -11,6 +11,7 @@ import { MenuBarComponent } from './menu-bar/menu-bar.component';
 import { SignUpComponent } from './user/signup.component';
 
 import { InputSectionComponent } from './budget/input-section.component';
+import { TaxesComponent } from './budget/taxes.component';
 
 import { CustomCurrencyFormatterDirective } from './budget/currency-formatter.directive';
 import { CustomCurrencyPipe } from './budget/custom-currency.pipe';
@@ -32,6 +33,7 @@ import { AppRoutingModule } from './app-routing.module';
     MenuBarComponent,
     SignUpComponent,
     InputSectionComponent,
+    TaxesComponent,
     CustomCurrencyFormatterDirective,
     CustomCurrencyPipe
   ],

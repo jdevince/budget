@@ -1,0 +1,56 @@
+<div class="taxes col-md-4">
+    <h1>Taxes</h1>
+    <div class="taxableIncome">
+        <h2>Income after pre-tax:</h2>
+        <h2>{{incomeMinusPreTax | customCurrency}}</h2>
+        <button>+Advanced</button>
+    </div>
+    <div class="taxableIncome">
+        <h2>Taxable Income:</h2>
+        <h2>{{taxableIncome | customCurrency}}</h2>
+    </div>
+    <table class="table">
+        <tr>
+            <td>Zipcode:</td>
+            <td>
+                <input type="text" [(ngModel)]="zipcode" />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button (click)="calculateTaxes()">Calculate taxes</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Federal:</td>
+            <td>
+                <input type="number" [(ngModel)]="federalTax" />
+            </td>
+        </tr>
+        <tr>
+            <td>FICA:</td>
+            <td>
+                <input type="number" [(ngModel)]="ficaTax" />
+            </td>
+        </tr>
+        <tr>
+            <td>State:</td>
+            <td>
+                <input type="number" [(ngModel)]="stateTax" />
+            </td>
+        </tr>
+        <tr>
+            <td>Local:</td>
+            <td>
+                <input type="number" [(ngModel)]="localTax" />
+            </td>
+        </tr>
+        <tr>
+            <td>Total:</td>
+            <td>
+                <input type="number" [(ngModel)]="totalTax" />
+            </td>
+        </tr>
+
+    </table>
+</div>

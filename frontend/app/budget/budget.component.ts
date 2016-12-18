@@ -18,13 +18,16 @@ export class BudgetComponent {
     @ViewChildren(InputSectionComponent)
     private inputSections: QueryList<InputSectionComponent>
 
+    ngAfterViewInit() {
+      this.budgetService.inputSections = this.inputSections.toArray();
+    }
+
     save() {
       let success: boolean;
-      console.log(this.inputSections);
-      this.budgetService.save(this.inputSections.toArray())
-                                    .subscribe(
-                                        result    =>  success = result,
-                                        error   =>  console.log(<any>error)
-                                    );
+      this.budgetService.save()
+                            .subscribe(
+                                result    =>  success = result,
+                                error   =>  console.log(<any>error)
+                            );
     }
  }

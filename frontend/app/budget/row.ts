@@ -7,7 +7,15 @@ export class Row {
     label: string;
     preTax: boolean;
 
-    get monthly() : string {
+    constructor(label: string, monthly: number, preTax: boolean = null) {
+        this.label = label;
+        this._monthly = monthly;
+        this.preTax = preTax;
+
+        this._currencyPipe = new CustomCurrencyPipe();
+    }
+
+    get monthly(): string {
         return this._currencyPipe.transform(this._monthly);
     }
 
@@ -20,7 +28,7 @@ export class Row {
         }
     }
 
-    get annually() : string {
+    get annually(): string {
         return this._currencyPipe.transform(this._monthly * 12);
     }
 
@@ -33,15 +41,11 @@ export class Row {
         }
     }
 
-    constructor(label: string, monthly: number, preTax: boolean = null) {
-        this.label = label;
-        this._monthly = monthly;
-        this.preTax = preTax;
-
-        this._currencyPipe = new CustomCurrencyPipe();
+    getMonthlyNumber(): number {
+        return this._monthly;
     }
 
-    getMonthlyNumber() : number {
-        return this._monthly;
+    getAnnuallyNumber(): number {
+        return this._monthly * 12;
     }
 }
