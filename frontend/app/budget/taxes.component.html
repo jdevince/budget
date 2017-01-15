@@ -39,15 +39,12 @@
             </td>
         </tr>
         <tr>
-            <td colspan="2">
-                <button (click)="calculateTaxes()">Calculate taxes</button>
-            </td>
+            <td>Taxable Income:</td>
+            <td colspan="2">{{taxableIncome | customCurrency}}</td>
         </tr>
         <tr>
             <td>Federal:</td>
-            <td colspan="2">
-                <input type="number" [(ngModel)]="federalTax" />
-            </td>
+            <td colspan="2">{{federalTax | customCurrency}}</td>
         </tr>
         <tr>
             <td>FICA:</td>

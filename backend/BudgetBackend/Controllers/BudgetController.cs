@@ -39,6 +39,22 @@ namespace BudgetBackend.Controllers
             return Unauthorized();
         }
 
+        //GET: api/budget/federalTaxBrackets/year
+        [HttpGet("federalTaxBrackets/{year}")]
+        public IActionResult FederalTaxBrackets(int year)
+        {
+            string bracketsJSON = _budgetRepository.GetFederalTaxBrackets(year);
+
+            if (bracketsJSON == "ERROR")
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(bracketsJSON);
+            }
+        }
+
         //POST: api/budget/save
         [HttpPost("save")]
         public IActionResult Save([FromBody] InputSectionRow[] rows)

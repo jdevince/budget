@@ -17,11 +17,11 @@ export class BudgetService {
     save(): Observable<boolean> {
         if (this.userService.isLoggedIn()) {
             let saveURL = "http://localhost:5000/api/budget/save"
-            let headers = new Headers({ 'Content-Type': 'application/json' });
-            headers.append('Authorization', 'Bearer ' + this.userService.getAccessToken());
+            let headers = new Headers({ "Content-Type": "application/json" });
+            headers.append("Authorization", "Bearer " + this.userService.getAccessToken());
             let body = this.getJSONForSave();
             let options = new RequestOptions({ headers: headers });
-console.log(body)
+
             return this.http
                         .post(saveURL,body,options)
                         .map(response => response.ok);
@@ -46,6 +46,13 @@ console.log(body)
             }
         }
         return JSON.stringify(array);
+    }
+
+    getFederalTaxBrackets(year: number): Observable<Object> {
+        let url = "http://localhost:5000/api/budget/federalTaxBrackets/" + year.toString();
+        return this.http
+                        .get(url)
+                        .map(response => response.json());
     }
 
     getIncomeMinusPreTax(): number {

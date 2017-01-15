@@ -45,7 +45,7 @@ export class InputSectionService {
             let headers = new Headers({ 'Content-Type': 'application/json' });
             headers.append('Authorization', 'Bearer ' + this.userService.getAccessToken());
             let options = new RequestOptions({ headers: headers });
-console.log("called");
+
             return this.http
                   .get(requestURL, options)
                   .map(this.extractRows)
@@ -54,8 +54,6 @@ console.log("called");
     }
 
     extractRows(res: any): Row[] {
-        console.log("extractRows");
-        console.log(res);
         let rows = new Array<Row>();
         let data = res.json().value;
         data.forEach(element => {

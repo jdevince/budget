@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace BudgetBackend.Models
@@ -92,6 +94,25 @@ namespace BudgetBackend.Models
             }
 
             return true;
+        }
+
+        public string GetFederalTaxBrackets(int year)
+        {
+            //TODO: Load from DB
+            string taxeeToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjU4NTVkZTMwZTUzOTlmNjdkNDU3MmE1ZCIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTQ4MjAyMjQ0OH0.xg8Suu1SKhc_JZFdQHqG564mAnsE5jKilXp_I0vs_fE";
+            string url = @"https://taxee.io/api/v2/federal/" + year.ToString();
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", taxeeToken);
+
+            try
+            {
+                return httpClient.GetStringAsync(url).Result;
+            }
+            catch
+            {
+                return "ERROR";
+            }
         }
     }
 }

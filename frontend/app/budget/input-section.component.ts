@@ -13,7 +13,7 @@ import { InputSectionService } from './input-section.service';
 
 export class InputSectionComponent {
     showPreTaxCheckbox: boolean = false;
-    rows: Row[];
+    rows: Row[] = [];
 
     @Input() type: string;
     

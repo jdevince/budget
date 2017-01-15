@@ -10,5 +10,6 @@ namespace BudgetBackend.Models
     {
         JsonResult Load(string username, string type);
         bool Save(int userId, InputSectionRow[] rows);
+        string GetFederalTaxBrackets(int year);
     }
 }
