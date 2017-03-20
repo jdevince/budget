@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { BudgetService } from './budget.service';
+import { CustomCurrencyPipe } from './custom-currency.pipe';
+import { DeductOrCreditRow } from './deductOrCreditRow';
 
 @Component({
   moduleId: module.id,
   selector: 'taxes',
   templateUrl: '/app/budget/taxes.component.html',
-  styleUrls: ['../../app/budget/taxes.component.css'] //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
+  styleUrls: ['../../app/budget/taxes.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
+  providers: [CustomCurrencyPipe]
 })
 
 export class TaxesComponent {
@@ -34,7 +37,10 @@ export class TaxesComponent {
     ]
     public primaryDeductionType: number = 0;
 
-    public deductions: [string, number][] = [[this.PrimaryDeductionTypes[this.primaryDeductionType], 6300]]
+    public federalDeductions: DeductOrCreditRow[] = [];
+    public federalCredits: DeductOrCreditRow[] = [];
+    public stateDeductions: DeductOrCreditRow[] = [];
+    public stateCredits: DeductOrCreditRow[] = [];
 
     public zipcode: string;
     public ficaTax: string;
@@ -61,11 +67,11 @@ export class TaxesComponent {
     public get taxableIncome(): number {
         //Initially set at sum of Incomes minus pre-tax expenses/savings
         let taxableIncome: number = this.incomeMinusPreTax;
-        
+        console.log(this.federalDeductions);
         //Subtract deductions
         let deductionsSum = 0;
-        for (let deduction of this.deductions) {
-            deductionsSum += deduction[1];
+        for (let deduction of this.federalDeductions) {
+            deductionsSum += deduction.getAmount();
         }
         taxableIncome -= deductionsSum;
 
@@ -73,10 +79,6 @@ export class TaxesComponent {
         taxableIncome -= this.exemptions * this.exemptionAmounts[2017];
 
         return taxableIncome;
-    }
-
-    public get federalTaxCredits(): number {
-        return 0; //TODO
     }
 
     public get federalTax(): number {
@@ -120,7 +122,13 @@ export class TaxesComponent {
                 let minTierAmount = brackets[bracketIndex]["bracket"];
                 let taxAmountForMinTier = brackets[bracketIndex]["amount"];
                 let marginalRate = brackets[bracketIndex]["marginal_rate"];
-                let tax = taxAmountForMinTier + ((this.taxableIncome - minTierAmount) * (marginalRate * 0.01)) - this.federalTaxCredits;
+
+                let credits = 0;
+                for (let row of this.federalCredits) {
+                    credits+= row.getAmount();
+                }
+
+                let tax = taxAmountForMinTier + ((this.taxableIncome - minTierAmount) * (marginalRate * 0.01)) - credits;
                 return tax;
             }
         }
@@ -128,5 +136,14 @@ export class TaxesComponent {
         return null; //Shouldn't happen. Indicates an error
     }
 
+    addDeductionOrCreditRow(array: DeductOrCreditRow[]): void {
+        let newRow = new DeductOrCreditRow(null, 0);
+        array.push(newRow);
+    }
+
+    deleteDeductionOrCreditRow(array: DeductOrCreditRow[], row: DeductOrCreditRow): void {
+        let index = array.indexOf(row);
+        array.splice(index, 1);
+    }
 }
 

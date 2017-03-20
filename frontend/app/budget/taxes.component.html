@@ -20,18 +20,103 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3">Deductions:</td>
+            <td colspan="3">
+                <tabs>
+                    <tab tabTitle="Federal">
+                        <table class="table">
+                            <tr>
+                                <td colspan="3">Deductions:</td>
+                            </tr>
+                            <tr *ngFor="let row of federalDeductions" class="form-group">
+                                <td>
+                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                </td>
+                                <td>
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                </td>
+                                <td>
+                                    <button (click)="deleteDeductionOrCreditRow(federalDeductions, row)">Delete Row</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button (click)="addDeductionOrCreditRow(federalDeductions)">Add Row</button>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Credits:</td>
+                            </tr>
+                            <tr *ngFor="let row of federalCredits" class="form-group">
+                                <td>
+                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                </td>
+                                <td>
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                </td>
+                                <td>
+                                    <button (click)="deleteDeductionOrCreditRow(federalCredits, row)">Delete Row</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button (click)="addDeductionOrCreditRow(federalCredits)">Add Row</button>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </tab>
+                    <tab tabTitle="State">
+                        <table class="table">
+                            <tr>
+                                <td colspan="3">Deductions:</td>
+                            </tr>
+                            <tr *ngFor="let row of stateDeductions" class="form-group">
+                                <td>
+                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                </td>
+                                <td>
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                </td>
+                                <td>
+                                    <button (click)="deleteDeductionOrCreditRow(stateDeductions, row)">Delete Row</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button (click)="addDeductionOrCreditRow(stateDeductions)">Add Row</button>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">Credits:</td>
+                            </tr>
+                            <tr *ngFor="let row of stateCredits" class="form-group">
+                                <td>
+                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                </td>
+                                <td>
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                </td>
+                                <td>
+                                    <button (click)="deleteDeductionOrCreditRow(stateCredits, row)">Delete Row</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <button (click)="addDeductionOrCreditRow(stateCredits)">Add Row</button>
+                                </td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </table>
+                    </tab>
+                </tabs>
+            </td>
         </tr>
-        <tr>
-            <td></td>
-            <td>
-                <select [(ngModel)]="primaryDeductionType">
-                    <option *ngFor="let type of PrimaryDeductionTypes" [value]="PrimaryDeductionTypes.indexOf(type)">{{type}}</option>
-                </select>
-            </td>
-            <td>
-                <input type="number" [(ngModel)]="deductions[0][1]" />
-            </td>
         <tr>
             <td>Zipcode:</td>
             <td colspan="2">

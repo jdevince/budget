@@ -13,6 +13,9 @@ import { SignUpComponent } from './user/signup.component';
 import { InputSectionComponent } from './budget/input-section.component';
 import { TaxesComponent } from './budget/taxes.component';
 
+import { Tab } from './tabs/tab.component';
+import { Tabs } from './tabs/tabs.component';
+
 import { CustomCurrencyFormatterDirective } from './budget/currency-formatter.directive';
 import { CustomCurrencyPipe } from './budget/custom-currency.pipe';
 
@@ -34,6 +37,8 @@ import { AppRoutingModule } from './app-routing.module';
     SignUpComponent,
     InputSectionComponent,
     TaxesComponent,
+    Tab,
+    Tabs,
     CustomCurrencyFormatterDirective,
     CustomCurrencyPipe
   ],
