@@ -55,6 +55,13 @@ export class BudgetService {
                         .map(response => response.json());
     }
 
+    getStateTaxBrackets(year: number, stateAbbr: string): Observable<Object> {
+        let url = "http://localhost:5000/api/budget/stateTaxBrackets/" + year.toString() + "/" + stateAbbr;
+        return this.http
+                        .get(url)
+                        .map(response => response.json());
+    }
+
     getIncomeMinusPreTax(): number {
         if (this.inputSections === undefined) {
             return 0;
@@ -76,5 +83,26 @@ export class BudgetService {
         }
 
         return incomeMinusPreTax;
+    }
+
+    getIncomeSubjectToFICA(): number {
+        //Returns sum of all rows in Incomes section. 
+        //Future enhancement: Only add "Earned Income" (i.e. salary, but not dividends)
+
+        if (this.inputSections === undefined) {
+            return 0;
+        }
+
+        let income: number = 0;
+
+        for (let inputSection of this.inputSections) {
+            if (inputSection.type === "Incomes") {
+                for (let row of inputSection.rows) {
+                    income += row.getAnnuallyNumber();
+                }
+            }
+        }
+
+        return income;
     }
 }

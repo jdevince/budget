@@ -10,6 +10,8 @@ namespace BudgetBackend.Models
 {
     public class BudgetRepository : IBudgetRepository
     {
+        const string TaxeeToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjU4NTVkZTMwZTUzOTlmNjdkNDU3MmE1ZCIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTQ4MjAyMjQ0OH0.xg8Suu1SKhc_JZFdQHqG564mAnsE5jKilXp_I0vs_fE";
+
         public JsonResult Load(string username, string type)
         {
             List<InputSectionRow> rows = new List<InputSectionRow>();
@@ -99,11 +101,28 @@ namespace BudgetBackend.Models
         public string GetFederalTaxBrackets(int year)
         {
             //TODO: Load from DB
-            string taxeeToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjU4NTVkZTMwZTUzOTlmNjdkNDU3MmE1ZCIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTQ4MjAyMjQ0OH0.xg8Suu1SKhc_JZFdQHqG564mAnsE5jKilXp_I0vs_fE";
             string url = @"https://taxee.io/api/v2/federal/" + year.ToString();
 
             HttpClient httpClient = new HttpClient();
-            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", taxeeToken);
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TaxeeToken);
+
+            try
+            {
+                return httpClient.GetStringAsync(url).Result;
+            }
+            catch
+            {
+                return "ERROR";
+            }
+        }
+
+        public string GetStateTaxBrackets(int year, string stateAbbr)
+        {
+            //TODO: Load from DB
+            string url = @"https://taxee.io/api/v2/state/" + year.ToString() + "/" + stateAbbr;
+
+            HttpClient httpClient = new HttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", TaxeeToken);
 
             try
             {

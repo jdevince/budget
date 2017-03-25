@@ -1,6 +1,6 @@
 import { CustomCurrencyPipe } from './custom-currency.pipe';
 
-export class DeductOrCreditRow {
+export class LabelAndCurrencyRow {
     private _amount: number;
     private _currencyPipe: CustomCurrencyPipe;
 

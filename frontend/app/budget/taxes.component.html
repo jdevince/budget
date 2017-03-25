@@ -20,6 +20,14 @@
             </td>
         </tr>
         <tr>
+            <td>State:</td>
+            <td colspan="2">
+                <select [(ngModel)]="state">
+                    <option *ngFor="let stateAbbr of States" [value]="States.indexOf(stateAbbr)">{{stateAbbr}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td colspan="3">
                 <tabs>
                     <tab tabTitle="Federal">
@@ -29,39 +37,45 @@
                             </tr>
                             <tr *ngFor="let row of federalDeductions" class="form-group">
                                 <td>
-                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                    <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
                                 <td>
-                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
+                                    />
                                 </td>
                                 <td>
-                                    <button (click)="deleteDeductionOrCreditRow(federalDeductions, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(federalDeductions, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addDeductionOrCreditRow(federalDeductions)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(federalDeductions)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
+                            </tr>
+                            <tr>
+                                <td>Taxable Income:</td>
+                                <td colspan="2">{{FederalTaxableIncome | customCurrency}}</td>
                             </tr>
                             <tr>
                                 <td colspan="3">Credits:</td>
                             </tr>
                             <tr *ngFor="let row of federalCredits" class="form-group">
                                 <td>
-                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                    <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
                                 <td>
-                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
+                                    />
                                 </td>
                                 <td>
-                                    <button (click)="deleteDeductionOrCreditRow(federalCredits, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(federalCredits, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addDeductionOrCreditRow(federalCredits)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(federalCredits)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -75,39 +89,45 @@
                             </tr>
                             <tr *ngFor="let row of stateDeductions" class="form-group">
                                 <td>
-                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                    <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
                                 <td>
-                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
+                                    />
                                 </td>
                                 <td>
-                                    <button (click)="deleteDeductionOrCreditRow(stateDeductions, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(stateDeductions, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addDeductionOrCreditRow(stateDeductions)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(stateDeductions)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
+                            </tr>
+                            <tr>
+                                <td>Taxable Income:</td>
+                                <td colspan="2">{{StateTaxableIncome | customCurrency}}</td>
                             </tr>
                             <tr>
                                 <td colspan="3">Credits:</td>
                             </tr>
                             <tr *ngFor="let row of stateCredits" class="form-group">
                                 <td>
-                                    <input type="text" class="form-control" [(ngModel)]="row[0]" />
+                                    <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
                                 <td>
-                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" [(ngModel)]="row[1]" customCurrencyFormatter />
+                                    <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
+                                    />
                                 </td>
                                 <td>
-                                    <button (click)="deleteDeductionOrCreditRow(stateCredits, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(stateCredits, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addDeductionOrCreditRow(stateCredits)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(stateCredits)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -118,42 +138,39 @@
             </td>
         </tr>
         <tr>
-            <td>Zipcode:</td>
-            <td colspan="2">
-                <input type="text" [(ngModel)]="zipcode" />
-            </td>
-        </tr>
-        <tr>
-            <td>Taxable Income:</td>
-            <td colspan="2">{{taxableIncome | customCurrency}}</td>
-        </tr>
-        <tr>
             <td>Federal:</td>
-            <td colspan="2">{{federalTax | customCurrency}}</td>
+            <td colspan="2">{{FederalTax | customCurrency}}</td>
         </tr>
         <tr>
             <td>FICA:</td>
-            <td colspan="2">
-                <input type="number" [(ngModel)]="ficaTax" />
-            </td>
+            <td colspan="2">{{FICATax | customCurrency}}</td>
         </tr>
         <tr>
             <td>State:</td>
-            <td colspan="2">
-                <input type="number" [(ngModel)]="stateTax" />
-            </td>
+            <td colspan="2">{{StateTax | customCurrency}}</td>
         </tr>
         <tr>
-            <td>Local:</td>
-            <td colspan="2">
-                <input type="number" [(ngModel)]="localTax" />
+            <td>
+                <button (click)="addLabelAndCurrencyRow(additionalTaxes)">Add a tax</button>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr *ngFor="let row of additionalTaxes" class="form-group">
+            <td>
+                <input type="text" class="form-control" [(ngModel)]="row.label" />
+            </td>
+            <td>
+                <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
+                />
+            </td>
+            <td>
+                <button (click)="deleteLabelAndCurrencyRow(additionalTaxes, row)">Delete Row</button>
             </td>
         </tr>
         <tr>
             <td>Total:</td>
-            <td colspan="2">
-                <input type="number" [(ngModel)]="totalTax" />
-            </td>
+            <td colspan="2">{{TaxesSum | customCurrency}}</td>
         </tr>
 
     </table>

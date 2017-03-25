@@ -55,6 +55,22 @@ namespace BudgetBackend.Controllers
             }
         }
 
+        //GET: api/budget/stateTaxBrackets/year/stateAbbr
+        [HttpGet("stateTaxBrackets/{year}/{stateAbbr}")]
+        public IActionResult StateTaxBrackets(int year, string stateAbbr)
+        {
+            string bracketsJSON = _budgetRepository.GetStateTaxBrackets(year, stateAbbr);
+
+            if (bracketsJSON == "ERROR")
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok(bracketsJSON);
+            }
+        }
+
         //POST: api/budget/save
         [HttpPost("save")]
         public IActionResult Save([FromBody] InputSectionRow[] rows)
