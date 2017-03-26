@@ -1,0 +1,59 @@
+DROP TABLE IF EXISTS AdditionalTaxes;
+DROP TABLE IF EXISTS DeductionsAndCredits;
+DROP TABLE IF EXISTS Taxes;
+DROP TABLE IF EXISTS IncomesExpensesAndSavings;
+DROP TABLE IF EXISTS Users;
+
+CREATE TABLE Users
+( 
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+	username TEXT NOT NULL UNIQUE, 
+	password TEXT NOT NULL
+);
+
+CREATE TABLE IncomesExpensesAndSavings
+( 
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+	userId INTEGER NOT NULL, 
+	type TEXT NOT NULL,
+	rowNum INTEGER NOT NULL, 
+	label TEXT, 
+	monthly NUMERIC, 
+	preTax INTEGER, 
+	FOREIGN KEY(`userId`) REFERENCES `users`(`id`) 
+);
+
+CREATE TABLE Taxes
+( 
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+	userId INTEGER NOT NULL, 
+	FilingStatus INTEGER,
+	Exemptions INTEGER,
+	State INTEGER,
+	FOREIGN KEY(`userId`) REFERENCES `users`(`id`) 
+);
+
+CREATE TABLE DeductionsAndCredits
+(
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+	userId INTEGER NOT NULL, 
+	federalOrState TEXT NOT NULL,
+	deductionOrCredit TEXT NOT NULL,
+	rowNum INTEGER NOT NULL, 
+	label TEXT, 
+	amount NUMERIC, 
+	FOREIGN KEY(`userId`) REFERENCES `users`(`id`) 
+);
+
+CREATE TABLE AdditionalTaxes
+(
+	id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, 
+	userId INTEGER NOT NULL, 
+	rowNum INTEGER NOT NULL, 
+	label TEXT, 
+	amount NUMERIC, 
+	FOREIGN KEY(`userId`) REFERENCES `users`(`id`) 
+);
+
+
+

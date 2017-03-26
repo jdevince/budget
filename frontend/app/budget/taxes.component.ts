@@ -29,15 +29,11 @@ export class TaxesComponent {
         //"Widow(er) with Dependent Child" //Future enhancement: Taxee doesn't have data for this status.
     ];
 
-    get States(): string[] {
-        return States.ListOfStateAbbreviations;
-    }
-
     private _federalTaxBrackets;
 
     private _stateTaxBrackets;
     get stateTaxBrackets() {
-        let stateAbbr: string = this.States[this.state];
+        let stateAbbr: string = this.States[this.State];
 
         if (!this._stateTaxBrackets) {
             this._stateTaxBrackets = {};
@@ -48,7 +44,7 @@ export class TaxesComponent {
             this._stateTaxBrackets[stateAbbr] = "Loading"; //Set this so multiple loading attempts won't fire if one is unsuccessful
 
             //State brackets not loaded for selected state, load them.
-            this.budgetService.getStateTaxBrackets(TaxYear, this.States[this.state])
+            this.budgetService.getStateTaxBrackets(TaxYear, this.States[this.State])
                 .subscribe(
                 brackets => {
                     this._stateTaxBrackets[stateAbbr] = brackets;
@@ -63,74 +59,23 @@ export class TaxesComponent {
         }
     }
 
-    public filingStatus: number = 0; //Default to "Single"
-    public exemptions: number = 1; //Default to 1 exemption
-    public state: number = 0; //Index in States.ListOfStates. Defaulting to first state in list
+    public FilingStatus: number = 0; //Default to "Single"
+    public Exemptions: number = 1; //Default to 1 exemption
+    public State: number = 0; //Index in States.ListOfStates. Defaulting to first state in list
 
-    public federalDeductions: LabelAndCurrencyRow[] = [];
-    public federalCredits: LabelAndCurrencyRow[] = [];
-    public stateDeductions: LabelAndCurrencyRow[] = [];
-    public stateCredits: LabelAndCurrencyRow[] = [];
+    public FederalDeductions: LabelAndCurrencyRow[] = [];
+    public FederalCredits: LabelAndCurrencyRow[] = [];
+    public StateDeductions: LabelAndCurrencyRow[] = [];
+    public StateCredits: LabelAndCurrencyRow[] = [];
 
-    public additionalTaxes: LabelAndCurrencyRow[] = [];
+    public AdditionalTaxes: LabelAndCurrencyRow[] = [];
 
-    public ficaTax: string;
-    public stateTax: string;
-    public localTax: string;
-    public totalTax: string;
-
-    constructor(
-        private budgetService: BudgetService
-    ) { }
-
-    ngOnInit(): void {
-        this.budgetService.getFederalTaxBrackets(TaxYear)
-            .subscribe(
-            brackets => this._federalTaxBrackets = brackets,
-            error => console.log(<any>error)
-            );
-    }
-
-    public get incomeMinusPreTax(): number {
+    public get IncomeMinusPreTax(): number {
         return this.budgetService.getIncomeMinusPreTax();
     }
 
-    getBracketsForFilingStatus(filingStatus: number, bracketsToChooseFrom: any): any {
-        let bracketsForStatus: any = null;
-
-        if (!bracketsToChooseFrom || !bracketsToChooseFrom["single"]) {
-            //Bracket isn't loaded or isn't loaded correctly
-            return null;
-        }
-
-        switch (+filingStatus) {
-            case 0: {
-                //Single
-                bracketsForStatus = bracketsToChooseFrom["single"];
-                break;
-            }
-            case 1: {
-                //Married Filing Jointly
-                bracketsForStatus = bracketsToChooseFrom["married"];
-                break;
-            }
-            case 2: {
-                //Head of Household
-                bracketsForStatus = bracketsToChooseFrom["head_of_household"];
-                break;
-            }
-            case 3: {
-                //Married Filing Separately
-                bracketsForStatus = bracketsToChooseFrom["married_separately"];
-                break;
-            }
-            case 4: {
-                //Widow(er) with Dependent Child
-                //Future enhancement: Taxee doesn't have data for this status.
-            }
-        }
-
-        return bracketsForStatus;
+    public get States(): string[] {
+        return States.ListOfStateAbbreviations;
     }
 
     public get StateTaxableIncome(): number {
@@ -139,44 +84,6 @@ export class TaxesComponent {
 
     public get FederalTaxableIncome(): number {
         return this.getTaxableIncome(TaxType.Federal);
-    }
-
-    getTaxableIncome(taxType: TaxType): number {
-        let brackets: any = null;
-        let deductions: LabelAndCurrencyRow[] = null;
-        let exemptionAmount: number = 0;
-
-        if (taxType === TaxType.Federal) {
-            brackets = this.getBracketsForFilingStatus(this.filingStatus, this._federalTaxBrackets);
-            deductions = this.federalDeductions;
-
-            if (brackets !== null) {
-                exemptionAmount = brackets["exemptions"][0]["exemption_amount"];
-            }
-        }
-        else if (taxType === TaxType.State) {
-            brackets = this.getBracketsForFilingStatus(this.filingStatus, this.stateTaxBrackets);
-            deductions = this.stateDeductions;
-        }
-
-        if (brackets === null) {
-            return null;
-        }
-
-        //Initially set at sum of Incomes minus pre-tax expenses/savings
-        let taxableIncome: number = this.incomeMinusPreTax;
-
-        //Subtract deductions
-        let deductionsSum = 0;
-        for (let deduction of deductions) {
-            deductionsSum += deduction.getAmount();
-        }
-        taxableIncome -= deductionsSum;
-
-        //Subtract exceptions
-        taxableIncome -= this.exemptions * exemptionAmount;
-
-        return taxableIncome;
     }
 
     public get StateTax(): number {
@@ -224,7 +131,115 @@ export class TaxesComponent {
         return socialSecurityTax + medicareTax;
     }
 
-    public getTax(taxType: TaxType): number {
+    public get TaxesSum(): number {
+        let taxesSum: number;
+         
+         taxesSum = this.FederalTax + this.StateTax + this.FICATax;
+
+         for (let tax of this.AdditionalTaxes) {
+             taxesSum += tax.getAmount();
+         }
+
+         return taxesSum;
+    }
+
+    constructor(private budgetService: BudgetService) { 
+        this.budgetService.TaxesComponent = this;
+    }
+
+    ngOnInit(): void {
+        this.budgetService.loadTaxes()
+            .subscribe(
+                loadedData => {
+                    console.log(loadedData);
+                },
+                error => console.log(<any>error)
+                );
+
+        this.budgetService.getFederalTaxBrackets(TaxYear)
+            .subscribe(
+            brackets => this._federalTaxBrackets = brackets,
+            error => console.log(<any>error)
+            );
+    }
+
+    getBracketsForFilingStatus(filingStatus: number, bracketsToChooseFrom: any): any {
+        let bracketsForStatus: any = null;
+
+        if (!bracketsToChooseFrom || !bracketsToChooseFrom["single"]) {
+            //Bracket isn't loaded or isn't loaded correctly
+            return null;
+        }
+
+        switch (+filingStatus) {
+            case 0: {
+                //Single
+                bracketsForStatus = bracketsToChooseFrom["single"];
+                break;
+            }
+            case 1: {
+                //Married Filing Jointly
+                bracketsForStatus = bracketsToChooseFrom["married"];
+                break;
+            }
+            case 2: {
+                //Head of Household
+                bracketsForStatus = bracketsToChooseFrom["head_of_household"];
+                break;
+            }
+            case 3: {
+                //Married Filing Separately
+                bracketsForStatus = bracketsToChooseFrom["married_separately"];
+                break;
+            }
+            case 4: {
+                //Widow(er) with Dependent Child
+                //Future enhancement: Taxee doesn't have data for this status.
+            }
+        }
+
+        return bracketsForStatus;
+    }
+
+    getTaxableIncome(taxType: TaxType): number {
+        let brackets: any = null;
+        let deductions: LabelAndCurrencyRow[] = null;
+        let exemptionAmount: number = 0;
+
+        if (taxType === TaxType.Federal) {
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this._federalTaxBrackets);
+            deductions = this.FederalDeductions;
+
+            if (brackets !== null) {
+                exemptionAmount = brackets["exemptions"][0]["exemption_amount"];
+            }
+        }
+        else if (taxType === TaxType.State) {
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this.stateTaxBrackets);
+            deductions = this.StateDeductions;
+        }
+
+        if (brackets === null) {
+            return null;
+        }
+
+        //Initially set at sum of Incomes minus pre-tax expenses/savings
+        let taxableIncome: number = this.IncomeMinusPreTax;
+
+        //Subtract deductions
+        let deductionsSum = 0;
+        for (let deduction of deductions) {
+            deductionsSum += deduction.getAmount();
+        }
+        taxableIncome -= deductionsSum;
+
+        //Subtract exceptions
+        taxableIncome -= this.Exemptions * exemptionAmount;
+
+        return taxableIncome;
+    }
+
+    getTax(taxType: TaxType): number {
         let brackets: any = null;
         let taxableIncome: number = 0;
         let credits: LabelAndCurrencyRow[];
@@ -234,14 +249,14 @@ export class TaxesComponent {
         let tax: number = 0;
 
         if (taxType === TaxType.Federal) {
-            brackets = this.getBracketsForFilingStatus(this.filingStatus, this._federalTaxBrackets);
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this._federalTaxBrackets);
             taxableIncome = this.FederalTaxableIncome;
-            credits = this.federalCredits;
+            credits = this.FederalCredits;
         }
         else if (taxType === TaxType.State) {
-            brackets = this.getBracketsForFilingStatus(this.filingStatus, this.stateTaxBrackets);
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this.stateTaxBrackets);
             taxableIncome = this.StateTaxableIncome;
-            credits = this.stateCredits;
+            credits = this.StateCredits;
         }
 
         if (brackets === null || !brackets.hasOwnProperty("income_tax_brackets")) {
@@ -277,18 +292,6 @@ export class TaxesComponent {
         return tax;
     }
 
-    public get TaxesSum(): number {
-        let taxesSum: number;
-         
-         taxesSum = this.FederalTax + this.StateTax + this.FICATax;
-
-         for (let tax of this.additionalTaxes) {
-             taxesSum += tax.getAmount();
-         }
-
-         return taxesSum;
-    }
-
     addLabelAndCurrencyRow(array: LabelAndCurrencyRow[]): void {
         let newRow = new LabelAndCurrencyRow("Label", 0);
         array.push(newRow);
@@ -297,6 +300,21 @@ export class TaxesComponent {
     deleteLabelAndCurrencyRow(array: LabelAndCurrencyRow[], row: LabelAndCurrencyRow): void {
         let index = array.indexOf(row);
         array.splice(index, 1);
+    }
+
+    getDataToSave(): Object {
+        let data: any = {};
+
+        data["FilingStatus"] = this.FilingStatus;
+        data["Exemptions"] = this.Exemptions;
+        data["State"] = this.State;
+        data["FederalDeductions"] = this.FederalDeductions.map( el => el.getDataToSave());
+        data["FederalCredits"] = this.FederalCredits.map( el => el.getDataToSave());
+        data["StateDeductions"] = this.StateDeductions.map( el => el.getDataToSave());
+        data["StateCredits"] = this.StateCredits.map( el => el.getDataToSave());
+        data["AdditionalTaxes"] = this.AdditionalTaxes.map( el => el.getDataToSave());
+
+        return data;
     }
 }
 

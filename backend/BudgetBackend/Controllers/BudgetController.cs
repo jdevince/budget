@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using BudgetBackend.Models;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Primitives;
+using BudgetBackend.Enums;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,13 +28,21 @@ namespace BudgetBackend.Controllers
         [HttpGet("load")]
         public IActionResult Load()
         {
-            string type = this.Request.Query["type"];
+            InputSectionTypes inputSectionType;
+            string loadType = this.Request.Query["type"];
             string authHeader = this.Request.Headers["Authorization"];
             string username = getUsername(authHeader);
 
             if (username != null)
             {
-                return Ok(_budgetRepository.Load(username, type));
+                if (loadType == "Taxes")
+                {
+                    return Ok(_budgetRepository.LoadTaxes(username));
+                }
+                else if (Enum.TryParse<InputSectionTypes>(loadType, out inputSectionType))
+                {
+                    return Ok(_budgetRepository.LoadInputSection(username, inputSectionType));
+                } 
             }
 
             return Unauthorized();
@@ -73,14 +82,14 @@ namespace BudgetBackend.Controllers
 
         //POST: api/budget/save
         [HttpPost("save")]
-        public IActionResult Save([FromBody] InputSectionRow[] rows)
+        public IActionResult Save([FromBody] BudgetModel budgetModel)
         {
             bool success;
             string authHeader = this.Request.Headers["Authorization"];
             string username = getUsername(authHeader);
             int userId = _userRepository.GetUserId(username);
 
-            success = _budgetRepository.Save(userId, rows);
+            success = _budgetRepository.Save(userId, budgetModel);
 
             return Ok();
         }

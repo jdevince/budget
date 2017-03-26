@@ -3,12 +3,12 @@
     <table class="table">
         <tr>
             <td>Income after pre-tax:</td>
-            <td colspan="2">{{incomeMinusPreTax | customCurrency}}</td>
+            <td colspan="2">{{IncomeMinusPreTax | customCurrency}}</td>
         </tr>
         <tr>
             <td>Filing status:</td>
             <td colspan="2">
-                <select [(ngModel)]="filingStatus">
+                <select [(ngModel)]="FilingStatus">
                     <option *ngFor="let status of FilingStatusOptions" [value]="FilingStatusOptions.indexOf(status)">{{status}}</option>
                 </select>
             </td>
@@ -16,13 +16,13 @@
         <tr>
             <td>Exemptions:</td>
             <td colspan="2">
-                <input type="number" [(ngModel)]="exemptions" min="1" max="30" step="1" />
+                <input type="number" [(ngModel)]="Exemptions" min="1" max="30" step="1" />
             </td>
         </tr>
         <tr>
             <td>State:</td>
             <td colspan="2">
-                <select [(ngModel)]="state">
+                <select [(ngModel)]="State">
                     <option *ngFor="let stateAbbr of States" [value]="States.indexOf(stateAbbr)">{{stateAbbr}}</option>
                 </select>
             </td>
@@ -35,7 +35,7 @@
                             <tr>
                                 <td colspan="3">Deductions:</td>
                             </tr>
-                            <tr *ngFor="let row of federalDeductions" class="form-group">
+                            <tr *ngFor="let row of FederalDeductions" class="form-group">
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
@@ -44,12 +44,12 @@
                                     />
                                 </td>
                                 <td>
-                                    <button (click)="deleteLabelAndCurrencyRow(federalDeductions, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(FederalDeductions, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addLabelAndCurrencyRow(federalDeductions)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(FederalDeductions)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -61,7 +61,7 @@
                             <tr>
                                 <td colspan="3">Credits:</td>
                             </tr>
-                            <tr *ngFor="let row of federalCredits" class="form-group">
+                            <tr *ngFor="let row of FederalCredits" class="form-group">
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
@@ -70,12 +70,12 @@
                                     />
                                 </td>
                                 <td>
-                                    <button (click)="deleteLabelAndCurrencyRow(federalCredits, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(FederalCredits, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addLabelAndCurrencyRow(federalCredits)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(FederalCredits)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -87,7 +87,7 @@
                             <tr>
                                 <td colspan="3">Deductions:</td>
                             </tr>
-                            <tr *ngFor="let row of stateDeductions" class="form-group">
+                            <tr *ngFor="let row of StateDeductions" class="form-group">
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
@@ -96,12 +96,12 @@
                                     />
                                 </td>
                                 <td>
-                                    <button (click)="deleteLabelAndCurrencyRow(stateDeductions, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(StateDeductions, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addLabelAndCurrencyRow(stateDeductions)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(StateDeductions)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -113,7 +113,7 @@
                             <tr>
                                 <td colspan="3">Credits:</td>
                             </tr>
-                            <tr *ngFor="let row of stateCredits" class="form-group">
+                            <tr *ngFor="let row of StateCredits" class="form-group">
                                 <td>
                                     <input type="text" class="form-control" [(ngModel)]="row.label" />
                                 </td>
@@ -122,12 +122,12 @@
                                     />
                                 </td>
                                 <td>
-                                    <button (click)="deleteLabelAndCurrencyRow(stateCredits, row)">Delete Row</button>
+                                    <button (click)="deleteLabelAndCurrencyRow(StateCredits, row)">Delete Row</button>
                                 </td>
                             </tr>
                             <tr>
                                 <td>
-                                    <button (click)="addLabelAndCurrencyRow(stateCredits)">Add Row</button>
+                                    <button (click)="addLabelAndCurrencyRow(StateCredits)">Add Row</button>
                                 </td>
                                 <td></td>
                                 <td></td>
@@ -151,12 +151,12 @@
         </tr>
         <tr>
             <td>
-                <button (click)="addLabelAndCurrencyRow(additionalTaxes)">Add a tax</button>
+                <button (click)="addLabelAndCurrencyRow(AdditionalTaxes)">Add a tax</button>
             </td>
             <td></td>
             <td></td>
         </tr>
-        <tr *ngFor="let row of additionalTaxes" class="form-group">
+        <tr *ngFor="let row of AdditionalTaxes" class="form-group">
             <td>
                 <input type="text" class="form-control" [(ngModel)]="row.label" />
             </td>
@@ -165,7 +165,7 @@
                 />
             </td>
             <td>
-                <button (click)="deleteLabelAndCurrencyRow(additionalTaxes, row)">Delete Row</button>
+                <button (click)="deleteLabelAndCurrencyRow(AdditionalTaxes, row)">Delete Row</button>
             </td>
         </tr>
         <tr>

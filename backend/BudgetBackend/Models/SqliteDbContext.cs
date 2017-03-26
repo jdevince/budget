@@ -9,12 +9,15 @@ namespace BudgetBackend.Models
 {
     public class SqliteDbContext : DbContext
     {
+        public DbSet<LabelAndCurrencyRow> AdditionalTaxes { get; set; }
+        public DbSet<DeductionOrCredit> DeductionsAndCredits { get; set; }
+        public DbSet<InputSectionRow> IncomesExpensesAndSavings  { get; set; }
+        public DbSet<Taxes> Taxes { get; set; }
         public DbSet<User> Users { get; set; }
-        public DbSet<InputSectionRow> InputSectionRows { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=./users.db");
+            optionsBuilder.UseSqlite("Filename=./budget.db");
         }
     }
 }

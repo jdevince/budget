@@ -1,19 +1,19 @@
 import { Component, Input } from '@angular/core';
-import { Row } from './row';
+import { InputSectionRow } from './InputSectionRow';
 import { CustomCurrencyPipe } from './custom-currency.pipe';
-import { InputSectionService } from './input-section.service';
+import { BudgetService } from './budget.service';
 
 @Component({
   moduleId: module.id,
   selector: 'input-section',
   templateUrl: '/app/budget/input-section.component.html',
   styleUrls: ['../../app/budget/input-section.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
-  providers: [CustomCurrencyPipe, InputSectionService]
+  providers: [CustomCurrencyPipe]
 })
 
 export class InputSectionComponent {
     showPreTaxCheckbox: boolean = false;
-    rows: Row[] = [];
+    rows: InputSectionRow[] = [];
 
     @Input() type: string;
     
@@ -22,10 +22,10 @@ export class InputSectionComponent {
         this.showPreTaxCheckbox = (enablePreTaxCheckbox === "true");
     }
 
-    constructor(private inputSectionService: InputSectionService) { }
+    constructor(private budgetService: BudgetService) { }
 
     ngOnInit() : void {
-        this.inputSectionService.getRows(this.type)
+        this.budgetService.loadInputSection(this.type)
                                     .subscribe(
                                         rows    =>  this.rows = rows,
                                         error   =>  console.log(<any>error)
@@ -34,11 +34,11 @@ export class InputSectionComponent {
 
     addRow(): void {
         let preTaxDefault: boolean = this.showPreTaxCheckbox ? false : null;
-        let newRow = new Row(null, 0, preTaxDefault);
+        let newRow = new InputSectionRow(null, 0, preTaxDefault);
         this.rows.push(newRow);
     }
 
-    deleteRow(row: Row): void {
+    deleteRow(row: InputSectionRow): void {
         let index = this.rows.indexOf(row);
         this.rows.splice(index, 1);
     }
@@ -57,5 +57,21 @@ export class InputSectionComponent {
 
     getAnnuallyTotal(): number {
         return this.getMonthlyTotal() * 12
+    }
+
+    getDataToSave(): any {
+        let data: Object[] = [];
+
+        for (let rowNum in this.rows) {
+            let row = { };
+            row["type"] = this.type;
+            row["rowNum"] = rowNum;
+            row["label"] = this.rows[rowNum].label;
+            row["monthly"] = this.rows[rowNum].getMonthlyNumber();
+            row["preTax"] = this.rows[rowNum].preTax;
+            data.push(row);
+        }
+
+        return data;
     }
  }

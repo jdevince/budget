@@ -1,6 +1,6 @@
 import { CustomCurrencyPipe } from './custom-currency.pipe';
 
-export class Row {
+export class InputSectionRow {
     private _monthly: number;
     private _currencyPipe: CustomCurrencyPipe;
 

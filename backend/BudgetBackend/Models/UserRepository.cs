@@ -10,7 +10,7 @@ namespace BudgetBackend.Models
         public void CreateAccount(User user)
         {
             SqliteDbContext db = new SqliteDbContext();
-            db.Add(user);
+            db.Users.Add(user);
             db.SaveChanges();
         }
 

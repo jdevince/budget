@@ -28,4 +28,13 @@ export class LabelAndCurrencyRow {
     getAmount(): number {
         return this._amount;
     }
+
+    getDataToSave(): any {
+        let data: any = {};
+
+        data["label"] = this.label;
+        data["amount"] = this._amount;
+
+        return data;
+    }
 }

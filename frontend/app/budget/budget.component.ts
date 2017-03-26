@@ -19,7 +19,7 @@ export class BudgetComponent {
     private inputSections: QueryList<InputSectionComponent>
 
     ngAfterViewInit() {
-      this.budgetService.inputSections = this.inputSections.toArray();
+      this.budgetService.InputSections = this.inputSections.toArray();
     }
 
     save() {

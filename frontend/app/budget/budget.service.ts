@@ -3,11 +3,14 @@ import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
 import { InputSectionComponent } from './input-section.component';
+import { InputSectionRow } from './InputSectionRow';
+import { TaxesComponent } from './taxes.component';
 import { UserService } from '../user/user.service';
 
 @Injectable()
 export class BudgetService {
-    public inputSections: InputSectionComponent[];
+    public InputSections: InputSectionComponent[];
+    public TaxesComponent: TaxesComponent;
 
     constructor(
         private userService: UserService,
@@ -30,22 +33,101 @@ export class BudgetService {
         return Observable.of(false);
     }
 
-    getJSONForSave(): string {
-        let array = [];
-        let jsonString: string;
+    loadInputSection(type: string): Observable<Array<InputSectionRow>> {
 
-        for (let inputSection of this.inputSections) {
-            for (let rowNum in inputSection.rows) {
-                let row = { };
-                row["type"] = inputSection.type;
-                row["rowNum"] = rowNum;
-                row["label"] = inputSection.rows[rowNum].label;
-                row["monthly"] = inputSection.rows[rowNum].getMonthlyNumber();
-                row["preTax"] = inputSection.rows[rowNum].preTax;
-                array.push(row);
+        if (!this.userService.isLoggedIn()) {
+            //If user not logged in, return default values
+
+            let rows: Array<InputSectionRow> = [];
+
+            switch (type) {
+                case "Incomes":
+                    rows.push(new InputSectionRow("Primary Job", 9750));
+                    rows.push(new InputSectionRow("Secondary Job", 1000));
+                    break;                   
+                case "Expenses":
+                    rows.push(new InputSectionRow("Groceries", 200, false));
+                    rows.push(new InputSectionRow("Health Insurance", 100, true));
+                    break;
+                case "Savings":
+                    rows.push(new InputSectionRow("401k", 500, true));
+                    rows.push(new InputSectionRow("Roth IRA", 300, false));
+                    rows.push(new InputSectionRow("Car", 100, false));
+                    break;
             }
+
+            return Observable.of(rows);
         }
-        return JSON.stringify(array);
+        else {
+            //If user is logged in, return user's saved data
+
+            //Load from server
+            let requestURL = 'http://localhost:5000/api/budget/load?type=' + type; 
+            let headers = new Headers({ 'Content-Type': 'application/json' });
+            headers.append('Authorization', 'Bearer ' + this.userService.getAccessToken());
+            let options = new RequestOptions({ headers: headers });
+
+            return this.http
+                        .get(requestURL, options)
+                        .map(this.extractRows);
+        }    
+    }
+
+    loadTaxes(): Observable<TaxesComponent> {
+
+        if (this.userService.isLoggedIn()) {
+            //If user is logged in, return user's saved data
+
+            //Load from server
+            let requestURL = 'http://localhost:5000/api/budget/load?type=Taxes'; 
+            let headers = new Headers({ 'Content-Type': 'application/json' });
+            headers.append('Authorization', 'Bearer ' + this.userService.getAccessToken());
+            let options = new RequestOptions({ headers: headers });
+
+            return this.http
+                    .get(requestURL, options)
+                    .map(this.extractTaxesComponent);
+        }    
+
+        return Observable.of(null);
+    }
+
+    extractRows(res: any): InputSectionRow[] {
+        let rows = new Array<InputSectionRow>();
+        let data = res.json().value;
+        data.forEach(element => {
+            let label = element.label;
+            let monthly = element.monthly;
+            let preTax = element.preTax
+
+            let row = new InputSectionRow(label, monthly, preTax)
+            rows.push(row);
+        });
+        return rows;
+    }
+
+    extractTaxesComponent(res: any): TaxesComponent {
+        console.log(res.json());
+        return null;
+    }
+
+    getJSONForSave(): string {
+        let data = { 
+            "Incomes": [],
+            "Expenses": [],
+            "Savings": [], 
+            "Taxes": {} 
+        };
+
+        //Input Sections (Income, Expenses, Savings)
+        for (let inputSection of this.InputSections) {
+            data[inputSection.type] = inputSection.getDataToSave();
+        }
+
+        //Taxes
+        data.Taxes = this.TaxesComponent.getDataToSave();
+        
+        return JSON.stringify(data);
     }
 
     getFederalTaxBrackets(year: number): Observable<Object> {
@@ -63,13 +145,13 @@ export class BudgetService {
     }
 
     getIncomeMinusPreTax(): number {
-        if (this.inputSections === undefined) {
+        if (this.InputSections === undefined) {
             return 0;
         }
 
         let incomeMinusPreTax: number = 0;
 
-        for (let inputSection of this.inputSections) {
+        for (let inputSection of this.InputSections) {
             for (let row of inputSection.rows) {
                 if (inputSection.type === "Incomes") {
                     //Add all incomes
@@ -89,13 +171,13 @@ export class BudgetService {
         //Returns sum of all rows in Incomes section. 
         //Future enhancement: Only add "Earned Income" (i.e. salary, but not dividends)
 
-        if (this.inputSections === undefined) {
+        if (this.InputSections === undefined) {
             return 0;
         }
 
         let income: number = 0;
 
-        for (let inputSection of this.inputSections) {
+        for (let inputSection of this.InputSections) {
             if (inputSection.type === "Incomes") {
                 for (let row of inputSection.rows) {
                     income += row.getAnnuallyNumber();

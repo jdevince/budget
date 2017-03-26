@@ -1,5 +1,4 @@
-﻿using BudgetBackend.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -10,8 +9,7 @@ using System.Threading.Tasks;
 namespace BudgetBackend.Models
 {
     [DataContract]
-    [Table("IncomesExpensesAndSavings")]
-    public class InputSectionRow
+    public class Taxes
     {
         [Key]
         public int id { get; set; }
@@ -19,14 +17,17 @@ namespace BudgetBackend.Models
         public int userId { get; set; }
 
         [DataMember]
-        public InputSectionTypes type { get; set; }
+        public int FilingStatus;
         [DataMember]
-        public int rowNum { get; set; }
+        public int Exemptions;
         [DataMember]
-        public string label { get; set; }
-        [DataMember]
-        public double monthly { get; set; }
-        [DataMember]
-        public bool? preTax { get; set; }
+        public int State;
+
+        public DeductionOrCredit[] FederalDeductions;
+        public DeductionOrCredit[] FederalCredits;
+        public DeductionOrCredit[] StateDeductions;
+        public DeductionOrCredit[] StateCredits;
+
+        public LabelAndCurrencyRow[] AdditionalTaxes;
     }
 }
