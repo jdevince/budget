@@ -9,9 +9,9 @@ namespace BudgetBackend.Models
 {
     public interface IBudgetRepository
     {
-        JsonResult LoadInputSection(string username, InputSectionTypes inputSectionType);
-        JsonResult LoadTaxes(string username);
-        bool Save(int userId, BudgetModel budgetModel);
+        BudgetInputRow[] LoadBudgetInputs(string username, BudgetInputTypes inputSectionType);
+        TaxInfo LoadTaxInfo(string username);
+        bool Save(int userId, List<BudgetInputRow> budgetInputRows, TaxInfo taxInfo);
         string GetFederalTaxBrackets(int year);
         string GetStateTaxBrackets(int year, string stateAbbr);
     }

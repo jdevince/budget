@@ -5,6 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Builder;
+using BudgetBackend.Models;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
+using EFLogging;
 
 namespace BudgetBackend
 {
@@ -20,6 +25,13 @@ namespace BudgetBackend
                 .Build();
 
             host.Run();
+
+            using (var db = new BudgetDbContext())
+            {
+                var serviceProvider = db.GetInfrastructure<IServiceProvider>();
+                var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+                loggerFactory.AddProvider(new MyFilteredLoggerProvider());
+            }
         }
     }
 }

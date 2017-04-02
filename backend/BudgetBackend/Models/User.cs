@@ -9,9 +9,11 @@ namespace BudgetBackend.Models
 {
     public class User
     {
-        [Key]
-        public int id { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+
+        public TaxInfo TaxInfo { get; set; }
+        public List<BudgetInputRow> BudgetInputRows { get; set; }
     }
 }

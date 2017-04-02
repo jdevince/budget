@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BudgetBackend.Enums
 {
-    public enum InputSectionTypes
+    public enum BudgetInputTypes
     {
         Incomes,
         Expenses,

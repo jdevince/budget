@@ -64,11 +64,11 @@ export class InputSectionComponent {
 
         for (let rowNum in this.rows) {
             let row = { };
-            row["type"] = this.type;
-            row["rowNum"] = rowNum;
-            row["label"] = this.rows[rowNum].label;
-            row["monthly"] = this.rows[rowNum].getMonthlyNumber();
-            row["preTax"] = this.rows[rowNum].preTax;
+            row["Type"] = this.type;
+            row["RowNum"] = rowNum;
+            row["Label"] = this.rows[rowNum].label;
+            row["Monthly"] = this.rows[rowNum].getMonthlyNumber();
+            row["PreTax"] = this.rows[rowNum].preTax;
             data.push(row);
         }
 

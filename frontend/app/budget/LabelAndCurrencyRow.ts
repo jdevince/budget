@@ -32,8 +32,8 @@ export class LabelAndCurrencyRow {
     getDataToSave(): any {
         let data: any = {};
 
-        data["label"] = this.label;
-        data["amount"] = this._amount;
+        data["Label"] = this.label;
+        data["Amount"] = this._amount;
 
         return data;
     }

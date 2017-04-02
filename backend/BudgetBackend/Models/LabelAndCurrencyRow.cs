@@ -9,14 +9,9 @@ namespace BudgetBackend.Models
 {
     public class LabelAndCurrencyRow
     {
-        [Key]
-        public int id { get; set; }
-        [ForeignKey("User")]
-        public int userId { get; set; }
-
-        public int rowNum { get; set; }
-
-        public string label;
-        public double amount;
+        public int Id { get; set; }
+        public int RowNum { get; set; }
+        public string Label { get; set; }
+        public double Amount { get; set; }
     }
 }

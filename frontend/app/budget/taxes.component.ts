@@ -151,7 +151,14 @@ export class TaxesComponent {
         this.budgetService.loadTaxes()
             .subscribe(
                 loadedData => {
-                    console.log(loadedData);
+                    this.FilingStatus = loadedData.FilingStatus;
+                    this.Exemptions = loadedData.Exemptions;
+                    this.State = loadedData.State;
+                    this.FederalDeductions = loadedData.FederalDeductions;
+                    this.FederalCredits = loadedData.FederalCredits;
+                    this.StateDeductions = loadedData.StateDeductions;
+                    this.StateCredits = loadedData.StateCredits;
+                    this.AdditionalTaxes = loadedData.AdditionalTaxes;
                 },
                 error => console.log(<any>error)
                 );
@@ -308,11 +315,50 @@ export class TaxesComponent {
         data["FilingStatus"] = this.FilingStatus;
         data["Exemptions"] = this.Exemptions;
         data["State"] = this.State;
-        data["FederalDeductions"] = this.FederalDeductions.map( el => el.getDataToSave());
-        data["FederalCredits"] = this.FederalCredits.map( el => el.getDataToSave());
-        data["StateDeductions"] = this.StateDeductions.map( el => el.getDataToSave());
-        data["StateCredits"] = this.StateCredits.map( el => el.getDataToSave());
-        data["AdditionalTaxes"] = this.AdditionalTaxes.map( el => el.getDataToSave());
+
+        //Deductions and Credits
+        data["DeductionsAndCredits"] = [];
+        
+        for(let rowIdx in this.FederalDeductions) {
+            let dataRow = this.FederalDeductions[rowIdx].getDataToSave();
+            dataRow["RowNum"] = rowIdx;
+            dataRow["FederalOrState"] = "Federal";
+            dataRow["DeductionOrCredit"] = "Deduction";
+            data["DeductionsAndCredits"].push(dataRow);
+        }
+
+        for(let rowIdx in this.FederalCredits) {
+            let dataRow = this.FederalCredits[rowIdx].getDataToSave();
+            dataRow["RowNum"] = rowIdx;
+            dataRow["FederalOrState"] = "Federal";
+            dataRow["DeductionOrCredit"] = "Credit";
+            data["DeductionsAndCredits"].push(dataRow);
+        }
+
+        for(let rowIdx in this.StateDeductions) {
+            let dataRow = this.StateDeductions[rowIdx].getDataToSave();
+            dataRow["RowNum"] = rowIdx;
+            dataRow["FederalOrState"] = "State";
+            dataRow["DeductionOrCredit"] = "Deduction";
+            data["DeductionsAndCredits"].push(dataRow);
+        }
+
+        for(let rowIdx in this.StateCredits) {
+            let dataRow = this.StateCredits[rowIdx].getDataToSave();
+            dataRow["RowNum"] = rowIdx;
+            dataRow["FederalOrState"] = "State";
+            dataRow["DeductionOrCredit"] = "Credit";
+            data["DeductionsAndCredits"].push(dataRow);
+        }
+
+        //Additional Taxes
+        data["AdditionalTaxes"] = [];
+
+        for(let rowIdx in this.AdditionalTaxes) {
+            let dataRow = this.AdditionalTaxes[rowIdx].getDataToSave();
+            dataRow["RowNum"] = rowIdx;
+            data["AdditionalTaxes"].push(dataRow);
+        }
 
         return data;
     }

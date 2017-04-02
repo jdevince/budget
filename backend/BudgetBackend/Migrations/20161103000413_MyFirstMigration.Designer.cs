@@ -7,7 +7,7 @@ using BudgetBackend.Models;
 
 namespace BudgetBackend.Migrations
 {
-    [DbContext(typeof(SqliteDbContext))]
+    [DbContext(typeof(BudgetDbContext))]
     [Migration("20161103000413_MyFirstMigration")]
     partial class MyFirstMigration
     {

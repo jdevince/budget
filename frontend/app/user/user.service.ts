@@ -19,7 +19,7 @@ export class UserService {
   }
 
   createAcc (username: string, password: string): Observable<User> {
-    let body = JSON.stringify({ "username" : username, "password": password });
+    let body = JSON.stringify({ "Username" : username, "Password": password });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
@@ -31,7 +31,7 @@ export class UserService {
 
   login(username: string, password: string): Observable<boolean> {
     let headers = new Headers({ 'Content-Type': 'application/json' });
-    let body = JSON.stringify({ "username" : username, "password": password });
+    let body = JSON.stringify({ "Username" : username, "Password": password });
     let options = new RequestOptions({ headers: headers });
 
     var httpCall = this.http

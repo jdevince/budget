@@ -28,20 +28,43 @@ namespace BudgetBackend.Controllers
         [HttpGet("load")]
         public IActionResult Load()
         {
-            InputSectionTypes inputSectionType;
+            JsonResult jsonResult;
+            BudgetInputTypes inputSectionType;
             string loadType = this.Request.Query["type"];
             string authHeader = this.Request.Headers["Authorization"];
-            string username = getUsername(authHeader);
-
-            if (username != null)
+            
+            if (authHeader == null)
             {
+                //User not logged in. Load defaults.
                 if (loadType == "Taxes")
                 {
-                    return Ok(_budgetRepository.LoadTaxes(username));
+                    TaxInfo taxInfo = TaxInfo.GetDefaults();
+                    jsonResult = new JsonResult(taxInfo);
+                    return Ok(jsonResult);
                 }
-                else if (Enum.TryParse<InputSectionTypes>(loadType, out inputSectionType))
+                else if (Enum.TryParse<BudgetInputTypes>(loadType, out inputSectionType))
                 {
-                    return Ok(_budgetRepository.LoadInputSection(username, inputSectionType));
+                    List<BudgetInputRow> budgetInputRows = BudgetInputRow.GetDefaults(inputSectionType);
+                    jsonResult = new JsonResult(budgetInputRows);
+                    return Ok(jsonResult);
+                }
+            }
+            else
+            {
+                //User is logged in. Load from database.
+                string username = getUsername(authHeader);
+
+                if (loadType == "Taxes")
+                {
+                    TaxInfo taxInfo = _budgetRepository.LoadTaxInfo(username);
+                    jsonResult = new JsonResult(taxInfo);
+                    return Ok(jsonResult);
+                }
+                else if (Enum.TryParse<BudgetInputTypes>(loadType, out inputSectionType))
+                {
+                    BudgetInputRow[] budgetInputRows = _budgetRepository.LoadBudgetInputs(username, inputSectionType);
+                    jsonResult = new JsonResult(budgetInputRows);
+                    return Ok(jsonResult);
                 } 
             }
 
@@ -82,14 +105,14 @@ namespace BudgetBackend.Controllers
 
         //POST: api/budget/save
         [HttpPost("save")]
-        public IActionResult Save([FromBody] BudgetModel budgetModel)
+        public IActionResult Save([FromBody] User user)
         {
             bool success;
             string authHeader = this.Request.Headers["Authorization"];
             string username = getUsername(authHeader);
             int userId = _userRepository.GetUserId(username);
 
-            success = _budgetRepository.Save(userId, budgetModel);
+            success = _budgetRepository.Save(userId, user.BudgetInputRows, user.TaxInfo);
 
             return Ok();
         }

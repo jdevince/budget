@@ -1,9 +1,11 @@
 ﻿using BudgetBackend.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace BudgetBackend
 {
@@ -34,8 +36,11 @@ namespace BudgetBackend
                     .AllowCredentials());
             });
 
-            services.AddMvc();
-            
+            services.AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
+                });
 
             services.AddSingleton<IUserRepository, UserRepository>();
             services.AddSingleton<IBudgetRepository, BudgetRepository>();
@@ -45,7 +50,7 @@ namespace BudgetBackend
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            loggerFactory.AddDebug(LogLevel.Debug);
 
             //Set CORS
             app.UseCors("CorsPolicy");

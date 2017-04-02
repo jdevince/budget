@@ -18,8 +18,8 @@ namespace BudgetBackend
 
         public TokenResponse GenerateToken(User user)
         {
-            var username = user.username;
-            var password = user.password;
+            var username = user.Username;
+            var password = user.Password;
 
             var now = DateTime.UtcNow;
             var nowOffset = new DateTimeOffset(now);

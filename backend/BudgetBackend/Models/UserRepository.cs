@@ -1,7 +1,12 @@
-﻿using System;
+﻿using BudgetBackend.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BudgetBackend.Models
 {
@@ -9,7 +14,12 @@ namespace BudgetBackend.Models
     {
         public void CreateAccount(User user)
         {
-            SqliteDbContext db = new SqliteDbContext();
+            BudgetDbContext db = new BudgetDbContext();
+
+            //Set defaults
+            user.BudgetInputRows = BudgetInputRow.GetDefaults();
+            user.TaxInfo = TaxInfo.GetDefaults();
+
             db.Users.Add(user);
             db.SaveChanges();
         }
@@ -21,9 +31,9 @@ namespace BudgetBackend.Models
                 return false;
             }
 
-            SqliteDbContext db = new SqliteDbContext();
+            BudgetDbContext db = new BudgetDbContext();
             var query = from u in db.Users
-                        where u.username == user.username && u.password == user.password
+                        where u.Username == user.Username && u.Password == user.Password
                         select u;
             try
             {
@@ -39,11 +49,11 @@ namespace BudgetBackend.Models
 
         public int GetUserId(string username)
         {
-            SqliteDbContext db = new SqliteDbContext();
+            BudgetDbContext db = new BudgetDbContext();
             var query = from u in db.Users
-                        where u.username == username
+                        where u.Username == username
                         select u;
-            return query.Single().id;
+            return query.Single().Id;
         }
     }
 }

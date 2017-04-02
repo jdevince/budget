@@ -7,7 +7,7 @@ using BudgetBackend.Models;
 
 namespace BudgetBackend.Migrations
 {
-    [DbContext(typeof(SqliteDbContext))]
+    [DbContext(typeof(BudgetDbContext))]
     partial class SqliteDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

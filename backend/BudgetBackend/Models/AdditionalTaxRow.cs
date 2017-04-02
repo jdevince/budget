@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace BudgetBackend.Models
 {
-    public class BudgetModel
+    [Table("AdditionalTaxes")]
+    public class AdditionalTaxRow : LabelAndCurrencyRow
     {
-        public InputSectionRow[] Incomes;
-        public InputSectionRow[] Expenses;
-        public InputSectionRow[] Savings;
-        public Taxes Taxes;
+        public int TaxInfoId { get; set; }
+        public TaxInfo TaxInfo { get; set; }
     }
 }
