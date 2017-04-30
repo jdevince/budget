@@ -1,3 +1,11 @@
 .taxableIncome h2 {
     display: inline-block;
 }
+
+.fa-times {
+    color: red;
+}
+
+.fa-plus {
+    color: green;
+}

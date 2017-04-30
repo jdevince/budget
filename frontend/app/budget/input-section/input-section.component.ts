@@ -32,10 +32,19 @@ export class InputSectionComponent {
                                     );
     }
 
-    addRow(): void {
+    insertRow(row: InputSectionRow): void {
+        let index: number = this.rows.indexOf(row);
         let preTaxDefault: boolean = this.showPreTaxCheckbox ? false : null;
         let newRow = new InputSectionRow(null, 0, preTaxDefault);
-        this.rows.push(newRow);
+
+        if (index === this.rows.length - 1) {
+            //Selected row is last row. Add new row to end.
+            this.rows.push(newRow)
+        }
+        else {
+            //Add new row after selected row
+            this.rows.splice(index + 1, 0, newRow);
+        }
     }
 
     deleteRow(row: InputSectionRow): void {

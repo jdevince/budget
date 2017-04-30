@@ -21,16 +21,9 @@
                 <input type="checkbox" [(ngModel)]="row.preTax" />
             </td>
             <td>
-                <button (click)="deleteRow(row)">Delete Row</button>            
+                <a class="btn" (click)="deleteRow(row)"><i class="fa fa-times"></i></a>   
+                <a class="btn" (click)="insertRow(row)"><i class="fa fa-plus"></i></a>           
             </td>
-        </tr>
-        <tr>
-            <td>
-                <button (click)="addRow()">Add Row</button>
-            </td>
-            <td></td>
-            <td></td>
-            <td *ngIf="showPreTaxCheckbox"></td> 
         </tr>
         <tr>
             <td>
@@ -43,6 +36,7 @@
                 <h2>{{ getAnnuallyTotal() | currency : 'USD' : true : '1.2-2' }}</h2>
             </td>
             <td *ngIf="showPreTaxCheckbox"></td> 
+            <td></td>
         </tr>
     </table>
 </div>

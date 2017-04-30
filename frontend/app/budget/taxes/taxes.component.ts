@@ -294,14 +294,23 @@ export class TaxesComponent {
         return tax;
     }
 
-    addLabelAndCurrencyRow(array: LabelAndCurrencyRow[]): void {
-        let newRow = new LabelAndCurrencyRow("Label", 0);
-        array.push(newRow);
-    }
-
     deleteLabelAndCurrencyRow(array: LabelAndCurrencyRow[], row: LabelAndCurrencyRow): void {
         let index = array.indexOf(row);
         array.splice(index, 1);
+    }
+
+    insertLabelAndCurrencyRow(array: LabelAndCurrencyRow[], row: LabelAndCurrencyRow): void {
+        let index: number = array.indexOf(row);
+        let newRow: LabelAndCurrencyRow = new LabelAndCurrencyRow(null, 0);
+
+        if (index === array.length - 1) {
+            //Selected row is last row. Add new row to end.
+            array.push(newRow)
+        }
+        else {
+            //Add new row after selected row
+            array.splice(index + 1, 0, newRow);
+        }
     }
 
     getDataToSave(): Object {

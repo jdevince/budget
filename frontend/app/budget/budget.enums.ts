@@ -8,3 +8,9 @@ export enum DeductionOrCredit {
     Deduction,
     Credit
 }
+
+export enum PreOrPostTax {
+    PreTaxOnly,
+    PostTaxOnly,
+    EitherPreOrPostTax
+}

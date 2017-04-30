@@ -12,6 +12,8 @@ import { SignUpComponent } from './user/signup.component';
 
 import { InputSectionComponent } from './budget/input-section/input-section.component';
 import { TaxesComponent } from './budget/taxes/taxes.component';
+import { BreakdownComponent } from './budget/breakdown/breakdown.component';
+import { SummaryComponent } from './budget/summary/summary.component';
 
 import { Tab } from './tabs/tab.component';
 import { Tabs } from './tabs/tabs.component';
@@ -37,6 +39,8 @@ import { AppRoutingModule } from './app-routing.module';
     SignUpComponent,
     InputSectionComponent,
     TaxesComponent,
+    BreakdownComponent,
+    SummaryComponent,
     Tab,
     Tabs,
     CustomCurrencyFormatterDirective,

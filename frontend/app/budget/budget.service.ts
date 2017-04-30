@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
-import { TaxType, DeductionOrCredit } from './budget.enums';
+import { TaxType, DeductionOrCredit, PreOrPostTax } from './budget.enums';
 import { InputSectionComponent } from './input-section/input-section.component';
 import { InputSectionRow } from './input-section/input-section-row.model';
 import { TaxesComponent } from './taxes/taxes.component';
@@ -19,6 +19,7 @@ export class BudgetService {
         private http: Http
     ) {}
 
+    //Send data to server
     save(): Observable<boolean> {
         if (this.userService.isLoggedIn()) {
             let saveURL = "http://localhost:5000/api/budget/save"
@@ -35,6 +36,25 @@ export class BudgetService {
         return Observable.of(false);
     }
 
+    //Send data to server helper functions
+    getJSONForSave(): string {
+        let user = { 
+            "BudgetInputRows": [],
+            "TaxInfo": {} 
+        };
+
+        // Input Sections (Income, Expenses, Savings)
+        for (let inputSection of this.InputSections) {
+            user.BudgetInputRows = user.BudgetInputRows.concat(inputSection.getDataToSave());
+        }
+
+        //Taxes
+        user.TaxInfo = this.TaxesComponent.getDataToSave();
+        
+        return JSON.stringify(user);
+    }
+
+    //Load data from server
     loadInputSection(type: string): Observable<Array<InputSectionRow>> {
         let requestURL = 'http://localhost:5000/api/budget/load?type=' + type; 
         let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -67,6 +87,7 @@ export class BudgetService {
                 .map(this.extractTaxesComponent);  
     }
 
+    //Load data from server helper functions
     extractRows(res: any): InputSectionRow[] {
         let rows = new Array<InputSectionRow>();
         let data = res.json().value;
@@ -94,7 +115,6 @@ export class BudgetService {
         let stateCredits: LabelAndCurrencyRow[] = [];
 
         for (let row of res.json().value.deductionsAndCredits) {
-            console.log(row);
             if (row.federalOrState === TaxType.Federal) {
                 if (row.deductionOrCredit === DeductionOrCredit.Deduction) {
                     //Federal Deduction
@@ -131,23 +151,7 @@ export class BudgetService {
         return taxInfo;
     }
 
-    getJSONForSave(): string {
-        let user = { 
-            "BudgetInputRows": [],
-            "TaxInfo": {} 
-        };
-
-        // Input Sections (Income, Expenses, Savings)
-        for (let inputSection of this.InputSections) {
-            user.BudgetInputRows = user.BudgetInputRows.concat(inputSection.getDataToSave());
-        }
-
-        //Taxes
-        user.TaxInfo = this.TaxesComponent.getDataToSave();
-        
-        return JSON.stringify(user);
-    }
-
+    //Get functions
     getFederalTaxBrackets(year: number): Observable<Object> {
         let url = "http://localhost:5000/api/budget/federalTaxBrackets/" + year.toString();
         return this.http
@@ -163,46 +167,54 @@ export class BudgetService {
     }
 
     getIncomeMinusPreTax(): number {
+        return this.getInputSectionAnnualTotal("Incomes") - this.getInputSectionAnnualTotal("Expenses", PreOrPostTax.PreTaxOnly) - this.getInputSectionAnnualTotal("Savings", PreOrPostTax.PreTaxOnly)
+    }
+
+    getInputSectionAnnualTotal(inputSectionType: string, preOrPostTax = PreOrPostTax.EitherPreOrPostTax): number {
+        ///Returns the sum of annual amounts for the given type and pre/post tax status
+        ///If getPreTax === false, returns only non-preTax. If getPreTax === true, retuns only preTax.
+
         if (this.InputSections === undefined) {
             return 0;
         }
 
-        let incomeMinusPreTax: number = 0;
+        let total: number = 0;
 
         for (let inputSection of this.InputSections) {
-            for (let row of inputSection.rows) {
-                if (inputSection.type === "Incomes") {
-                    //Add all incomes
-                    incomeMinusPreTax += row.getAnnuallyNumber();
+            if (inputSection.type === inputSectionType) {
+                for (let row of inputSection.rows) {
+                    if ((preOrPostTax === PreOrPostTax.EitherPreOrPostTax)
+                        || (preOrPostTax === PreOrPostTax.PreTaxOnly && row.preTax === true)
+                        || (preOrPostTax === PreOrPostTax.PostTaxOnly && row.preTax === false)) {
+                            total += row.getAnnuallyNumber();
+                    }
                 }
-                else if (row.preTax) {
-                    //Subtract pre-tax expenses and savings
-                    incomeMinusPreTax -= row.getAnnuallyNumber();
-                }
-            }
+            }        
         }
 
-        return incomeMinusPreTax;
+        return total;
+    }
+
+    getAfterTaxes(): number {
+        return this.getIncomeMinusPreTax() - this.TaxesComponent.TaxesSum;
+    }
+
+    getAfterSavings(): number {
+        return this.getAfterTaxes() - this.getInputSectionAnnualTotal("Savings", PreOrPostTax.PostTaxOnly);
+    }
+
+    getAfterExpenses(): number {
+        return this.getAfterSavings() - this.getInputSectionAnnualTotal("Expenses", PreOrPostTax.PostTaxOnly);
+    }
+
+    getTotalSavings(): number {
+        return this.getInputSectionAnnualTotal("Savings") + this.getAfterExpenses();
     }
 
     getIncomeSubjectToFICA(): number {
         //Returns sum of all rows in Incomes section. 
         //Future enhancement: Only add "Earned Income" (i.e. salary, but not dividends)
 
-        if (this.InputSections === undefined) {
-            return 0;
-        }
-
-        let income: number = 0;
-
-        for (let inputSection of this.InputSections) {
-            if (inputSection.type === "Incomes") {
-                for (let row of inputSection.rows) {
-                    income += row.getAnnuallyNumber();
-                }
-            }
-        }
-
-        return income;
+        return this.getInputSectionAnnualTotal("Incomes");
     }
 }
