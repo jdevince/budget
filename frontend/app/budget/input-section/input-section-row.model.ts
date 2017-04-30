@@ -1,4 +1,4 @@
-import { CustomCurrencyPipe } from './custom-currency.pipe';
+import { CustomCurrencyPipe } from './../custom-currency.pipe';
 
 export class InputSectionRow {
     private _monthly: number;

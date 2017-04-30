@@ -1,22 +1,17 @@
 import { Component } from '@angular/core';
-import { BudgetService } from './budget.service';
-import { CustomCurrencyPipe } from './custom-currency.pipe';
-import { LabelAndCurrencyRow } from './LabelAndCurrencyRow';
-import { States } from './states';
+import { BudgetService } from './../budget.service';
+import { TaxType, DeductionOrCredit } from './../budget.enums';
+import { CustomCurrencyPipe } from './../custom-currency.pipe';
+import { LabelAndCurrencyRow } from './label-and-currency-row.model';
+import { States } from './states.model';
 
 const TaxYear = 2017;
-
-enum TaxType {
-    Federal,
-    State,
-    FICA
-}
 
 @Component({
     moduleId: module.id,
     selector: 'taxes',
-    templateUrl: '/app/budget/taxes.component.html',
-    styleUrls: ['../../app/budget/taxes.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
+    templateUrl: '/app/budget/taxes/taxes.component.html',
+    styleUrls: ['../../../app/budget/taxes/taxes.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
     providers: [CustomCurrencyPipe]
 })
 
@@ -322,32 +317,32 @@ export class TaxesComponent {
         for(let rowIdx in this.FederalDeductions) {
             let dataRow = this.FederalDeductions[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
-            dataRow["FederalOrState"] = "Federal";
-            dataRow["DeductionOrCredit"] = "Deduction";
+            dataRow["FederalOrState"] = TaxType.Federal;
+            dataRow["DeductionOrCredit"] = DeductionOrCredit.Deduction;
             data["DeductionsAndCredits"].push(dataRow);
         }
 
         for(let rowIdx in this.FederalCredits) {
             let dataRow = this.FederalCredits[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
-            dataRow["FederalOrState"] = "Federal";
-            dataRow["DeductionOrCredit"] = "Credit";
+            dataRow["FederalOrState"] = TaxType.Federal;
+            dataRow["DeductionOrCredit"] = DeductionOrCredit.Credit;
             data["DeductionsAndCredits"].push(dataRow);
         }
 
         for(let rowIdx in this.StateDeductions) {
             let dataRow = this.StateDeductions[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
-            dataRow["FederalOrState"] = "State";
-            dataRow["DeductionOrCredit"] = "Deduction";
+            dataRow["FederalOrState"] = TaxType.State;
+            dataRow["DeductionOrCredit"] = DeductionOrCredit.Deduction;
             data["DeductionsAndCredits"].push(dataRow);
         }
 
         for(let rowIdx in this.StateCredits) {
             let dataRow = this.StateCredits[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
-            dataRow["FederalOrState"] = "State";
-            dataRow["DeductionOrCredit"] = "Credit";
+            dataRow["FederalOrState"] = TaxType.State;
+            dataRow["DeductionOrCredit"] = DeductionOrCredit.Credit;
             data["DeductionsAndCredits"].push(dataRow);
         }
 

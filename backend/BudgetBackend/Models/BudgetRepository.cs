@@ -18,14 +18,6 @@ namespace BudgetBackend.Models
         {
             BudgetDbContext db = new BudgetDbContext();
 
-            //var budgetInputRows = db.Users
-            //                .Include(u => u.BudgetInputRows)
-            //                .Where(u => u.Username == username)
-            //                .Select(u => u.BudgetInputRows
-            //                    .Where(bir => bir.Type == budgetInputType))
-            //                .Cast<BudgetInputRow>()
-            //                .ToArray();
-
             var user = db.Users
                             .Include(u => u.BudgetInputRows)
                             .Where(u => u.Username == username)

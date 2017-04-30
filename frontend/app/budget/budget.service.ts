@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { Observable }     from 'rxjs/Observable';
 
-import { InputSectionComponent } from './input-section.component';
-import { InputSectionRow } from './InputSectionRow';
-import { TaxesComponent } from './taxes.component';
+import { TaxType, DeductionOrCredit } from './budget.enums';
+import { InputSectionComponent } from './input-section/input-section.component';
+import { InputSectionRow } from './input-section/input-section-row.model';
+import { TaxesComponent } from './taxes/taxes.component';
 import { UserService } from '../user/user.service';
-import { LabelAndCurrencyRow } from './LabelAndCurrencyRow';
+import { LabelAndCurrencyRow } from './taxes/label-and-currency-row.model';
 
 @Injectable()
 export class BudgetService {
@@ -94,24 +95,24 @@ export class BudgetService {
 
         for (let row of res.json().value.deductionsAndCredits) {
             console.log(row);
-            if (row.FederalOrState === "Federal") {
-                if (row.DeductionOrCredit === "Deduction") {
+            if (row.federalOrState === TaxType.Federal) {
+                if (row.deductionOrCredit === DeductionOrCredit.Deduction) {
                     //Federal Deduction
-                    federalDeductions.push(new LabelAndCurrencyRow(row.Label, row.Amount));
+                    federalDeductions.push(new LabelAndCurrencyRow(row.label, row.amount));
                 }
                 else {
                     //Federal Credit
-                    federalCredits.push(new LabelAndCurrencyRow(row.Label, row.Amount));
+                    federalCredits.push(new LabelAndCurrencyRow(row.label, row.amount));
                 }
             }
             else {
-                if (row.DeductionOrCredit === "Deduction") {
+                if (row.deductionOrCredit === DeductionOrCredit.Deduction) {
                     //State Deduction
-                    stateDeductions.push(new LabelAndCurrencyRow(row.Label, row.Amount));
+                    stateDeductions.push(new LabelAndCurrencyRow(row.label, row.amount));
                 }
                 else {
                     //State Credit
-                    stateCredits.push(new LabelAndCurrencyRow(row.Label, row.Amount));
+                    stateCredits.push(new LabelAndCurrencyRow(row.label, row.amount));
                 }
             }
         }
@@ -123,7 +124,7 @@ export class BudgetService {
 
         let additionalTaxes: LabelAndCurrencyRow[] = [];
         for (let row of res.json().value.additionalTaxes) {
-            additionalTaxes.push(new LabelAndCurrencyRow(row.Label, row.Amount));
+            additionalTaxes.push(new LabelAndCurrencyRow(row.label, row.amount));
         }
         taxInfo.AdditionalTaxes = additionalTaxes;
     
