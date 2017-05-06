@@ -294,7 +294,7 @@ export class TaxesComponent {
         return tax;
     }
 
-    deleteLabelAndCurrencyRow(array: LabelAndCurrencyRow[], row: LabelAndCurrencyRow): void {
+    deleteLabelAndCurrencyRow(array: LabelAndCurrencyRow[], row?: LabelAndCurrencyRow): void {
         let index = array.indexOf(row);
         array.splice(index, 1);
     }

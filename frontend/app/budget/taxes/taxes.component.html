@@ -1,4 +1,4 @@
-<div class="taxes col-md-4">
+<div class="taxes">
     <h1>Taxes</h1>
     <table class="table">
         <tr>
@@ -29,11 +29,11 @@
         </tr>
         <tr>
             <td colspan="3">
-                <tabs>
+                <tabs class="tabs">
                     <tab tabTitle="Federal">
                         <table class="table">
-                            <tr>
-                                <td colspan="3">Deductions:</td>
+                            <tr class="title">
+                                <td colspan="3">Deductions</td>
                             </tr>
                             <tr *ngFor="let row of FederalDeductions" class="form-group">
                                 <td>
@@ -44,16 +44,17 @@
                                     />
                                 </td>
                                 <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-times"></i></a>   
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-plus"></i></a> 
+                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn" (click)="insertLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-plus"></i></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Taxable Income:</td>
-                                <td colspan="2">{{FederalTaxableIncome | customCurrency}}</td>
+                            <tr *ngIf="FederalDeductions.length===0">
+                                <td colspan="3">
+                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(FederalDeductions)"><i class="fa fa-plus"></i>Add</button>
+                                </td>
                             </tr>
-                            <tr>
-                                <td colspan="3">Credits:</td>
+                            <tr class="title">
+                                <td colspan="3">Credits</td>
                             </tr>
                             <tr *ngFor="let row of FederalCredits" class="form-group">
                                 <td>
@@ -64,16 +65,21 @@
                                     />
                                 </td>
                                 <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-times"></i></a>   
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-plus"></i></a> 
+                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn" (click)="insertLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-plus"></i></a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="FederalCredits.length===0">
+                                <td colspan="3">
+                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(FederalCredits)"><i class="fa fa-plus"></i>Add</button>
                                 </td>
                             </tr>
                         </table>
                     </tab>
                     <tab tabTitle="State">
                         <table class="table">
-                            <tr>
-                                <td colspan="3">Deductions:</td>
+                            <tr class="title">
+                                <td colspan="3">Deductions</td>
                             </tr>
                             <tr *ngFor="let row of StateDeductions" class="form-group">
                                 <td>
@@ -84,16 +90,17 @@
                                     />
                                 </td>
                                 <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-times"></i></a>   
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-plus"></i></a> 
+                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn" (click)="insertLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-plus"></i></a>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>Taxable Income:</td>
-                                <td colspan="2">{{StateTaxableIncome | customCurrency}}</td>
+                            <tr *ngIf="StateDeductions.length===0">
+                                <td colspan="3">
+                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(StateDeductions)"><i class="fa fa-plus"></i>Add</button>
+                                </td>
                             </tr>
-                            <tr>
-                                <td colspan="3">Credits:</td>
+                            <tr class="title">
+                                <td colspan="3">Credits</td>
                             </tr>
                             <tr *ngFor="let row of StateCredits" class="form-group">
                                 <td>
@@ -104,8 +111,13 @@
                                     />
                                 </td>
                                 <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-times"></i></a>   
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-plus"></i></a> 
+                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn" (click)="insertLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-plus"></i></a>
+                                </td>
+                            </tr>
+                            <tr *ngIf="StateCredits.length===0">
+                                <td colspan="3">
+                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(StateCredits)"><i class="fa fa-plus"></i>Add</button>
                                 </td>
                             </tr>
                         </table>
@@ -125,13 +137,6 @@
             <td>State:</td>
             <td colspan="2">{{StateTax | customCurrency}}</td>
         </tr>
-        <tr>
-            <td>
-                <button (click)="addLabelAndCurrencyRow(AdditionalTaxes)">Add a tax</button>
-            </td>
-            <td></td>
-            <td></td>
-        </tr>
         <tr *ngFor="let row of AdditionalTaxes" class="form-group">
             <td>
                 <input type="text" class="form-control" [(ngModel)]="row.label" />
@@ -141,9 +146,18 @@
                 />
             </td>
             <td>
-                <button (click)="deleteLabelAndCurrencyRow(AdditionalTaxes, row)">Delete Row</button>
+                <a class="btn" (click)="deleteLabelAndCurrencyRow(AdditionalTaxes, row)"><i class="fa fa-times"></i></a>
+                <a class="btn" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, row)"><i class="fa fa-plus"></i></a>
             </td>
         </tr>
+        <tr>
+            <td>
+                <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, AdditionalTaxes[AdditionalTaxes.length-1])"><i class="fa fa-plus"></i>Add a tax</button>
+            </td>
+            <td></td>
+            <td></td>
+        </tr>
+        
         <tr>
             <td>Total:</td>
             <td colspan="2">{{TaxesSum | customCurrency}}</td>

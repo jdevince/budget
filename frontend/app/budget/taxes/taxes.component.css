@@ -9,3 +9,15 @@
 .fa-plus {
     color: green;
 }
+
+.btn {
+    padding: 0;
+}
+
+.tabs .table>tbody>tr>td, .tabs .table>tbody>tr>th, .tabs .table>tfoot>tr>td, .tabs .table>tfoot>tr>th, .tabs .table>thead>tr>td, .tabs .table>thead>tr>th {
+    border-top: none;
+}
+
+.tabs .table .title {
+    text-align: center;
+}

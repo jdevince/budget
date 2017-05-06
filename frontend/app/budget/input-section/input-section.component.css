@@ -5,3 +5,30 @@
 .fa-plus {
     color: green;
 }
+
+th, .total {
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table > tbody > tr:last-of-type > td:first-of-type > p {
+    text-align: right; /*Make "Total:" be right aligned*/
+}
+
+.btn {
+    padding: 0;
+}
+
+input[type="text"] {
+    min-width: 76px;
+}
+
+.center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border-top: none;
+}

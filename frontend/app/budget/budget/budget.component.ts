@@ -1,6 +1,7 @@
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { Component, QueryList, ViewChildren, HostListener } from '@angular/core';
 import { InputSectionComponent } from './../input-section/input-section.component';
 import { BudgetService } from './../budget.service';
+import { WindowService } from './../../window/window.service';
 
 @Component({
   moduleId: module.id,
@@ -11,15 +12,25 @@ import { BudgetService } from './../budget.service';
 
 export class BudgetComponent {
     
+    private screenWidth: number;
+
     constructor(
-        private budgetService: BudgetService
-      ) {}
+        private budgetService: BudgetService,
+        private windowService: WindowService
+      ) {
+        this.screenWidth = windowService.nativeWindow.innerWidth;
+      }
 
     @ViewChildren(InputSectionComponent)
     private inputSections: QueryList<InputSectionComponent>
 
     ngAfterViewInit() {
       this.budgetService.InputSections = this.inputSections.toArray();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+      this.screenWidth = event.target.innerWidth; 
     }
 
     save() {

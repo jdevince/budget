@@ -1,4 +1,4 @@
-<div class="input-section col-md-4">
+<div class="input-section">
     <h1>{{type}}</h1>
     <table class="table">
         <tr>
@@ -6,6 +6,7 @@
             <th>Monthly</th>
             <th>Annually</th>
             <th *ngIf="showPreTaxCheckbox">Pre Tax?</th>
+            <th></th>
         </tr>
         <tr *ngFor="let row of rows" class="form-group">
             <td>
@@ -17,7 +18,7 @@
             <td>
                 <input type="text" (blur)="row.annually=$event.target.value" class="form-control" value={{row.annually}} customCurrencyFormatter />
             </td>
-            <td *ngIf="showPreTaxCheckbox">
+            <td *ngIf="showPreTaxCheckbox" class="center">
                 <input type="checkbox" [(ngModel)]="row.preTax" />
             </td>
             <td>
@@ -25,15 +26,21 @@
                 <a class="btn" (click)="insertRow(row)"><i class="fa fa-plus"></i></a>           
             </td>
         </tr>
+        <tr *ngIf="rows.length===0">
+            <td colspan="4">
+                <button type="button" class="btn" (click)="insertRow()"><i class="fa fa-plus"></i>Add</button>
+            </td>
+            <td *ngIf="showPreTaxCheckbox"></td>
+        </tr>
         <tr>
             <td>
-                <h2>Total:</h2>
+                <p class="total">Total:</p>
             </td>
             <td>
-                <h2>{{ getMonthlyTotal() | currency : 'USD' : true : '1.2-2' }}</h2>
+                <p class="total">{{ getMonthlyTotal() | currency : 'USD' : true : '1.2-2' }}</p>
             </td>
             <td>
-                <h2>{{ getAnnuallyTotal() | currency : 'USD' : true : '1.2-2' }}</h2>
+                <p class="total">{{ getAnnuallyTotal() | currency : 'USD' : true : '1.2-2' }}</p>
             </td>
             <td *ngIf="showPreTaxCheckbox"></td> 
             <td></td>
