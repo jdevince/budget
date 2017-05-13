@@ -10,7 +10,13 @@
     width: 100%;
 }
 
-/*.incomes {
-    border: 5px solid #89C4F4;
-    border-radius: 30px;
-}*/
+.budget {
+    background-color: #EEEFF2;
+    padding: 5px;
+}
+
+.card {
+    background-color: white;
+    border: solid 5px #EEEFF2; 
+    border-radius: 10px;
+}

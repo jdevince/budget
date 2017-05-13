@@ -24,6 +24,10 @@ input[type="text"] {
     min-width: 76px;
 }
 
+.input-section {
+    text-align: center;
+}
+
 .center {
     text-align: center;
     vertical-align: middle;
@@ -31,4 +35,23 @@ input[type="text"] {
 
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
     border-top: none;
+}
+
+h1 {
+    display: inline-block;
+    color: white;
+    padding: 2px 10px;
+    border-radius: 10px;
+}
+
+:host-context(.incomes) h1 {
+    background: #37BC9B;
+}
+
+:host-context(.expenses) h1 {
+    background: #F6BB42;
+}
+
+:host-context(.savings) h1 {
+    background: #967ADC;
 }

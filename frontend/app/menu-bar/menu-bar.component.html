@@ -1,4 +1,16 @@
-<a routerLink="/">Annual Budget</a>
-<a *ngIf="!isLoggedIn" routerLink="login">Login</a>
-<a *ngIf="!isLoggedIn" routerLink="signup">Sign Up</a>
-<a *ngIf="isLoggedIn" (click)="logOut()" routerLink="">Log Out</a>
+<div class="menuBarDiv">
+    <div class="left">
+        <i class="fa fa-usd fa-2x" aria-hidden="true"></i>
+        <h1>Annual Budget</h1>
+    </div>
+    <div class="right">
+        <i *ngIf="!isLoggedIn" class="fa fa-sign-in fa-2x" aria-hidden="true"></i>
+        <a *ngIf="!isLoggedIn" class="login" routerLink="login">Login</a>
+               
+        <i *ngIf="!isLoggedIn" class="fa fa-user fa-2x" aria-hidden="true"></i>
+        <a *ngIf="!isLoggedIn" routerLink="signup">Sign Up</a>
+
+        <i *ngIf="isLoggedIn" class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
+        <a *ngIf="isLoggedIn" (click)="logOut()" routerLink="">Log Out</a>    
+    </div>
+</div>

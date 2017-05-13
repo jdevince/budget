@@ -1,42 +1,10 @@
-<div class="container">
-    <!--Dynamically set html based on screen width so that row-eq-height can be used-->
-    <div *ngIf="screenWidth >= 1150">
-        <!--3 columns-->
-        <div class="row row-eq-height">
-            <input-section type="Incomes" class="incomes col-xs-4"></input-section>
-            <input-section type="Expenses" enablePreTaxCheckbox="true" class="expenses col-xs-4"></input-section>
-            <input-section type="Savings" enablePreTaxCheckbox="true" class="savings col-xs-4"></input-section>
-        </div>
-        <div class="row row-eq-height">
-            <taxes class="taxes col-xs-4"></taxes>
-            <breakdown class="breakdown col-xs-4"></breakdown>
-            <summary class="summary col-xs-4"></summary>
-        </div>
-    </div>
-    <div *ngIf="screenWidth < 1150 && screenWidth >= 763">
-        <!--2 columns-->
-        <div class="row row-eq-height">
-            <input-section type="Incomes" class="incomes col-xs-6"></input-section>
-            <input-section type="Expenses" enablePreTaxCheckbox="true" class="expenses col-xs-6"></input-section>
-        </div>
-        <div class="row row-eq-height">
-            <input-section type="Savings" enablePreTaxCheckbox="true" class="savings col-xs-6"></input-section>
-            <taxes class="taxes col-xs-6"></taxes>
-        </div>
-        <div class="row row-eq-height">
-            <breakdown class="breakdown col-xs-6"></breakdown>
-            <summary class="summary col-xs-6"></summary>
-        </div>
-    </div>
-    <div *ngIf="screenWidth < 763">
-        <!--1 column-->
-        <input-section type="Incomes" class="incomes"></input-section>
-        <input-section type="Expenses" enablePreTaxCheckbox="true" class="expenses"></input-section>
-        <input-section type="Savings" enablePreTaxCheckbox="true" class="savings"></input-section>
-        <taxes class="taxes"></taxes>
-        <breakdown class="breakdown"></breakdown>
-        <summary class="summary"></summary>
-    </div>
+<div class="budget container" myMatchHeight="card">
+    <input-section type="Incomes" class="incomes card col-lg-4 col-md-6 col-xs-12"></input-section>
+    <input-section type="Expenses" enablePreTaxCheckbox="true" class="expenses card col-lg-4 col-md-6 col-xs-12"></input-section>
+    <input-section type="Savings" enablePreTaxCheckbox="true" class="savings card col-lg-4 col-md-6 col-xs-12"></input-section>
+    <taxes class="taxes card col-lg-4 col-md-6 col-xs-12"></taxes>
+    <breakdown class="breakdown card col-lg-4 col-md-6 col-xs-12"></breakdown>
+    <summary class="summary card col-lg-4 col-md-6 col-xs-12"></summary>
 
-    <button (click)="save()">Save</button>
+    <!--<button (click)="save()">Save</button>-->
 </div>
