@@ -1,0 +1,11 @@
+.submitBtn {
+    float: right;
+}
+
+.fa-times {
+    float: right;
+}
+
+.fa-times:hover {
+    cursor: pointer;
+}

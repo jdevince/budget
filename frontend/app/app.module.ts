@@ -3,11 +3,12 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
+import { ReCaptchaModule } from 'angular2-recaptcha';
+
 import { AppComponent }   from './app.component';
 import { BudgetComponent } from './budget/budget/budget.component';
-import { LoginComponent } from './user/login.component';
+import { EnterAccountComponent } from './user/enter-account/enter-account.component';
 import { MenuBarComponent } from './menu-bar/menu-bar.component';
-import { SignUpComponent } from './user/signup.component';
 
 import { InputSectionComponent } from './budget/input-section/input-section.component';
 import { TaxesComponent } from './budget/taxes/taxes.component';
@@ -29,14 +30,14 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     FormsModule,
     HttpModule,
-    AppRoutingModule
+    AppRoutingModule,
+    ReCaptchaModule
   ],
   declarations: [ 
     AppComponent,
     BudgetComponent,
-    LoginComponent,
+    EnterAccountComponent,
     MenuBarComponent,
-    SignUpComponent,
     InputSectionComponent,
     TaxesComponent,
     BreakdownComponent,

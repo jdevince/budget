@@ -4,13 +4,22 @@
         <h1>Annual Budget</h1>
     </div>
     <div class="right">
-        <i *ngIf="!isLoggedIn" class="fa fa-sign-in fa-2x" aria-hidden="true"></i>
-        <a *ngIf="!isLoggedIn" class="login" routerLink="login">Login</a>
-               
-        <i *ngIf="!isLoggedIn" class="fa fa-user fa-2x" aria-hidden="true"></i>
-        <a *ngIf="!isLoggedIn" routerLink="signup">Sign Up</a>
-
-        <i *ngIf="isLoggedIn" class="fa fa-sign-out fa-2x" aria-hidden="true"></i>
-        <a *ngIf="isLoggedIn" (click)="logOut()" routerLink="">Log Out</a>    
+        <div class="login">         
+            <a *ngIf="!isLoggedIn" class="login" (click)="toggleLoginForm()">
+                <i *ngIf="!isLoggedIn" class="fa fa-sign-in" aria-hidden="true"></i>Login
+            </a>
+            <enter-account *ngIf="ShowLoginForm" EnterAccountTypeInput="Login" class="enter-account enter-account-login"></enter-account>
+        </div>
+        <div class="signup">
+            <a *ngIf="!isLoggedIn" (click)="toggleSignupForm()">
+                <i *ngIf="!isLoggedIn" class="fa fa-user" aria-hidden="true"></i>Sign Up
+            </a>
+            <enter-account *ngIf="ShowSignupForm" EnterAccountTypeInput="Signup" class="enter-account enter-account-signup"></enter-account>
+        </div>
+        <div class="logout">
+            <a *ngIf="isLoggedIn" (click)="logOut()">
+                <i *ngIf="isLoggedIn" class="fa fa-sign-out" aria-hidden="true"></i>Log Out
+            </a>    
+        </div>
     </div>
 </div>

@@ -12,6 +12,9 @@ export class MenuBarComponent {
   private isLoggedIn: boolean;
   private _subscription;
 
+  public ShowSignupForm: boolean;
+  public ShowLoginForm: boolean;
+
   constructor(
     private userService: UserService
   ) {
@@ -21,6 +24,30 @@ export class MenuBarComponent {
 
   ngOnDestroy() {
     this._subscription.unsubscribe();
+  }
+
+  toggleSignupForm(): void {
+    if (this.ShowSignupForm === true) {
+      //Currently open, let's close it
+      this.ShowSignupForm = false;
+    }
+    else {
+      //Currently closed, let's open it. Be sure login is closed.
+      this.ShowLoginForm = false;
+      this.ShowSignupForm = true;
+    }
+  }
+
+  toggleLoginForm(): void {
+    if (this.ShowLoginForm === true) {
+      //Currently open, let's close it
+      this.ShowLoginForm = false;
+    }
+    else {
+      //Currently closed, let's open it. Be sure signup is closed.
+      this.ShowSignupForm = false;
+      this.ShowLoginForm = true;
+    }
   }
 
   logOut(): void {

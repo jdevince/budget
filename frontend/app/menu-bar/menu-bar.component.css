@@ -2,9 +2,10 @@
     height: 50px;
     background: #4FC1E9;
     padding: 0 15px;
+    cursor: default;
 }
 
-.menuBarDiv div {
+.menuBarDiv > div {
     margin-top: 7px;
 }
 
@@ -28,10 +29,40 @@ i {
     margin-right: 20px;
 }
 
+.login, .signup, .logout {
+    display: inline-block;
+    position: relative;
+}
+
+.enter-account {
+    position: absolute;
+    width: 300px;
+    z-index: 1;
+    padding: 15px;
+    border: 5px solid #4FC1E9;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    background: white;
+}
+
+.enter-account-login {
+    top: 38px;
+    left: -44px;
+}
+
+.enter-account-signup {
+    top: 38px;
+    left: -175px;
+}
+
 .left {
     float: left;
 }
 
 .right {
     float: right;
+}
+
+.right .fa {
+    margin-right: 5px;
 }

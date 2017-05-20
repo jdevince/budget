@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 
 namespace BudgetBackend.Controllers
@@ -42,6 +45,27 @@ namespace BudgetBackend.Controllers
             else
             {
                 return Unauthorized();
+            }
+        }
+
+        [HttpPost("validateCaptcha")]
+        public IActionResult ValidateCaptcha(string captchaResponse)
+        {
+            string secretKey = "6Lc2RSIUAAAAAM0mEM_0hIF97BEnfOSWYCfuSb10"; //TODO: securely load
+            string validateCaptchaUrl = string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}",secretKey,captchaResponse);
+
+            using (HttpClient httpClient = new HttpClient())
+            {
+                HttpResponseMessage httpResponse = httpClient.PostAsync(validateCaptchaUrl, null).Result;
+                bool validated = (bool)JObject.Parse(httpResponse.Content.ReadAsStringAsync().Result)["success"];
+                if (validated)
+                {
+                    return Ok(true);
+                }
+                else
+                {
+                    return Ok(false);
+                }
             }
         }
 
