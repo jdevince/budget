@@ -4,11 +4,11 @@ import { CustomCurrencyPipe } from './../custom-currency.pipe';
 import { BudgetService } from './../budget.service';
 
 @Component({
-  moduleId: module.id,
-  selector: 'input-section',
-  templateUrl: '/app/budget/input-section/input-section.component.html',
-  styleUrls: ['../../../app/budget/input-section/input-section.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
-  providers: [CustomCurrencyPipe]
+    moduleId: module.id,
+    selector: 'input-section',
+    templateUrl: '/app/budget/input-section/input-section.component.html',
+    styleUrls: ['../../../app/budget/input-section/input-section.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
+    providers: [CustomCurrencyPipe]
 })
 
 export class InputSectionComponent {
@@ -16,7 +16,7 @@ export class InputSectionComponent {
     rows: InputSectionRow[] = [];
 
     @Input() type: string;
-    
+
     @Input()
     set enablePreTaxCheckbox(enablePreTaxCheckbox: string) {
         this.showPreTaxCheckbox = (enablePreTaxCheckbox === "true");
@@ -24,12 +24,8 @@ export class InputSectionComponent {
 
     constructor(private budgetService: BudgetService) { }
 
-    ngOnInit() : void {
-        this.budgetService.loadInputSection(this.type)
-                                    .subscribe(
-                                        rows    =>  this.rows = rows,
-                                        error   =>  console.log(<any>error)
-                                    );
+    ngOnInit(): void {
+        this.budgetService.loadInputSection(this);
     }
 
     insertRow(row: InputSectionRow): void {
@@ -72,7 +68,7 @@ export class InputSectionComponent {
         let data: Object[] = [];
 
         for (let rowNum in this.rows) {
-            let row = { };
+            let row = {};
             row["Type"] = this.type;
             row["RowNum"] = rowNum;
             row["Label"] = this.rows[rowNum].label;
@@ -83,4 +79,4 @@ export class InputSectionComponent {
 
         return data;
     }
- }
+}

@@ -16,6 +16,11 @@
             </a>
             <enter-account *ngIf="ShowSignupForm" EnterAccountTypeInput="Signup" class="enter-account enter-account-signup"></enter-account>
         </div>
+        <div class="save" [ngClass]="{'hasUnsavedChanges': hasUnsavedChanges}">
+            <a *ngIf="isLoggedIn" (click)="save()">
+                <i *ngIf="isLoggedIn" class="fa fa-floppy-o" aria-hidden="true"></i>Save
+            </a>    
+        </div>
         <div class="logout">
             <a *ngIf="isLoggedIn" (click)="logOut()">
                 <i *ngIf="isLoggedIn" class="fa fa-sign-out" aria-hidden="true"></i>Log Out

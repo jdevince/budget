@@ -1,46 +1,112 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
-import { Observable }     from 'rxjs/Observable';
+import { Observable } from 'rxjs/Observable';
 
 import { TaxType, DeductionOrCredit, PreOrPostTax } from './budget.enums';
 import { InputSectionComponent } from './input-section/input-section.component';
 import { InputSectionRow } from './input-section/input-section-row.model';
 import { TaxesComponent } from './taxes/taxes.component';
-import { UserService } from '../user/user.service';
 import { LabelAndCurrencyRow } from './taxes/label-and-currency-row.model';
+
+import { UserService } from '../user/user.service';
+import { BudgetServerAPIService } from './budgetServerAPI.service';
 
 @Injectable()
 export class BudgetService {
-    public InputSections: InputSectionComponent[];
+    public InputSections: InputSectionComponent[] = [];
     public TaxesComponent: TaxesComponent;
+
+    private _JSONDataInDatabase: string; //Used to track if there are unsaved changes. It is set after a load from the server.
 
     constructor(
         private userService: UserService,
-        private http: Http
-    ) {}
+        private budgetServerAPIService: BudgetServerAPIService
+    ) { }
 
-    //Send data to server
-    save(): Observable<boolean> {
-        if (this.userService.isLoggedIn()) {
-            let saveURL = "http://localhost:5000/api/budget/save"
-            let headers = new Headers({ "Content-Type": "application/json" });
-            headers.append("Authorization", "Bearer " + this.userService.getAccessToken());
-            let body = this.getJSONForSave();
-            let options = new RequestOptions({ headers: headers });
-
-            return this.http
-                        .post(saveURL,body,options)
-                        .map(response => response.ok);
+    save(): boolean {
+        if (!this.hasUnsavedChanges()) {
+            return true; //No need to save. Return true to indicate no errors.
         }
 
-        return Observable.of(false);
+        let success: boolean;
+        let JSONDataToSave: string = this.getJSONDataToSave();
+
+        this.budgetServerAPIService.save(JSONDataToSave, this.userService.getAccessToken())
+            .subscribe(
+            result => success = result,
+            error => console.log(<any>error)
+            );
+
+        this._JSONDataInDatabase = JSONDataToSave;
+
+        return success;
     }
 
-    //Send data to server helper functions
-    getJSONForSave(): string {
-        let user = { 
+    loadInputSection(inputSection: InputSectionComponent): void {
+        
+        this.budgetServerAPIService.loadInputSection(inputSection.type, this.userService.getAccessToken())
+            .subscribe(
+            rows => {
+                inputSection.rows = rows;
+                this._JSONDataInDatabase = this.getJSONDataToSave();
+            },
+            error => console.log(<any>error)
+            );
+    }
+
+    loadTaxes(taxesComponent: TaxesComponent): void {
+        this.budgetServerAPIService.loadTaxes(this.userService.getAccessToken())
+            .subscribe(
+            loadedData => {
+                taxesComponent.FilingStatus = loadedData.FilingStatus;
+                taxesComponent.Exemptions = loadedData.Exemptions;
+                taxesComponent.State = loadedData.State;
+                taxesComponent.FederalDeductions = loadedData.FederalDeductions;
+                taxesComponent.FederalCredits = loadedData.FederalCredits;
+                taxesComponent.StateDeductions = loadedData.StateDeductions;
+                taxesComponent.StateCredits = loadedData.StateCredits;
+                taxesComponent.AdditionalTaxes = loadedData.AdditionalTaxes;
+
+                this._JSONDataInDatabase = this.getJSONDataToSave();
+            },
+            error => console.log(<any>error)
+            );
+    }
+
+    loadFederalTaxBrackets(year: number): any {
+        let federalTaxBrackets: any;
+
+        this.budgetServerAPIService.loadFederalTaxBrackets(year)
+            .subscribe(
+            brackets => federalTaxBrackets = brackets,
+            error => console.log(<any>error)
+            );
+
+        return federalTaxBrackets;
+    }
+
+    loadStateTaxBrackets(year: number, stateAbbr: string): any {
+        let stateTaxBrackets: any;
+
+        this.budgetServerAPIService.loadStateTaxBrackets(year, stateAbbr)
+            .subscribe(
+            brackets => stateTaxBrackets = brackets,
+            error => console.log(<any>error)
+            );
+
+        return stateTaxBrackets;
+    }
+
+    //Private functions
+    private getJSONDataToSave(): string {
+        if (!this.InputSections || !this.TaxesComponent) {
+            //Not loaded yet
+            return "";
+        }
+
+        let user = {
             "BudgetInputRows": [],
-            "TaxInfo": {} 
+            "TaxInfo": {}
         };
 
         // Input Sections (Income, Expenses, Savings)
@@ -50,122 +116,11 @@ export class BudgetService {
 
         //Taxes
         user.TaxInfo = this.TaxesComponent.getDataToSave();
-        
+
         return JSON.stringify(user);
     }
 
-    //Load data from server
-    loadInputSection(type: string): Observable<Array<InputSectionRow>> {
-        let requestURL = 'http://localhost:5000/api/budget/load?type=' + type; 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-
-        let authToken: string = this.userService.getAccessToken();
-        if (authToken) {
-            headers.append('Authorization', 'Bearer ' + this.userService.getAccessToken());
-        }
-        
-        let options = new RequestOptions({ headers: headers });
-
-        return this.http
-                    .get(requestURL, options)
-                    .map(this.extractRows);  
-    }
-
-    loadTaxes(): Observable<any> {
-        let requestURL = 'http://localhost:5000/api/budget/load?type=Taxes'; 
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-
-        let authToken: string = this.userService.getAccessToken();
-        if (authToken) {
-            headers.append('Authorization', 'Bearer ' + this.userService.getAccessToken());
-        }
-
-        let options = new RequestOptions({ headers: headers });
-
-        return this.http
-                .get(requestURL, options)
-                .map(this.extractTaxesComponent);  
-    }
-
-    //Load data from server helper functions
-    extractRows(res: any): InputSectionRow[] {
-        let rows = new Array<InputSectionRow>();
-        let data = res.json().value;
-        data.forEach(element => {
-            let label = element.label;
-            let monthly = element.monthly;
-            let preTax = element.preTax
-
-            let row = new InputSectionRow(label, monthly, preTax)
-            rows.push(row);
-        });
-        return rows;
-    }
-
-    extractTaxesComponent(res: any): any {
-        let taxInfo: any = {}
-
-        taxInfo.FilingStatus = res.json().value.filingStatus;
-        taxInfo.Exemptions = res.json().value.exemptions;
-        taxInfo.State = res.json().value.state;
-
-        let federalDeductions: LabelAndCurrencyRow[] = [];
-        let federalCredits: LabelAndCurrencyRow[] = [];
-        let stateDeductions: LabelAndCurrencyRow[] = [];
-        let stateCredits: LabelAndCurrencyRow[] = [];
-
-        for (let row of res.json().value.deductionsAndCredits) {
-            if (row.federalOrState === TaxType.Federal) {
-                if (row.deductionOrCredit === DeductionOrCredit.Deduction) {
-                    //Federal Deduction
-                    federalDeductions.push(new LabelAndCurrencyRow(row.label, row.amount));
-                }
-                else {
-                    //Federal Credit
-                    federalCredits.push(new LabelAndCurrencyRow(row.label, row.amount));
-                }
-            }
-            else {
-                if (row.deductionOrCredit === DeductionOrCredit.Deduction) {
-                    //State Deduction
-                    stateDeductions.push(new LabelAndCurrencyRow(row.label, row.amount));
-                }
-                else {
-                    //State Credit
-                    stateCredits.push(new LabelAndCurrencyRow(row.label, row.amount));
-                }
-            }
-        }
-
-        taxInfo.FederalDeductions = federalDeductions;
-        taxInfo.FederalCredits = federalCredits;
-        taxInfo.StateDeductions = stateDeductions;
-        taxInfo.StateCredits = stateCredits;
-
-        let additionalTaxes: LabelAndCurrencyRow[] = [];
-        for (let row of res.json().value.additionalTaxes) {
-            additionalTaxes.push(new LabelAndCurrencyRow(row.label, row.amount));
-        }
-        taxInfo.AdditionalTaxes = additionalTaxes;
-    
-        return taxInfo;
-    }
-
     //Get functions
-    getFederalTaxBrackets(year: number): Observable<Object> {
-        let url = "http://localhost:5000/api/budget/federalTaxBrackets/" + year.toString();
-        return this.http
-                        .get(url)
-                        .map(response => response.json());
-    }
-
-    getStateTaxBrackets(year: number, stateAbbr: string): Observable<Object> {
-        let url = "http://localhost:5000/api/budget/stateTaxBrackets/" + year.toString() + "/" + stateAbbr;
-        return this.http
-                        .get(url)
-                        .map(response => response.json());
-    }
-
     getIncomeMinusPreTax(): number {
         return this.getInputSectionAnnualTotal("Incomes") - this.getInputSectionAnnualTotal("Expenses", PreOrPostTax.PreTaxOnly) - this.getInputSectionAnnualTotal("Savings", PreOrPostTax.PreTaxOnly)
     }
@@ -186,10 +141,10 @@ export class BudgetService {
                     if ((preOrPostTax === PreOrPostTax.EitherPreOrPostTax)
                         || (preOrPostTax === PreOrPostTax.PreTaxOnly && row.preTax === true)
                         || (preOrPostTax === PreOrPostTax.PostTaxOnly && row.preTax === false)) {
-                            total += row.getAnnuallyNumber();
+                        total += row.getAnnuallyNumber();
                     }
                 }
-            }        
+            }
         }
 
         return total;
@@ -216,5 +171,23 @@ export class BudgetService {
         //Future enhancement: Only add "Earned Income" (i.e. salary, but not dividends)
 
         return this.getInputSectionAnnualTotal("Incomes");
+    }
+
+    //Miscellaneous functions
+    reload() {
+        for (let inputSection of this.InputSections) {
+            this.loadInputSection(inputSection);
+        }
+
+        this.loadTaxes(this.TaxesComponent);
+    }
+
+    hasUnsavedChanges(): boolean {
+        if (this.getJSONDataToSave() === this._JSONDataInDatabase) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 }

@@ -39,14 +39,7 @@ export class TaxesComponent {
             this._stateTaxBrackets[stateAbbr] = "Loading"; //Set this so multiple loading attempts won't fire if one is unsuccessful
 
             //State brackets not loaded for selected state, load them.
-            this.budgetService.getStateTaxBrackets(TaxYear, this.States[this.State])
-                .subscribe(
-                brackets => {
-                    this._stateTaxBrackets[stateAbbr] = brackets;
-                    return this._stateTaxBrackets[stateAbbr];
-                },
-                error => console.log(<any>error)
-                );
+            this._stateTaxBrackets[stateAbbr] = this.budgetService.loadStateTaxBrackets(TaxYear, this.States[this.State])
         }
         else {
             //State brackets already loaded, return them
@@ -115,8 +108,7 @@ export class TaxesComponent {
         }
 
         //Calculate Medicare tax
-        if (incomeSubjectToFICA <= medicareExtraThreshold)
-        {
+        if (incomeSubjectToFICA <= medicareExtraThreshold) {
             medicareTax = incomeSubjectToFICA * medicareRate;
         }
         else {
@@ -128,41 +120,23 @@ export class TaxesComponent {
 
     public get TaxesSum(): number {
         let taxesSum: number;
-         
-         taxesSum = this.FederalTax + this.StateTax + this.FICATax;
 
-         for (let tax of this.AdditionalTaxes) {
-             taxesSum += tax.getAmount();
-         }
+        taxesSum = this.FederalTax + this.StateTax + this.FICATax;
 
-         return taxesSum;
+        for (let tax of this.AdditionalTaxes) {
+            taxesSum += tax.getAmount();
+        }
+
+        return taxesSum;
     }
 
-    constructor(private budgetService: BudgetService) { 
+    constructor(private budgetService: BudgetService) {
         this.budgetService.TaxesComponent = this;
     }
 
     ngOnInit(): void {
-        this.budgetService.loadTaxes()
-            .subscribe(
-                loadedData => {
-                    this.FilingStatus = loadedData.FilingStatus;
-                    this.Exemptions = loadedData.Exemptions;
-                    this.State = loadedData.State;
-                    this.FederalDeductions = loadedData.FederalDeductions;
-                    this.FederalCredits = loadedData.FederalCredits;
-                    this.StateDeductions = loadedData.StateDeductions;
-                    this.StateCredits = loadedData.StateCredits;
-                    this.AdditionalTaxes = loadedData.AdditionalTaxes;
-                },
-                error => console.log(<any>error)
-                );
-
-        this.budgetService.getFederalTaxBrackets(TaxYear)
-            .subscribe(
-            brackets => this._federalTaxBrackets = brackets,
-            error => console.log(<any>error)
-            );
+        this.budgetService.loadTaxes(this);
+        this._federalTaxBrackets = this.budgetService.loadFederalTaxBrackets(TaxYear);
     }
 
     getBracketsForFilingStatus(filingStatus: number, bracketsToChooseFrom: any): any {
@@ -278,7 +252,7 @@ export class TaxesComponent {
             }
             else {
                 //Add amount for this bracket to total tax, then move on to next higher bracket
-                marginalAmount = incomeTaxBrackets[bracketIndex + 1]["bracket"] - incomeTaxBrackets[bracketIndex]["bracket"];               
+                marginalAmount = incomeTaxBrackets[bracketIndex + 1]["bracket"] - incomeTaxBrackets[bracketIndex]["bracket"];
             }
 
             marginalRate = incomeTaxBrackets[bracketIndex]["marginal_rate"];
@@ -322,8 +296,8 @@ export class TaxesComponent {
 
         //Deductions and Credits
         data["DeductionsAndCredits"] = [];
-        
-        for(let rowIdx in this.FederalDeductions) {
+
+        for (let rowIdx in this.FederalDeductions) {
             let dataRow = this.FederalDeductions[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
             dataRow["FederalOrState"] = TaxType.Federal;
@@ -331,7 +305,7 @@ export class TaxesComponent {
             data["DeductionsAndCredits"].push(dataRow);
         }
 
-        for(let rowIdx in this.FederalCredits) {
+        for (let rowIdx in this.FederalCredits) {
             let dataRow = this.FederalCredits[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
             dataRow["FederalOrState"] = TaxType.Federal;
@@ -339,7 +313,7 @@ export class TaxesComponent {
             data["DeductionsAndCredits"].push(dataRow);
         }
 
-        for(let rowIdx in this.StateDeductions) {
+        for (let rowIdx in this.StateDeductions) {
             let dataRow = this.StateDeductions[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
             dataRow["FederalOrState"] = TaxType.State;
@@ -347,7 +321,7 @@ export class TaxesComponent {
             data["DeductionsAndCredits"].push(dataRow);
         }
 
-        for(let rowIdx in this.StateCredits) {
+        for (let rowIdx in this.StateCredits) {
             let dataRow = this.StateCredits[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
             dataRow["FederalOrState"] = TaxType.State;
@@ -358,7 +332,7 @@ export class TaxesComponent {
         //Additional Taxes
         data["AdditionalTaxes"] = [];
 
-        for(let rowIdx in this.AdditionalTaxes) {
+        for (let rowIdx in this.AdditionalTaxes) {
             let dataRow = this.AdditionalTaxes[rowIdx].getDataToSave();
             dataRow["RowNum"] = rowIdx;
             data["AdditionalTaxes"].push(dataRow);

@@ -24,6 +24,7 @@ export class EnterAccountComponent {
     public User = new User(null, null, null);
 
     constructor(
+        private budgetService: BudgetService,
         private userService: UserService,
         @Host() private parentMenuBarComponent: MenuBarComponent
     ) { }
@@ -57,13 +58,13 @@ export class EnterAccountComponent {
                         this.createAcc(this.User.username, this.User.password);
                     }
                     else if (this.EnterAccountType === EnterAccountType.Login) {
-                        this.login(this.User.username, this.User.password);
+                        this.login(this.User.username, this.User.password, true);
                     }
                 }
             });
     }
 
-    private login(username: string, password: string) {
+    private login(username: string, password: string, reload: boolean) {
         if ((!username) || (!password)) {
             return;
         }
@@ -71,6 +72,10 @@ export class EnterAccountComponent {
         this.userService.login(username, password)
             .subscribe((result) => {
                 if (result) {
+                    if (reload) {
+                        //Reload data on Login, but not after Create Account to preserve potential changes already made
+                        this.budgetService.reload();
+                    }
                     this.close();
                 }
             });
@@ -85,7 +90,7 @@ export class EnterAccountComponent {
             .subscribe(
             user => {
                 this.User;
-                this.login(this.User.username, this.User.password);
+                this.login(this.User.username, this.User.password, false);
             },
             error => console.log(<any>error)
             );

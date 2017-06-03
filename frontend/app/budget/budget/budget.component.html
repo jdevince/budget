@@ -1,3 +1,6 @@
+<div class="notLoggedInWarningDiv" *ngIf="!isLoggedIn">
+    <h1>You are not logged in. If you'd like to save, please login or sign up.</h1>
+</div>
 <div class="budget container" myMatchHeight="card">
     <input-section type="Incomes" class="incomes card col-lg-4 col-md-6 col-xs-12"></input-section>
     <input-section type="Expenses" enablePreTaxCheckbox="true" class="expenses card col-lg-4 col-md-6 col-xs-12"></input-section>
@@ -5,6 +8,4 @@
     <taxes class="taxes card col-lg-4 col-md-6 col-xs-12"></taxes>
     <breakdown class="breakdown card col-lg-4 col-md-6 col-xs-12"></breakdown>
     <summary class="summary card col-lg-4 col-md-6 col-xs-12"></summary>
-
-    <!--<button (click)="save()">Save</button>-->
 </div>

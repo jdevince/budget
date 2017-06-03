@@ -60,7 +60,7 @@ namespace BudgetBackend.Models
                     rows[0].Type = type;
                     rows[0].RowNum = 0;
                     rows[0].Label = "Primary Job";
-                    rows[0].Monthly = 9750;
+                    rows[0].Monthly = 3000;
 
                     //Default second row
                     rows[1].Type = type;
@@ -105,40 +105,5 @@ namespace BudgetBackend.Models
 
             return rows;
         }
-
-            //public static BudgetInputRow[] GetDefaults(User user, InputSectionTypes type)
-            //{
-            //    BudgetInputRow[] rows = new BudgetInputRow[2] { new BudgetInputRow(), new BudgetInputRow() };
-
-            //    switch (type)
-            //    {
-            //        case InputSectionTypes.Incomes:
-            //            //Default first row
-            //            rows[0].UserId = user.Id;
-            //            rows[0].Type = type;
-            //            rows[0].RowNum = 0;
-            //            rows[0].Label = "Primary Job";
-            //            rows[0].Monthly = 9750;
-
-            //            //Default second row
-            //            rows[1].UserId = user.Id;
-            //            rows[1].Type = type;
-            //            rows[1].RowNum = 1;
-            //            rows[1].Label = "Secondary Job";
-            //            rows[1].Monthly = 1000;
-
-            //            break;
-
-            //        //case InputSectionTypes.Expenses:
-            //        //    this.type = type;
-            //        //    break;
-
-            //        //case InputSectionTypes.Savings:
-            //        //    this.type = type;
-            //        //    break;
-            //    }
-
-            //    return rows;
-            //}
-        }
+    }
 }

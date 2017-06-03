@@ -127,8 +127,15 @@ namespace BudgetBackend.Controllers
 
                 JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
 
-                JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(jwtTokenString);
-                username = jwtToken.Subject;
+                try
+                {
+                    JwtSecurityToken jwtToken = tokenHandler.ReadJwtToken(jwtTokenString);
+                    username = jwtToken.Subject;
+                }
+                catch
+                {
+                    username = null;
+                }
             }
 
             return username;

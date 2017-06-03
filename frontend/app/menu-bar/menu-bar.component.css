@@ -21,15 +21,23 @@ a {
     color: white;
 }
 
+a:hover {
+    cursor: pointer;
+}
+
 i {
     color: white;
 }
 
-.login {
+.hasUnsavedChanges i {
+    color: #E9573F;
+}
+
+.login, .save {
     margin-right: 20px;
 }
 
-.login, .signup, .logout {
+.login, .signup, .save, .logout {
     display: inline-block;
     position: relative;
 }

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { UserService } from '../user/user.service';
+
+import { BudgetService } from './../budget/budget.service';
+import { UserService } from './../user/user.service';
 
 @Component({
   moduleId: module.id,
@@ -9,22 +11,30 @@ import { UserService } from '../user/user.service';
 })
 
 export class MenuBarComponent {
-  private isLoggedIn: boolean;
-  private _subscription;
-
   public ShowSignupForm: boolean;
   public ShowLoginForm: boolean;
 
-  constructor(
-    private userService: UserService
-  ) {
-    this.isLoggedIn = userService.isLoggedIn();
-    this._subscription = userService.loggedInChange.subscribe((value) => { this.isLoggedIn = value; console.log("updated: " + value); })
+  get isLoggedIn(): boolean {
+    return this.userService.isLoggedIn();
   }
 
-  ngOnDestroy() {
-    this._subscription.unsubscribe();
+  get hasUnsavedChanges(): boolean {
+    return this.budgetService.hasUnsavedChanges();
   }
+
+  get tooltip(): string {
+    if (this.hasUnsavedChanges) {
+      return "There are unsaved changes";
+    }
+    else {
+      return "All changes saved";
+    }
+  }
+
+  constructor(
+    private budgetService: BudgetService,
+    private userService: UserService
+  ) { }
 
   toggleSignupForm(): void {
     if (this.ShowSignupForm === true) {
@@ -50,8 +60,14 @@ export class MenuBarComponent {
     }
   }
 
+  save(): void {
+    this.budgetService.save();
+  }
+
   logOut(): void {
+    this.budgetService.save();
     this.userService.logout();
+    this.budgetService.reload();
   }
 
 }
