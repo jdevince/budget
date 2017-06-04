@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 import { BudgetService } from './../budget/budget.service';
+import { ConfirmDialogService } from './../confirm-dialog/confirm-dialog.service';
 import { UserService } from './../user/user.service';
 
 @Component({
@@ -33,6 +34,7 @@ export class MenuBarComponent {
 
   constructor(
     private budgetService: BudgetService,
+    private confirmDialogService: ConfirmDialogService,
     private userService: UserService
   ) { }
 
@@ -65,9 +67,18 @@ export class MenuBarComponent {
   }
 
   logOut(): void {
-    this.budgetService.save();
-    this.userService.logout();
-    this.budgetService.reload();
+    if (this.budgetService.hasUnsavedChanges()) {
+      this.confirmDialogService
+        .confirm("Logout with unsaved changes", "Are you sure you want to log out without saving changes?")
+        .subscribe(response => {
+          if (response) {
+            this.userService.logout();
+            this.budgetService.reload();
+          }
+        });
+    }
+    else {
+      this.userService.logout();
+    }
   }
-
 }

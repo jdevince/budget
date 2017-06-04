@@ -73,7 +73,7 @@ export class BudgetServerAPIService {
     private extractInputSectionRows(res: any): InputSectionRow[] {
         let rows = new Array<InputSectionRow>();
         let data = res.json().value;
-        data.forEach(element => {
+        data.forEach((element: any) => {
             let label = element.label;
             let monthly = element.monthly;
             let preTax = element.preTax

@@ -1,11 +1,10 @@
 import { NgModule }      from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
-// import { MaterialModule } from '@angular/material';
+import { MaterialModule } from '@angular/material';
 import { HttpModule } from '@angular/http';
 
 import { ReCaptchaModule } from 'angular2-recaptcha';
-
 
 import { AppComponent }   from './app.component';
 import { BudgetComponent } from './budget/budget/budget.component';
@@ -22,7 +21,7 @@ import { MyMatchHeightDirective } from './my-match-height/my-match-height.direct
 import { Tab } from './tabs/tab.component';
 import { Tabs } from './tabs/tabs.component';
 
-// import { ConfirmDialogService } from './confirm-dialog/confirm-dialog.service';
+import { ConfirmDialog } from './confirm-dialog/confirm-dialog.component';
 
 import { CustomCurrencyFormatterDirective } from './budget/currency-formatter.directive';
 import { CustomCurrencyPipe } from './budget/custom-currency.pipe';
@@ -35,7 +34,8 @@ import { AppRoutingModule } from './app-routing.module';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    ReCaptchaModule
+    ReCaptchaModule,
+    MaterialModule
   ],
   declarations: [ 
     AppComponent,
@@ -49,6 +49,7 @@ import { AppRoutingModule } from './app-routing.module';
     MyMatchHeightDirective,
     Tab,
     Tabs,
+    ConfirmDialog,
     CustomCurrencyFormatterDirective,
     CustomCurrencyPipe
   ],

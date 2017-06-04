@@ -24,9 +24,9 @@ export class TaxesComponent {
         //"Widow(er) with Dependent Child" //Future enhancement: Taxee doesn't have data for this status.
     ];
 
-    private _federalTaxBrackets;
+    private _federalTaxBrackets: any;
 
-    private _stateTaxBrackets;
+    private _stateTaxBrackets: any;
     get stateTaxBrackets() {
         let stateAbbr: string = this.States[this.State];
 

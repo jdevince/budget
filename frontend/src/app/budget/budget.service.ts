@@ -104,7 +104,7 @@ export class BudgetService {
             return "";
         }
 
-        let user = {
+        let user: any = {
             "BudgetInputRows": [],
             "TaxInfo": {}
         };

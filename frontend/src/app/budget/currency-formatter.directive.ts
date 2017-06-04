@@ -18,13 +18,13 @@ export class CustomCurrencyFormatterDirective implements OnInit {
   }
 
   @HostListener("focus", ["$event.target.value"])
-  onFocus(value) {
+  onFocus(value: any) {
     let parsedValue = this.currencyPipe.parse(value); 
     this.el.value = (parsedValue > 0) ? parsedValue.toString() : "";
   }
 
   @HostListener("blur", ["$event.target.value"])
-  onBlur(value) {
+  onBlur(value:any ) {
     this.el.value = this.currencyPipe.transform(value);
   }
 
