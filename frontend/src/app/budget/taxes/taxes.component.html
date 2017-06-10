@@ -50,7 +50,8 @@
                             </tr>
                             <tr *ngIf="FederalDeductions.length===0">
                                 <td colspan="3">
-                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(FederalDeductions)"><i class="fa fa-plus"></i>Add</button>
+                                    <button type="button" class="btn" (click)="insertStandardDeduction(FederalDeductions, TaxTypeEnum.Federal)"><i class="fa fa-plus"></i>Add Standard</button>
+                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(FederalDeductions)"><i class="fa fa-plus"></i>Add Custom</button>
                                 </td>
                             </tr>
                             <tr class="title">
@@ -96,7 +97,8 @@
                             </tr>
                             <tr *ngIf="StateDeductions.length===0">
                                 <td colspan="3">
-                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(StateDeductions)"><i class="fa fa-plus"></i>Add</button>
+                                    <button  *ngIf="isStateStandardDeduction" type="button" class="btn" (click)="insertStandardDeduction(StateDeductions, TaxTypeEnum.State)"><i class="fa fa-plus"></i>Add Standard</button>
+                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(StateDeductions)"><i class="fa fa-plus"></i>Add Custom</button>
                                 </td>
                             </tr>
                             <tr class="title">

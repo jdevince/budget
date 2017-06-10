@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule }   from '@angular/forms';
 import { MaterialModule } from '@angular/material';
 import { HttpModule } from '@angular/http';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 import { ReCaptchaModule } from 'angular2-recaptcha';
 
@@ -35,7 +36,8 @@ import { AppRoutingModule } from './app-routing.module';
     HttpModule,
     AppRoutingModule,
     ReCaptchaModule,
-    MaterialModule
+    MaterialModule,
+    BrowserAnimationsModule
   ],
   declarations: [ 
     AppComponent,
@@ -52,6 +54,9 @@ import { AppRoutingModule } from './app-routing.module';
     ConfirmDialog,
     CustomCurrencyFormatterDirective,
     CustomCurrencyPipe
+  ],
+  entryComponents: [
+    ConfirmDialog
   ],
   bootstrap:    [ AppComponent ]
 })

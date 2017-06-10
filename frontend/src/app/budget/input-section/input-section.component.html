@@ -1,11 +1,11 @@
 <div class="input-section">
     <h1>{{type}}</h1>
     <table class="table">
-        <tr>
+        <tr class="table-headers">
             <th>Label</th>
             <th>Monthly</th>
             <th>Annually</th>
-            <th *ngIf="showPreTaxCheckbox">Pre Tax?</th>
+            <th *ngIf="showPreTaxCheckbox">Pre Tax</th>
             <th></th>
         </tr>
         <tr *ngFor="let row of rows" class="form-group">

@@ -30,7 +30,7 @@ export class BudgetComponent {
 
   @HostListener('window:beforeunload', ['$event'])
   onBeforeUnload($event: any) {
-    if (this.budgetService.hasUnsavedChanges()) {
+    if (this.userService.isLoggedIn() && this.budgetService.hasUnsavedChanges()) {
       $event.returnValue = 'Are you sure you want to leave without saving changes?'; //To show confim dialog before exiting. Message doesn't actually show in modern browsers.
     }
   }

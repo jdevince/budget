@@ -24,7 +24,7 @@ export class TaxesComponent {
         //"Widow(er) with Dependent Child" //Future enhancement: Taxee doesn't have data for this status.
     ];
 
-    private _federalTaxBrackets: any;
+    public federalTaxBrackets: any;
 
     private _stateTaxBrackets: any;
     get stateTaxBrackets() {
@@ -39,13 +39,15 @@ export class TaxesComponent {
             this._stateTaxBrackets[stateAbbr] = "Loading"; //Set this so multiple loading attempts won't fire if one is unsuccessful
 
             //State brackets not loaded for selected state, load them.
-            this._stateTaxBrackets[stateAbbr] = this.budgetService.loadStateTaxBrackets(TaxYear, this.States[this.State])
+            this.budgetService.loadStateTaxBrackets(this._stateTaxBrackets, TaxYear, this.States[this.State])
         }
         else {
             //State brackets already loaded, return them
             return this._stateTaxBrackets[stateAbbr];
         }
     }
+
+    public TaxTypeEnum: TaxType = TaxType; //Create property for enum so html can use
 
     public FilingStatus: number = 0; //Default to "Single"
     public Exemptions: number = 1; //Default to 1 exemption
@@ -130,13 +132,28 @@ export class TaxesComponent {
         return taxesSum;
     }
 
+    public get isStateStandardDeduction: boolean {
+        let brackets: any = this.getBracketsForFilingStatus(this.FilingStatus, this.stateTaxBrackets);
+
+        if (brackets === null 
+        || !brackets.hasOwnProperty("deductions") 
+        || !brackets["deductions"].length > 0
+        || !brackets["deductions"][0].hasOwnProperty("deduction_name") 
+        || !brackets["deductions"][0].hasOwnProperty("deduction_amount")) {
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
     constructor(private budgetService: BudgetService) {
         this.budgetService.TaxesComponent = this;
     }
 
     ngOnInit(): void {
         this.budgetService.loadTaxes(this);
-        this._federalTaxBrackets = this.budgetService.loadFederalTaxBrackets(TaxYear);
+        this.budgetService.loadFederalTaxBrackets(this, TaxYear);
     }
 
     getBracketsForFilingStatus(filingStatus: number, bracketsToChooseFrom: any): any {
@@ -183,7 +200,7 @@ export class TaxesComponent {
         let exemptionAmount: number = 0;
 
         if (taxType === TaxType.Federal) {
-            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this._federalTaxBrackets);
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this.federalTaxBrackets);
             deductions = this.FederalDeductions;
 
             if (brackets !== null) {
@@ -225,7 +242,7 @@ export class TaxesComponent {
         let tax: number = 0;
 
         if (taxType === TaxType.Federal) {
-            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this._federalTaxBrackets);
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this.federalTaxBrackets);
             taxableIncome = this.FederalTaxableIncome;
             credits = this.FederalCredits;
         }
@@ -285,6 +302,33 @@ export class TaxesComponent {
             //Add new row after selected row
             array.splice(index + 1, 0, newRow);
         }
+    }
+
+    insertStandardDeduction(array: LabelAndCurrencyRow[], taxType: TaxType): void {
+        let brackets: any = null;
+        let standardDeductionRow: LabelAndCurrencyRow;
+        let label: string;
+        let amount: number;
+        
+        if (taxType === TaxType.Federal) {
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this.federalTaxBrackets);
+        }
+        else { //State
+            brackets = this.getBracketsForFilingStatus(this.FilingStatus, this.stateTaxBrackets);
+        }
+
+        if (brackets === null 
+        || !brackets.hasOwnProperty("deductions") 
+        || !brackets["deductions"][0].hasOwnProperty("deduction_name") 
+        || !brackets["deductions"][0].hasOwnProperty("deduction_amount")) {
+            return null;
+        }
+
+        label = brackets["deductions"][0]["deduction_name"];
+        amount = brackets["deductions"][0]["deduction_amount"];
+
+        standardDeductionRow = new LabelAndCurrencyRow(label, amount);
+        array.push(standardDeductionRow);
     }
 
     getDataToSave(): Object {

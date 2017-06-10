@@ -1,4 +1,6 @@
-<p>{{ title }}</p>
-<p>{{ message }}</p>
-<button type="button" md-raised-button (click)="dialogRef.close(true)">OK</button>
-<button type="button" md-button (click)="dialogRef.close()">Cancel</button>
+<h1 md-dialog-title>{{ title }}</h1>
+<md-dialog-content>{{ message }}</md-dialog-content>
+<md-dialog-actions class="buttons">
+    <button type="button" md-button (click)="dialogRef.close(true)">Continue</button>
+    <button type="button" md-button (click)="dialogRef.close()">Go Back</button>
+</md-dialog-actions>

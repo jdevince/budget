@@ -73,28 +73,20 @@ export class BudgetService {
             );
     }
 
-    loadFederalTaxBrackets(year: number): any {
-        let federalTaxBrackets: any;
-
+    loadFederalTaxBrackets(taxesComponent: TaxesComponent, year: number): void {      
         this.budgetServerAPIService.loadFederalTaxBrackets(year)
             .subscribe(
-            brackets => federalTaxBrackets = brackets,
+            loadedBrackets => taxesComponent.federalTaxBrackets = loadedBrackets,
             error => console.log(<any>error)
             );
-
-        return federalTaxBrackets;
     }
 
-    loadStateTaxBrackets(year: number, stateAbbr: string): any {
-        let stateTaxBrackets: any;
-
+    loadStateTaxBrackets(stateTaxBrackets: any, year: number, stateAbbr: string): any {
         this.budgetServerAPIService.loadStateTaxBrackets(year, stateAbbr)
             .subscribe(
-            brackets => stateTaxBrackets = brackets,
+            loadedBrackets => stateTaxBrackets[stateAbbr] = loadedBrackets,
             error => console.log(<any>error)
             );
-
-        return stateTaxBrackets;
     }
 
     //Private functions

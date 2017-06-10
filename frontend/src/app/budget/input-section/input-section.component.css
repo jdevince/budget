@@ -44,6 +44,12 @@ h1 {
     border-radius: 10px;
 }
 
+@media (min-width: 992px) {
+    :host-context(.incomes) .table-headers {
+        height: 60px; /*Taller to match multi-lined "Pre Tax" when Incomes is next to Expenses*/
+    }
+}
+
 :host-context(.incomes) h1 {
     background: #37BC9B;
 }
