@@ -72,7 +72,7 @@ export class MyMatchHeightDirective implements AfterViewChecked {
         let className: string | null;
         let colWidth: number;
 
-        if (screenWidth >= 1200) {
+        if (screenWidth >= 1420) {
             //Large (lg)
             className = this.findLgClass(classes);
         }

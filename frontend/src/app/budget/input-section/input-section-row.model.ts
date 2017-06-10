@@ -24,7 +24,7 @@ export class InputSectionRow {
             this._monthly = 0;
         }
         else {
-            this._monthly = parseFloat(amount);
+            this._monthly = this._currencyPipe.parse(amount);
         }
     }
 
@@ -37,7 +37,7 @@ export class InputSectionRow {
             this._monthly = 0;
         }
         else {
-            this._monthly = parseFloat(amount) / 12;
+            this._monthly = this._currencyPipe.parse(amount) / 12;
         }
     }
 

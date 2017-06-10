@@ -1,0 +1,5 @@
+http://getbootstrap.com/customize/
+
+Changes:
+@screen-lg changed from 1200px to 1420px
+@container-large-desktop changed from 1140px to 1360px
