@@ -21,14 +21,14 @@
             <td *ngIf="showPreTaxCheckbox" class="center">
                 <input type="checkbox" [(ngModel)]="row.preTax" />
             </td>
-            <td>
-                <a class="btn" (click)="deleteRow(row)"><i class="fa fa-times"></i></a>   
-                <a class="btn" (click)="insertRow(row)"><i class="fa fa-plus"></i></a>           
+            <td class="add-remove-td">
+                <a class="btn no-padding" (click)="deleteRow(row)"><i class="fa fa-times"></i></a>   
+                <a class="btn no-padding" (click)="insertRow(row)"><i class="fa fa-plus"></i></a>           
             </td>
         </tr>
         <tr *ngIf="rows.length===0">
             <td colspan="4">
-                <button type="button" class="btn" (click)="insertRow()"><i class="fa fa-plus"></i>Add</button>
+                <button type="button" class="btn btn-default" (click)="insertRow()"><i class="fa fa-plus"></i>Add</button>
             </td>
             <td *ngIf="showPreTaxCheckbox"></td>
         </tr>

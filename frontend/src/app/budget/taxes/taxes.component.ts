@@ -47,7 +47,7 @@ export class TaxesComponent {
         }
     }
 
-    public TaxTypeEnum: TaxType = TaxType; //Create property for enum so html can use
+    public TaxTypeEnum: any = TaxType; //Create property for enum so html can use
 
     public FilingStatus: number = 0; //Default to "Single"
     public Exemptions: number = 1; //Default to 1 exemption
@@ -132,18 +132,27 @@ export class TaxesComponent {
         return taxesSum;
     }
 
-    public get isStateStandardDeduction: boolean {
+    public get isStateStandardDeduction(): boolean {
         let brackets: any = this.getBracketsForFilingStatus(this.FilingStatus, this.stateTaxBrackets);
 
         if (brackets === null 
         || !brackets.hasOwnProperty("deductions") 
-        || !brackets["deductions"].length > 0
+        || !(brackets["deductions"].length > 0)
         || !brackets["deductions"][0].hasOwnProperty("deduction_name") 
         || !brackets["deductions"][0].hasOwnProperty("deduction_amount")) {
             return false;
         }
         else {
             return true;
+        }
+    }
+
+    public get addStateStardardDeductionBtnLabel(): string {
+        if (this.isStateStandardDeduction) {
+            return "Add Custom";
+        }
+        else {
+            return "Add";
         }
     }
 
@@ -319,6 +328,7 @@ export class TaxesComponent {
 
         if (brackets === null 
         || !brackets.hasOwnProperty("deductions") 
+        || !(brackets["deductions"].length > 0)
         || !brackets["deductions"][0].hasOwnProperty("deduction_name") 
         || !brackets["deductions"][0].hasOwnProperty("deduction_amount")) {
             return null;

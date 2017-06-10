@@ -9,3 +9,7 @@ h1 {
     border-radius: 10px;
     background: #D770AD;
 }
+
+.table tr:first-child td {
+    border-top: none;
+}

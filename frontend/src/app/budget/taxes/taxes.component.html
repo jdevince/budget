@@ -33,7 +33,7 @@
                     <tab tabTitle="Federal">
                         <table class="table">
                             <tr class="title">
-                                <td colspan="3">Deductions</td>
+                                <td colspan="3">Federal Deductions</td>
                             </tr>
                             <tr *ngFor="let row of FederalDeductions" class="form-group">
                                 <td>
@@ -43,19 +43,19 @@
                                     <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
                                     />
                                 </td>
-                                <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-times"></i></a>
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-plus"></i></a>
+                                <td class="add-remove-td">
+                                    <a class="btn no-padding" (click)="deleteLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn no-padding" (click)="insertLabelAndCurrencyRow(FederalDeductions, row)"><i class="fa fa-plus"></i></a>
                                 </td>
                             </tr>
                             <tr *ngIf="FederalDeductions.length===0">
                                 <td colspan="3">
-                                    <button type="button" class="btn" (click)="insertStandardDeduction(FederalDeductions, TaxTypeEnum.Federal)"><i class="fa fa-plus"></i>Add Standard</button>
-                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(FederalDeductions)"><i class="fa fa-plus"></i>Add Custom</button>
+                                    <button type="button" class="btn btn-default" (click)="insertStandardDeduction(FederalDeductions, TaxTypeEnum.Federal)"><i class="fa fa-plus"></i>Add Standard</button>
+                                    <button type="button" class="btn btn-default" (click)="insertLabelAndCurrencyRow(FederalDeductions)"><i class="fa fa-plus"></i>Add Custom</button>
                                 </td>
                             </tr>
                             <tr class="title">
-                                <td colspan="3">Credits</td>
+                                <td colspan="3">Federal Credits</td>
                             </tr>
                             <tr *ngFor="let row of FederalCredits" class="form-group">
                                 <td>
@@ -65,14 +65,14 @@
                                     <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
                                     />
                                 </td>
-                                <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-times"></i></a>
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-plus"></i></a>
+                                <td class="add-remove-td">
+                                    <a class="btn no-padding" (click)="deleteLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn no-padding" (click)="insertLabelAndCurrencyRow(FederalCredits, row)"><i class="fa fa-plus"></i></a>
                                 </td>
                             </tr>
                             <tr *ngIf="FederalCredits.length===0">
                                 <td colspan="3">
-                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(FederalCredits)"><i class="fa fa-plus"></i>Add</button>
+                                    <button type="button" class="btn btn-default" (click)="insertLabelAndCurrencyRow(FederalCredits)"><i class="fa fa-plus"></i>Add</button>
                                 </td>
                             </tr>
                         </table>
@@ -80,7 +80,7 @@
                     <tab tabTitle="State">
                         <table class="table">
                             <tr class="title">
-                                <td colspan="3">Deductions</td>
+                                <td colspan="3">State Deductions</td>
                             </tr>
                             <tr *ngFor="let row of StateDeductions" class="form-group">
                                 <td>
@@ -90,19 +90,19 @@
                                     <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
                                     />
                                 </td>
-                                <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-times"></i></a>
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-plus"></i></a>
+                                <td class="add-remove-td">
+                                    <a class="btn no-padding" (click)="deleteLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn no-padding" (click)="insertLabelAndCurrencyRow(StateDeductions, row)"><i class="fa fa-plus"></i></a>
                                 </td>
                             </tr>
                             <tr *ngIf="StateDeductions.length===0">
                                 <td colspan="3">
-                                    <button  *ngIf="isStateStandardDeduction" type="button" class="btn" (click)="insertStandardDeduction(StateDeductions, TaxTypeEnum.State)"><i class="fa fa-plus"></i>Add Standard</button>
-                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(StateDeductions)"><i class="fa fa-plus"></i>Add Custom</button>
+                                    <button  *ngIf="isStateStandardDeduction" type="button" class="btn btn btn-default" (click)="insertStandardDeduction(StateDeductions, TaxTypeEnum.State)"><i class="fa fa-plus"></i>Add Standard</button>
+                                    <button type="button" class="btn btn-default" (click)="insertLabelAndCurrencyRow(StateDeductions)"><i class="fa fa-plus"></i>{{addStateStardardDeductionBtnLabel}}</button>
                                 </td>
                             </tr>
                             <tr class="title">
-                                <td colspan="3">Credits</td>
+                                <td colspan="3">State Credits</td>
                             </tr>
                             <tr *ngFor="let row of StateCredits" class="form-group">
                                 <td>
@@ -112,14 +112,14 @@
                                     <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
                                     />
                                 </td>
-                                <td>
-                                    <a class="btn" (click)="deleteLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-times"></i></a>
-                                    <a class="btn" (click)="insertLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-plus"></i></a>
+                                <td class="add-remove-td">
+                                    <a class="btn no-padding" (click)="deleteLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-times"></i></a>
+                                    <a class="btn no-padding" (click)="insertLabelAndCurrencyRow(StateCredits, row)"><i class="fa fa-plus"></i></a>
                                 </td>
                             </tr>
                             <tr *ngIf="StateCredits.length===0">
                                 <td colspan="3">
-                                    <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(StateCredits)"><i class="fa fa-plus"></i>Add</button>
+                                    <button type="button" class="btn btn-default" (click)="insertLabelAndCurrencyRow(StateCredits)"><i class="fa fa-plus"></i>Add</button>
                                 </td>
                             </tr>
                         </table>
@@ -147,17 +147,15 @@
                 <input type="text" (blur)="row.amount=$event.target.value" class="form-control" value="{{row.amount}}" customCurrencyFormatter
                 />
             </td>
-            <td>
-                <a class="btn" (click)="deleteLabelAndCurrencyRow(AdditionalTaxes, row)"><i class="fa fa-times"></i></a>
-                <a class="btn" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, row)"><i class="fa fa-plus"></i></a>
+            <td class="add-remove-td">
+                <a class="btn no-padding" (click)="deleteLabelAndCurrencyRow(AdditionalTaxes, row)"><i class="fa fa-times"></i></a>
+                <a class="btn no-padding" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, row)"><i class="fa fa-plus"></i></a>
             </td>
         </tr>
-        <tr>
-            <td>
-                <button type="button" class="btn" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, AdditionalTaxes[AdditionalTaxes.length-1])"><i class="fa fa-plus"></i>Add a tax</button>
+        <tr *ngIf="AdditionalTaxes.length === 0">
+            <td colspan="2">
+                <button type="button" class="btn btn-default" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, AdditionalTaxes[AdditionalTaxes.length-1])"><i class="fa fa-plus"></i>Add a tax</button>
             </td>
-            <td></td>
-            <td></td>
         </tr>
         
         <tr>

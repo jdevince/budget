@@ -16,8 +16,16 @@ th, .total {
     text-align: right; /*Make "Total:" be right aligned*/
 }
 
-.btn {
+.no-padding {
     padding: 0;
+}
+
+.add-remove-td {
+    padding-top: 1px;
+}
+
+.btn-default > .fa-plus {
+    margin-right: 5px;
 }
 
 input[type="text"] {

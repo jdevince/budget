@@ -22,8 +22,30 @@ h1 {
     color: green;
 }
 
-.btn {
+select {
+    border-radius: 4px;
+    padding: 1px 6px;
+}
+
+input {
+    border-radius: 4px;
+    padding: 1px 1px 1px 6px;
+}
+
+.no-padding {
     padding: 0;
+}
+
+.add-remove-td {
+    padding-top: 1px;
+}
+
+.btn-default > .fa-plus {
+    margin-right: 5px;
+}
+
+.table tr:first-child td {
+    border-top: none;
 }
 
 .tabs .table>tbody>tr>td, .tabs .table>tbody>tr>th, .tabs .table>tfoot>tr>td, .tabs .table>tfoot>tr>th, .tabs .table>thead>tr>td, .tabs .table>thead>tr>th {
