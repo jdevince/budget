@@ -46,7 +46,7 @@ export class UserService {
 
     var httpCall = this.http
       .post(this.loginUrl, body, options)
-      .map(this.setAccessToken)
+      .map(this.afterLoginCall)
       .catch(this.handleError);
 
     httpCall.subscribe(
@@ -74,7 +74,7 @@ export class UserService {
     return Observable.throw(errMsg);
   }
 
-  private setAccessToken(res: any) {
+  private afterLoginCall(res: any) {
     if (res.ok) {
       let body = res.json();
 

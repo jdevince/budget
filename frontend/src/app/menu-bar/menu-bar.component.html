@@ -6,7 +6,7 @@
     <div class="right">
         <div class="login">         
             <a *ngIf="!isLoggedIn" class="login" (click)="toggleLoginForm()">
-                <i *ngIf="!isLoggedIn" class="fa fa-sign-in" aria-hidden="true"></i>Login
+                <i *ngIf="!isLoggedIn" class="fa fa-sign-in" aria-hidden="true"></i>Log In
             </a>
             <enter-account *ngIf="ShowLoginForm" EnterAccountTypeInput="Login" class="enter-account enter-account-login"></enter-account>
         </div>

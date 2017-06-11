@@ -1,11 +1,22 @@
-.submitBtn {
-    float: right;
-}
-
 .fa-times {
     float: right;
 }
 
 .fa-times:hover {
     cursor: pointer;
+}
+
+.bottomDiv {
+    margin-top: 15px;
+    height: 50px;
+}
+
+.submitBtn {
+    float: right;
+    margin-top: 3px;
+}
+
+.errorLoggingInMsg {
+    color: red;
+    font-weight: bold;
 }

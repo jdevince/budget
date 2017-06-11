@@ -44,7 +44,7 @@ namespace BudgetBackend.Controllers
             }
             else
             {
-                return Unauthorized();
+                return Ok(false); //Invalid credentials
             }
         }
 

@@ -44,7 +44,7 @@ i {
 
 .enter-account {
     position: absolute;
-    width: 300px;
+    width: 344px; /*Specify this so it doesn't need to resize once recaptcha loads*/
     z-index: 1;
     padding: 15px;
     border: 5px solid #4FC1E9;
@@ -55,12 +55,12 @@ i {
 
 .enter-account-login {
     top: 38px;
-    left: -44px;
+    left: -49px;
 }
 
 .enter-account-signup {
     top: 38px;
-    left: -175px;
+    left: -189px;
 }
 
 .left {

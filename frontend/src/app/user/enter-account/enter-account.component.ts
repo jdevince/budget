@@ -22,6 +22,7 @@ export class EnterAccountComponent {
 
     public EnterAccountType: EnterAccountType;
     public User = new User(null, null, null);
+    public ErrorLoggingIn: boolean = false;
 
     constructor(
         private budgetService: BudgetService,
@@ -37,7 +38,7 @@ export class EnterAccountComponent {
                 caption = "Sign Up";
                 break;
             case EnterAccountType.Login:
-                caption = "Login";
+                caption = "Log In";
                 break;
         }
         return caption;
@@ -73,10 +74,15 @@ export class EnterAccountComponent {
             .subscribe((result) => {
                 if (result) {
                     if (reload) {
+                        this.ErrorLoggingIn = false;
                         //Reload data on Login, but not after Create Account to preserve potential changes already made
                         this.budgetService.reload();
                     }
                     this.close();
+                }
+                else {
+                    this.ErrorLoggingIn = true;
+                    this.captcha.reset();
                 }
             });
     }
