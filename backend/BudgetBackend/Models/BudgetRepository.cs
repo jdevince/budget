@@ -241,7 +241,7 @@ namespace BudgetBackend.Models
 
         public string GetFederalTaxBrackets(int year)
         {
-            //TODO: Load from DB
+            //TODO: Load from DB or locally to remove dependence on Taxee
             string url = @"https://taxee.io/api/v2/federal/" + year.ToString();
 
             HttpClient httpClient = new HttpClient();
@@ -259,7 +259,7 @@ namespace BudgetBackend.Models
 
         public string GetStateTaxBrackets(int year, string stateAbbr)
         {
-            //TODO: Load from DB
+            //TODO: Load from DB or locally to remove dependence on Taxee
             string url = @"https://taxee.io/api/v2/state/" + year.ToString() + "/" + stateAbbr;
 
             HttpClient httpClient = new HttpClient();

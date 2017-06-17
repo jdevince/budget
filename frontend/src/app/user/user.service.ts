@@ -28,14 +28,14 @@ export class UserService {
       .catch(this.handleError);
   }
 
-  createAcc(username: string, password: string): Observable<User> {
+  createAcc(username: string, password: string): Observable<boolean> {
     let body = JSON.stringify({ "Username": username, "Password": password });
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
 
     return this.http
       .post(this.createAccUrl, body, options)
-      .map(this.extractData)
+      .map(this.afterCreateAccountCall)
       .catch(this.handleError);
   }
 
@@ -60,9 +60,8 @@ export class UserService {
     return res.json();
   }
 
-  private extractData(res: Response) {
-    let body = res.json();
-    return body.data || {};
+  private afterCreateAccountCall(res: Response): boolean {
+    return res.json(); //Is set to True or False based on if account was created or not
   }
 
   private handleError(error: any) {

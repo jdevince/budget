@@ -10,6 +10,7 @@ namespace BudgetBackend.Models
     public class BudgetDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }
+        public DbSet<KeyValuePair> KeyValuePairs { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

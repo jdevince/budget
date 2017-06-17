@@ -25,13 +25,16 @@ namespace BudgetBackend.Controllers
         [HttpPost("create")]
         public IActionResult CreateAccount([FromBody] User user)
         {
+            bool created;
+
             if (user == null)
             {
                 return BadRequest();
             }
            
-            _userRepository.CreateAccount(user);
-            return Ok(user);
+            created = _userRepository.CreateAccount(user);
+
+            return Ok(created);
         }
 
         [HttpPost("login")]
@@ -51,7 +54,7 @@ namespace BudgetBackend.Controllers
         [HttpPost("validateCaptcha")]
         public IActionResult ValidateCaptcha(string captchaResponse)
         {
-            string secretKey = "6Lc2RSIUAAAAAM0mEM_0hIF97BEnfOSWYCfuSb10"; //TODO: securely load
+            string secretKey = Security.GetCaptchaSecretKey();
             string validateCaptchaUrl = string.Format("https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}",secretKey,captchaResponse);
 
             using (HttpClient httpClient = new HttpClient())
@@ -71,16 +74,13 @@ namespace BudgetBackend.Controllers
 
         private TokenProvider InitTokenProvider()
         {
-            // The secret key every token will be signed with.
-            // In production, you should store this securely in environment variables
-            // or a key management tool. Don't hardcode this into your application!
-            string secretKey = "mysupersecret_secretkey!123"; //TODO
+            string secretKey = Security.GetJWTSecretKey();
 
             var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
             var options = new TokenProviderOptions
             {
-                Audience = "ExampleAudience",
-                Issuer = "ExampleIssuer",
+                Audience = "BudgetAudience",
+                Issuer = "BudgetApp",
                 SigningCredentials = new SigningCredentials(signingKey, SecurityAlgorithms.HmacSha256),
             };
 

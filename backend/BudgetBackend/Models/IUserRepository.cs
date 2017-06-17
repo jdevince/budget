@@ -7,7 +7,7 @@ namespace BudgetBackend.Models
 {
     public interface IUserRepository
     {
-        void CreateAccount(User user);
+        bool CreateAccount(User user);
         bool ValidateUser(User user);
         int GetUserId(string username);
     }

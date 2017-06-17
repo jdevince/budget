@@ -7,21 +7,37 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Cryptography;
 
 namespace BudgetBackend.Models
 {
     public class UserRepository : IUserRepository
     {
-        public void CreateAccount(User user)
+        public bool CreateAccount(User user)
         {
             BudgetDbContext db = new BudgetDbContext();
 
-            //Set defaults
-            user.BudgetInputRows = BudgetInputRow.GetDefaults();
-            user.TaxInfo = TaxInfo.GetDefaults();
+            //Check if username is already taken
+            if (db.Users.Any(u => u.Username == user.Username))
+            {
+                return false;
+            }
+            else
+            {
+                //Set defaults
+                user.BudgetInputRows = BudgetInputRow.GetDefaults();
+                user.TaxInfo = TaxInfo.GetDefaults();
 
-            db.Users.Add(user);
-            db.SaveChanges();
+                //Encrypt password
+                user.Salt = Security.GetSalt();
+                user.Password = Security.GetHash(user.Password, user.Salt);
+
+                //Save user to db
+                db.Users.Add(user);
+                db.SaveChanges();
+
+                return true;
+            }
         }
 
         public bool ValidateUser(User user)
@@ -33,7 +49,7 @@ namespace BudgetBackend.Models
 
             BudgetDbContext db = new BudgetDbContext();
             var query = from u in db.Users
-                        where u.Username == user.Username && u.Password == user.Password
+                        where u.Username == user.Username && ValidatePassword(user.Password, u)
                         select u;
             try
             {
@@ -54,6 +70,14 @@ namespace BudgetBackend.Models
                         where u.Username == username
                         select u;
             return query.Single().Id;
+        }
+
+        private bool ValidatePassword(string enteredPassword, User savedUser)
+        {
+            bool isValid;
+            string salt = savedUser.Salt;
+            isValid = savedUser.Password == Security.GetHash(enteredPassword, salt);
+            return isValid;
         }
     }
 }

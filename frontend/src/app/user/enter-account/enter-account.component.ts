@@ -23,6 +23,7 @@ export class EnterAccountComponent {
     public EnterAccountType: EnterAccountType;
     public User = new User(null, null, null);
     public ErrorLoggingIn: boolean = false;
+    public ErrorCreatingAccount: boolean = false;
 
     constructor(
         private budgetService: BudgetService,
@@ -94,9 +95,15 @@ export class EnterAccountComponent {
 
         this.userService.createAcc(username, password)
             .subscribe(
-            user => {
-                this.User;
-                this.login(this.User.username, this.User.password, false);
+            created => {
+                if (created) {
+                    this.ErrorCreatingAccount = false;
+                    this.login(username, password, false);
+                }
+                else {
+                    this.ErrorCreatingAccount = true;
+                    this.captcha.reset();
+                }
             },
             error => console.log(<any>error)
             );
