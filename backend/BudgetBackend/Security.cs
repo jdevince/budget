@@ -13,14 +13,14 @@ namespace BudgetBackend
         public static string GetHash(string originalString, string salt)
         {
             byte[] hash = SHA256.Create().ComputeHash(Encoding.UTF8.GetBytes(originalString + salt));
-            return Encoding.UTF8.GetString(hash);
+            return BitConverter.ToString(hash);
         }
 
         public static string GetSalt()
         {
             byte[] salt = new byte[128 / 8];
             RandomNumberGenerator.Create().GetBytes(salt);
-            return Encoding.UTF8.GetString(salt);
+            return BitConverter.ToString(salt);
         }
 
         public static string GetJWTSecretKey()

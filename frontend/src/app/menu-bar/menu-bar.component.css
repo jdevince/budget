@@ -5,6 +5,18 @@
     cursor: default;
 }
 
+@media screen and (max-width: 516px) {
+    .menuBarDiv {
+        height: 90px;
+    }
+}
+
+@media screen and (max-width: 299px) {
+    .menuBarDiv {
+        height: 120px;
+    }
+}
+
 .menuBarDiv > div {
     margin-top: 7px;
 }
