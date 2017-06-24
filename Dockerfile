@@ -1,7 +1,7 @@
 FROM microsoft/dotnet:latest
-COPY /backend/. /backend/app
+COPY /backend/. /backend
 COPY /frontend/. /frontend
-WORKDIR /backend/app
+WORKDIR /backend/BudgetBackend
 
 RUN ["dotnet", "restore"]
 RUN ["dotnet", "build"]
