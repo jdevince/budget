@@ -14,7 +14,7 @@ namespace BudgetBackend.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Filename=./budget.db");
+            optionsBuilder.UseSqlite("Data Source=budget.db");
         }
     }
 }
