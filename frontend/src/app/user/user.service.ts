@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 
+import {AppSettings} from './../app-settings';
+
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 
@@ -9,9 +11,9 @@ import { User } from './user';
 @Injectable()
 export class UserService {
   private loggedIn = false;
-  private createAccUrl = 'http://localhost:5000/api/user/create';  // URL to web API
-  private loginUrl = 'http://localhost:5000/api/user/login';
-  private validateCaptchaUrl = 'http://localhost:5000/api/user/validateCaptcha?captchaResponse=';
+  private createAccUrl = AppSettings.API_ENDPOINT + '/api/user/create';
+  private loginUrl = AppSettings.API_ENDPOINT + '/api/user/login';
+  private validateCaptchaUrl = AppSettings.API_ENDPOINT + '/api/user/validateCaptcha?captchaResponse=';
 
   loggedInChange: Subject<boolean> = new Subject<boolean>();
 

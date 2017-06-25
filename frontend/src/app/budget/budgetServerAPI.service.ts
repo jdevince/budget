@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
+import {AppSettings} from './../app-settings';
+
 import { InputSectionRow } from './input-section/input-section-row.model';
 import { LabelAndCurrencyRow } from './taxes/label-and-currency-row.model';
 
@@ -15,7 +17,7 @@ export class BudgetServerAPIService {
     ) { }
 
     save(JSONDataToSave: string, accessToken: string): Observable<boolean> {
-        let saveURL = "http://localhost:5000/api/budget/save"
+        let saveURL = AppSettings.API_ENDPOINT + "/api/budget/save"
         let headers = new Headers({ "Content-Type": "application/json" });
         headers.append("Authorization", "Bearer " + accessToken);
         let body = JSONDataToSave;
@@ -27,7 +29,7 @@ export class BudgetServerAPIService {
     }
 
     loadInputSection(type: string, accessToken: string): Observable<Array<InputSectionRow>> {
-        let requestURL = 'http://localhost:5000/api/budget/load?type=' + type;
+        let requestURL = AppSettings.API_ENDPOINT + '/api/budget/load?type=' + type;
         let headers = new Headers({ 'Content-Type': 'application/json' });
 
         if (accessToken) {
@@ -42,7 +44,7 @@ export class BudgetServerAPIService {
     }
 
     loadTaxes(accessToken: string): Observable<any> {
-        let requestURL = 'http://localhost:5000/api/budget/load?type=Taxes';
+        let requestURL = AppSettings.API_ENDPOINT + '/api/budget/load?type=Taxes';
         let headers = new Headers({ 'Content-Type': 'application/json' });
 
         if (accessToken) {
@@ -57,14 +59,14 @@ export class BudgetServerAPIService {
     }
 
     loadFederalTaxBrackets(year: number): Observable<Object> {
-        let url = "http://localhost:5000/api/budget/federalTaxBrackets/" + year.toString();
+        let url = AppSettings.API_ENDPOINT + "/api/budget/federalTaxBrackets/" + year.toString();
         return this.http
             .get(url)
             .map(response => response.json());
     }
 
     loadStateTaxBrackets(year: number, stateAbbr: string): Observable<Object> {
-        let url = "http://localhost:5000/api/budget/stateTaxBrackets/" + year.toString() + "/" + stateAbbr;
+        let url = AppSettings.API_ENDPOINT + "/api/budget/stateTaxBrackets/" + year.toString() + "/" + stateAbbr;
         return this.http
             .get(url)
             .map(response => response.json());
