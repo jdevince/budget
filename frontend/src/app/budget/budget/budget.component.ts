@@ -4,9 +4,8 @@ import { BudgetService } from './../budget.service';
 import { UserService } from './../../user/user.service';
 
 @Component({
-  moduleId: module.id,
   selector: 'budget',
-  templateUrl: '/app/budget/budget/budget.component.html',
+  templateUrl: './budget.component.html',
   styleUrls: ['../../../app/budget/budget/budget.component.css'] //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
 })
 

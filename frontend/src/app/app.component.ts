@@ -10,8 +10,8 @@ import { WindowService } from './window/window.service';
 
 @Component({
   selector: 'budget-app',
-  templateUrl: '/app/app.component.html',
-  styleUrls: ['/app/app.component.css'],
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css', String('../custom_bootstrap/css/bootstrap.min.css')],
   providers: [UserService, BudgetService, BudgetServerAPIService, ConfirmDialogService, WindowService]
 })
 

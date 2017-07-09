@@ -3,9 +3,8 @@ import { BudgetService } from './../budget.service';
 import { CustomCurrencyPipe } from './../custom-currency.pipe';
 
 @Component({
-    moduleId: module.id,
     selector: 'summary',
-    templateUrl: '/app/budget/summary/summary.component.html',
+    templateUrl: './summary.component.html',
     styleUrls: ['../../../app/budget/summary/summary.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
     providers: [CustomCurrencyPipe]
 })

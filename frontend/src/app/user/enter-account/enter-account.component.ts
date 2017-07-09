@@ -8,9 +8,8 @@ import { ViewChild } from '@angular/core';
 import { ReCaptchaComponent } from 'angular2-recaptcha';
 
 @Component({
-    moduleId: module.id,
     selector: 'enter-account',
-    templateUrl: '/app/user/enter-account/enter-account.component.html',
+    templateUrl: './enter-account.component.html',
     styleUrls: ['../../../app/user/enter-account/enter-account.component.css'] //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
 })
 

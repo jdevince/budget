@@ -4,9 +4,8 @@ import { CustomCurrencyPipe } from './../custom-currency.pipe';
 import { BudgetService } from './../budget.service';
 
 @Component({
-    moduleId: module.id,
     selector: 'input-section',
-    templateUrl: '/app/budget/input-section/input-section.component.html',
+    templateUrl: './input-section.component.html',
     styleUrls: ['../../../app/budget/input-section/input-section.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
     providers: [CustomCurrencyPipe]
 })

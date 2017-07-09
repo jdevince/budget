@@ -2,9 +2,8 @@ import { Component, Input } from '@angular/core';
 import { Tab } from './tab.component';
 
 @Component({
-    moduleId: module.id,
     selector: 'tabs',
-    templateUrl: '/app/tabs/tabs.component.html',
+    templateUrl: './tabs.component.html',
     styleUrls: ['../../app/tabs/tabs.component.css'] //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
 })
 export class Tabs {

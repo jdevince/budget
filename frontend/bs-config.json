@@ -1,8 +1,9 @@
 {
   "server": {
-    "baseDir": "src",
+    "baseDir": "dist",
     "routes": {
       "/node_modules": "node_modules"
     }
-  }
+  },
+  "ghostMode:": false
 }

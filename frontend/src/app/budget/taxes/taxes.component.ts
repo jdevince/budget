@@ -8,9 +8,8 @@ import { States } from './states.model';
 const TaxYear = 2017;
 
 @Component({
-    moduleId: module.id,
     selector: 'taxes',
-    templateUrl: '/app/budget/taxes/taxes.component.html',
+    templateUrl: './taxes.component.html',
     styleUrls: ['../../../app/budget/taxes/taxes.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
     providers: [CustomCurrencyPipe]
 })

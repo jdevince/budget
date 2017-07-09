@@ -4,9 +4,8 @@ import { PreOrPostTax } from './../budget.enums';
 import { CustomCurrencyPipe } from './../custom-currency.pipe';
 
 @Component({
-    moduleId: module.id,
     selector: 'breakdown',
-    templateUrl: '/app/budget/breakdown/breakdown.component.html',
+    templateUrl: './breakdown.component.html',
     styleUrls: ['../../../app/budget/breakdown/breakdown.component.css'], //styleUrls doesn't accept root path: https://github.com/angular/angular/issues/4974
     providers: [CustomCurrencyPipe]
 })
