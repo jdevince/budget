@@ -1,15 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Builder;
-using BudgetBackend.Models;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
-using EFLogging;
+using System.IO;
 
 namespace BudgetBackend
 {
@@ -25,13 +16,6 @@ namespace BudgetBackend
                 .Build();
 
             host.Run();
-
-            using (var db = new BudgetDbContext())
-            {
-                var serviceProvider = db.GetInfrastructure<IServiceProvider>();
-                var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
-                loggerFactory.AddProvider(new MyFilteredLoggerProvider());
-            }
         }
     }
 }

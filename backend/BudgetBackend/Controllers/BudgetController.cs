@@ -7,6 +7,7 @@ using BudgetBackend.Models;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.Extensions.Primitives;
 using BudgetBackend.Enums;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -15,14 +16,16 @@ namespace BudgetBackend.Controllers
     [Route("api/[controller]")]
     public class BudgetController : Controller
     {
-        public BudgetController(IBudgetRepository budgetRepository, IUserRepository userRepository)
+        public BudgetController(IBudgetRepository budgetRepository, IUserRepository userRepository, ILogger<BudgetController> log)
         {
             this._budgetRepository = budgetRepository;
             this._userRepository = userRepository;
+            this._log = log;
         }
 
         private IBudgetRepository _budgetRepository;
         private IUserRepository _userRepository;
+        readonly ILogger<BudgetController> _log;
 
         //GET: api/budget/load
         [HttpGet("load")]
@@ -75,15 +78,16 @@ namespace BudgetBackend.Controllers
         [HttpGet("federalTaxBrackets/{year}")]
         public IActionResult FederalTaxBrackets(int year)
         {
-            string bracketsJSON = _budgetRepository.GetFederalTaxBrackets(year);
+            string bracketsJSONResponse = _budgetRepository.GetFederalTaxBrackets(year);
 
-            if (bracketsJSON == "ERROR")
+            if (bracketsJSONResponse.StartsWith("ERROR"))
             {
+                _log.LogInformation(bracketsJSONResponse);
                 return BadRequest();
             }
             else
             {
-                return Ok(bracketsJSON);
+                return Ok(bracketsJSONResponse);
             }
         }
 
@@ -91,15 +95,16 @@ namespace BudgetBackend.Controllers
         [HttpGet("stateTaxBrackets/{year}/{stateAbbr}")]
         public IActionResult StateTaxBrackets(int year, string stateAbbr)
         {
-            string bracketsJSON = _budgetRepository.GetStateTaxBrackets(year, stateAbbr);
+            string bracketsJSONResponse = _budgetRepository.GetStateTaxBrackets(year, stateAbbr);
 
-            if (bracketsJSON == "ERROR")
+            if (bracketsJSONResponse.StartsWith("ERROR"))
             {
+                _log.LogInformation(bracketsJSONResponse);
                 return BadRequest();
             }
             else
             {
-                return Ok(bracketsJSON);
+                return Ok(bracketsJSONResponse);
             }
         }
 

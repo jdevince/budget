@@ -22,7 +22,9 @@
     },
     "Microsoft.IdentityModel.Tokens": "5.0.0",
     "System.IdentityModel.Tokens.Jwt": "5.0.0",
-    "Microsoft.EntityFrameworkCore.Relational": "1.0.1"
+    "Microsoft.EntityFrameworkCore.Relational": "1.0.1",
+    "Serilog": "2.5.0",
+    "Serilog.Extensions.Logging.File": "1.1.0"
   },
 
   "tools": {

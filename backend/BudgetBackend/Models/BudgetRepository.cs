@@ -251,9 +251,9 @@ namespace BudgetBackend.Models
             {
                 return httpClient.GetStringAsync(url).Result;
             }
-            catch
+            catch (Exception e)
             {
-                return "ERROR";
+                return "ERROR: " + e.Message;
             }
         }
 
@@ -269,9 +269,9 @@ namespace BudgetBackend.Models
             {
                 return httpClient.GetStringAsync(url).Result;
             }
-            catch
+            catch (Exception e)
             {
-                return "ERROR";
+                return "ERROR: " + e.Message;
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using BudgetBackend.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
@@ -13,13 +14,15 @@ namespace BudgetBackend.Controllers
     [Route("api/[controller]")]
     public class UserController : Controller
     {
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository, ILogger<UserController> log)
         {
             this._userRepository = userRepository;
+            this._log = log;
             this._tokenProvider = InitTokenProvider();
         }
 
         private IUserRepository _userRepository { get; set; }
+        readonly ILogger<UserController> _log;
         private TokenProvider _tokenProvider;
 
         [HttpPost("create")]
