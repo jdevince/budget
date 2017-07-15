@@ -25,3 +25,17 @@ h1 {
     border: solid 5px #EEEFF2; 
     border-radius: 10px;
 }
+
+@media (max-width: 600px) {
+    .budget {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    .card {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}

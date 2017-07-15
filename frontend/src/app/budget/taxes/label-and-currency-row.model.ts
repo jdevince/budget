@@ -21,7 +21,7 @@ export class LabelAndCurrencyRow {
             this._amount = 0;
         }
         else {
-            this._amount = parseFloat(amount);
+            this._amount = this._currencyPipe.parse(amount);
         }
     }
 

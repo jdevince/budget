@@ -38,6 +38,7 @@ input {
 
 .add-remove-td {
     padding-top: 1px;
+    width: 30px;
 }
 
 .btn-default > .fa-plus {

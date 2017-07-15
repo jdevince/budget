@@ -12,6 +12,12 @@ th, .total {
     text-align: center;
 }
 
+.pre-tax-header {
+    width: 30px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
 .table > tbody > tr:last-of-type > td:first-of-type > p {
     text-align: right; /*Make "Total:" be right aligned*/
 }
@@ -22,6 +28,7 @@ th, .total {
 
 .add-remove-td {
     padding-top: 1px;
+    width: 30px;
 }
 
 .btn-default > .fa-plus {
@@ -55,6 +62,13 @@ h1 {
 @media (min-width: 992px) {
     :host-context(.incomes) .table-headers {
         height: 60px; /*Taller to match multi-lined "Pre Tax" when Incomes is next to Expenses*/
+    }
+}
+
+@media (max-width: 600px) {
+    .table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+        padding-left: 3px;
+        padding-right: 3px;
     }
 }
 

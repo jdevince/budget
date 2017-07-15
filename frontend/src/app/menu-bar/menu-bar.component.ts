@@ -78,6 +78,7 @@ export class MenuBarComponent {
     }
     else {
       this.userService.logout();
+      this.budgetService.reload();
     }
   }
 }
