@@ -1,0 +1,25 @@
+.footerDiv {
+    height: 50px;
+    background: #4FC1E9;
+    padding: 0 15px;
+    cursor: default;
+}
+
+.right {
+    float: right;
+}
+
+.contactUs {
+    margin-top: 7px;
+}
+
+a {
+    font-size: 25px;
+    color: white;
+}
+
+i {
+    color: white;
+    margin-right: 5px;
+}
+

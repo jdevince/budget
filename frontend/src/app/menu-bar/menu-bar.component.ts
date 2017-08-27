@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 import { BudgetService } from './../budget/budget.service';
-import { ConfirmDialogService } from './../confirm-dialog/confirm-dialog.service';
+import { PopupDialogService } from './../popup-dialog/popup-dialog.service';
 import { UserService } from './../user/user.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class MenuBarComponent {
 
   constructor(
     private budgetService: BudgetService,
-    private confirmDialogService: ConfirmDialogService,
+    private popupDialogService: PopupDialogService,
     private userService: UserService
   ) { }
 
@@ -67,7 +67,7 @@ export class MenuBarComponent {
 
   logOut(): void {
     if (this.budgetService.hasUnsavedChanges()) {
-      this.confirmDialogService
+      this.popupDialogService
         .confirm("Logout with unsaved changes", "Are you sure you want to log out without saving changes?")
         .subscribe(response => {
           if (response) {

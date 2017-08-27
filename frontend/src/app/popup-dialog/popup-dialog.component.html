@@ -1,0 +1,13 @@
+<h1 md-dialog-title>{{ title }}</h1>
+<md-dialog-content>
+    {{ message }}
+    <div *ngIf="hasMoreInfoLink">
+        <br>
+        <a [href]="moreInfoLink" target="_blank">{{ moreInfoMessage }}</a>
+    </div>
+    
+</md-dialog-content>
+<md-dialog-actions class="buttons">
+    <button *ngIf="isConfirm" type="button" md-button (click)="dialogRef.close(true)">Continue</button>
+    <button type="button" md-button (click)="dialogRef.close()">Go Back</button>
+</md-dialog-actions>

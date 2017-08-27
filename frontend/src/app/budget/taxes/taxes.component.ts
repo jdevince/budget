@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { BudgetService } from './../budget.service';
+import { PopupDialogService } from './../../popup-dialog/popup-dialog.service';
 import { TaxType, DeductionOrCredit } from './../budget.enums';
 import { CustomCurrencyPipe } from './../custom-currency.pipe';
 import { LabelAndCurrencyRow } from './label-and-currency-row.model';
@@ -155,7 +156,7 @@ export class TaxesComponent {
         }
     }
 
-    constructor(private budgetService: BudgetService) {
+    constructor(private budgetService: BudgetService, private popupDialogService: PopupDialogService) {
         this.budgetService.TaxesComponent = this;
     }
 
@@ -392,6 +393,54 @@ export class TaxesComponent {
         }
 
         return data;
+    }
+
+    showFilingStatusHelpInfo(): void {
+        let title: string = "Filing Status";
+        let message: string = "Filing status is based on marital status and family situation. You will fall into one of five possible categories: single, married filing jointly, married filing separately, head of household, or qualifying widow(er) with dependent children.";
+        let link = "https://www.irs.gov/publications/p501/ar02.html#en_US_2016_publink1000220721";
+        let linkMessage = "More Info";
+        this.popupDialogService.display(title,message,link,linkMessage);
+    }
+
+    showExemptionsHelpInfo(): void {
+        let title: string = "Exemptions";
+        let message: string = "Exemptions reduce the amount of tax owed. If you are not a dependent of another taxpayer, you can claim one exemption plus an additional exemption for each dependent you have.";
+        let link = "https://www.irs.gov/publications/p501/ar02.html#en_US_2016_publink1000220844";
+        let linkMessage = "More Info";
+        this.popupDialogService.display(title,message,link,linkMessage);
+    }
+
+    showFederalDeductionsHelpInfo(): void {
+        let title: string = "Federal Deductions";
+        let message: string = "Federal deductions reduce the amount of tax owed at the federal level. If you're unsure of what to enter, just click the Add Standard button.";
+        let link = "https://www.irs.gov/publications/p501/ar02.html#en_US_2016_publink1000221051";
+        let linkMessage = "More Info";
+        this.popupDialogService.display(title,message,link,linkMessage);
+    }
+
+    showFederalCreditsHelpInfo(): void {
+        let title: string = "Federal Credits";
+        let message: string = "Federal credits reduce the amount of tax owed at the federal level. If you're unsure of what to enter, don't enter anything.";
+        let link = "https://www.irs.gov/credits-deductions/individuals";
+        let linkMessage = "More Info";
+        this.popupDialogService.display(title,message,link,linkMessage);
+    }
+
+    showStateDeductionsHelpInfo(): void {
+        let title: string = "State Deductions";
+        let message: string = "State deductions reduce the amount of tax owed at the state level. If you're unsure of what to enter, just click the Add Standard button if it exists for your state, otherwise don't enter anything.";
+        let link = "http://www.google.com/search?q=" + this.States[this.State] + "+state+tax+deductions";
+        let linkMessage = "More Info";
+        this.popupDialogService.display(title,message,link,linkMessage);
+    }
+
+    showStateCreditsHelpInfo(): void {
+        let title: string = "State Credits";
+        let message: string = "State credits reduce the amount of tax owed at the state level. If you're unsure of what to enter, don't enter anything.";
+        let link = "http://www.google.com/search?q=" + this.States[this.State] + "+state+tax+credits";
+        let linkMessage = "More Info";
+        this.popupDialogService.display(title,message,link,linkMessage);
     }
 }
 

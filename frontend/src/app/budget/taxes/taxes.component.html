@@ -6,7 +6,7 @@
             <td colspan="2">{{IncomeMinusPreTax | customCurrency}}</td>
         </tr>
         <tr>
-            <td>Filing status:</td>
+            <td>Filing status: <i class="fa fa-question-circle" (click)="showFilingStatusHelpInfo()"></i></td>
             <td colspan="2">
                 <select [(ngModel)]="FilingStatus">
                     <option *ngFor="let status of FilingStatusOptions" [value]="FilingStatusOptions.indexOf(status)">{{status}}</option>
@@ -14,7 +14,9 @@
             </td>
         </tr>
         <tr>
-            <td>Exemptions:</td>
+            <td>
+                Exemptions: <i class="fa fa-question-circle" (click)="showExemptionsHelpInfo()"></i>
+            </td>
             <td colspan="2">
                 <input type="number" [(ngModel)]="Exemptions" min="1" max="30" step="1" />
             </td>
@@ -33,7 +35,7 @@
                     <tab tabTitle="Federal">
                         <table class="table">
                             <tr class="title">
-                                <td colspan="3">Federal Deductions</td>
+                                <td colspan="3">Federal Deductions <i class="fa fa-question-circle" (click)="showFederalDeductionsHelpInfo()"></i></td>
                             </tr>
                             <tr *ngFor="let row of FederalDeductions" class="form-group">
                                 <td>
@@ -55,7 +57,7 @@
                                 </td>
                             </tr>
                             <tr class="title">
-                                <td colspan="3">Federal Credits</td>
+                                <td colspan="3">Federal Credits <i class="fa fa-question-circle" (click)="showFederalCreditsHelpInfo()"></i></td>
                             </tr>
                             <tr *ngFor="let row of FederalCredits" class="form-group">
                                 <td>
@@ -80,7 +82,7 @@
                     <tab tabTitle="State">
                         <table class="table">
                             <tr class="title">
-                                <td colspan="3">State Deductions</td>
+                                <td colspan="3">State Deductions <i class="fa fa-question-circle" (click)="showStateDeductionsHelpInfo()"></i></td>
                             </tr>
                             <tr *ngFor="let row of StateDeductions" class="form-group">
                                 <td>
@@ -102,7 +104,7 @@
                                 </td>
                             </tr>
                             <tr class="title">
-                                <td colspan="3">State Credits</td>
+                                <td colspan="3">State Credits <i class="fa fa-question-circle" (click)="showStateCreditsHelpInfo()"></i></td>
                             </tr>
                             <tr *ngFor="let row of StateCredits" class="form-group">
                                 <td>
