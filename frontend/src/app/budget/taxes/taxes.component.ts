@@ -6,8 +6,6 @@ import { CustomCurrencyPipe } from './../custom-currency.pipe';
 import { LabelAndCurrencyRow } from './label-and-currency-row.model';
 import { States } from './states.model';
 
-const TaxYear = 2017;
-
 @Component({
     selector: 'taxes',
     templateUrl: './taxes.component.html',
@@ -24,7 +22,30 @@ export class TaxesComponent {
         //"Widow(er) with Dependent Child" //Future enhancement: Taxee doesn't have data for this status.
     ];
 
-    public federalTaxBrackets: any;
+    public readonly TaxYears: number[] = [
+        2017, 
+        2016, 
+        2015
+    ];
+
+    public _federalTaxBrackets: any;
+    get federalTaxBrackets() {
+        if (!this._federalTaxBrackets) {
+            this._federalTaxBrackets = {};
+        }
+
+        if (!this._federalTaxBrackets.hasOwnProperty(this.TaxYear)) {
+
+            this._federalTaxBrackets[this.TaxYear] = "Loading"; //Set this so multiple loading attempts won't fire if one is unsuccessful
+
+            //Federal brackets not loaded for selected tax year, load them.
+            this.budgetService.loadFederalTaxBrackets(this._federalTaxBrackets, this.TaxYear)
+        }
+        else {
+            //Federal brackets already loaded, return them
+            return this._federalTaxBrackets[this.TaxYear];
+        }
+    }
 
     private _stateTaxBrackets: any;
     get stateTaxBrackets() {
@@ -33,17 +54,17 @@ export class TaxesComponent {
         if (!this._stateTaxBrackets) {
             this._stateTaxBrackets = {};
         }
+        
+        if (!this._stateTaxBrackets.hasOwnProperty(this.TaxYear + "-" + stateAbbr)) {
 
-        if (!this._stateTaxBrackets.hasOwnProperty(stateAbbr)) {
+            this._stateTaxBrackets[this.TaxYear + "-" + stateAbbr] = "Loading"; //Set this so multiple loading attempts won't fire if one is unsuccessful
 
-            this._stateTaxBrackets[stateAbbr] = "Loading"; //Set this so multiple loading attempts won't fire if one is unsuccessful
-
-            //State brackets not loaded for selected state, load them.
-            this.budgetService.loadStateTaxBrackets(this._stateTaxBrackets, TaxYear, this.States[this.State])
+            //State brackets not loaded for selected year and state, load them.
+            this.budgetService.loadStateTaxBrackets(this._stateTaxBrackets, this.TaxYear, stateAbbr);
         }
         else {
             //State brackets already loaded, return them
-            return this._stateTaxBrackets[stateAbbr];
+            return this._stateTaxBrackets[this.TaxYear + "-" + stateAbbr];
         }
     }
 
@@ -51,6 +72,7 @@ export class TaxesComponent {
 
     public FilingStatus: number = 0; //Default to "Single"
     public Exemptions: number = 1; //Default to 1 exemption
+    public TaxYear: number = this.TaxYears[0] //Default to most recent year
     public State: number = 0; //Index in States.ListOfStates. Defaulting to first state in list
 
     public FederalDeductions: LabelAndCurrencyRow[] = [];
@@ -162,7 +184,6 @@ export class TaxesComponent {
 
     ngOnInit(): void {
         this.budgetService.loadTaxes(this);
-        this.budgetService.loadFederalTaxBrackets(this, TaxYear);
     }
 
     getBracketsForFilingStatus(filingStatus: number, bracketsToChooseFrom: any): any {

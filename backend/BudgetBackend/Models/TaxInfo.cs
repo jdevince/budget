@@ -13,6 +13,7 @@ namespace BudgetBackend.Models
         public int Id { get; set; }
         public int FilingStatus { get; set; }
         public int Exemptions { get; set; }
+        public int TaxYear { get; set; }
         public int State { get; set; }
 
         public int UserId { get; set; }
@@ -27,6 +28,7 @@ namespace BudgetBackend.Models
 
             taxInfo.FilingStatus = 0;
             taxInfo.Exemptions = 1;
+            taxInfo.TaxYear = 2017;
             taxInfo.State = 0;
             taxInfo.DeductionsAndCredits = new List<DeductionOrCreditRow>();
             taxInfo.AdditionalTaxes = new List<AdditionalTaxRow>();

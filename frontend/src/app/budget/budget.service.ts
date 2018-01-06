@@ -60,6 +60,7 @@ export class BudgetService {
             loadedData => {
                 taxesComponent.FilingStatus = loadedData.FilingStatus;
                 taxesComponent.Exemptions = loadedData.Exemptions;
+                taxesComponent.TaxYear = loadedData.TaxYear;
                 taxesComponent.State = loadedData.State;
                 taxesComponent.FederalDeductions = loadedData.FederalDeductions;
                 taxesComponent.FederalCredits = loadedData.FederalCredits;
@@ -73,10 +74,10 @@ export class BudgetService {
             );
     }
 
-    loadFederalTaxBrackets(taxesComponent: TaxesComponent, year: number): void {      
+    loadFederalTaxBrackets(federalTaxBrackets: any, year: number): void {      
         this.budgetServerAPIService.loadFederalTaxBrackets(year)
             .subscribe(
-            loadedBrackets => taxesComponent.federalTaxBrackets = loadedBrackets,
+            loadedBrackets => federalTaxBrackets[year] = loadedBrackets,
             error => console.log(<any>error)
             );
     }
@@ -84,7 +85,7 @@ export class BudgetService {
     loadStateTaxBrackets(stateTaxBrackets: any, year: number, stateAbbr: string): any {
         this.budgetServerAPIService.loadStateTaxBrackets(year, stateAbbr)
             .subscribe(
-            loadedBrackets => stateTaxBrackets[stateAbbr] = loadedBrackets,
+            loadedBrackets => stateTaxBrackets[year + "-" + stateAbbr] = loadedBrackets,
             error => console.log(<any>error)
             );
     }

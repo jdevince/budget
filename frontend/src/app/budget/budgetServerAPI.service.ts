@@ -91,6 +91,7 @@ export class BudgetServerAPIService {
 
         taxInfo.FilingStatus = res.json().value.filingStatus;
         taxInfo.Exemptions = res.json().value.exemptions;
+        taxInfo.TaxYear = res.json().value.taxYear;
         taxInfo.State = res.json().value.state;
 
         let federalDeductions: LabelAndCurrencyRow[] = [];

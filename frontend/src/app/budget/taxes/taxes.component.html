@@ -22,6 +22,14 @@
             </td>
         </tr>
         <tr>
+            <td>Tax year:</td>
+            <td colspan="2">
+                <select [(ngModel)]="TaxYear">
+                    <option *ngFor="let taxYear of this.TaxYears" [ngValue]="taxYear">{{taxYear}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td>State:</td>
             <td colspan="2">
                 <select [(ngModel)]="State">
