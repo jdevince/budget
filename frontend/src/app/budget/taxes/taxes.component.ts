@@ -367,6 +367,7 @@ export class TaxesComponent {
 
         data["FilingStatus"] = this.FilingStatus;
         data["Exemptions"] = this.Exemptions;
+        data["TaxYear"] = this.TaxYear;
         data["State"] = this.State;
 
         //Deductions and Credits

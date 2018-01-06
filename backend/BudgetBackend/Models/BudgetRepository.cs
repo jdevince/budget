@@ -75,6 +75,11 @@ namespace BudgetBackend.Models
                 dbTaxInfo.Exemptions = clientTaxInfo.Exemptions;
             }
 
+            if (dbTaxInfo.TaxYear != clientTaxInfo.TaxYear)
+            {
+                dbTaxInfo.TaxYear = clientTaxInfo.TaxYear;
+            }
+
             if (dbTaxInfo.State != clientTaxInfo.State)
             {
                 dbTaxInfo.State = clientTaxInfo.State;
