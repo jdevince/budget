@@ -5,27 +5,21 @@
     cursor: default;
 }
 
-@media screen and (max-width: 686px) {
+@media screen and (max-width: 666px) {
     .menuBarDiv {
         height: 90px;
     }
 }
 
-@media screen and (max-width: 406px) {
+@media screen and (max-width: 387px) {
     .menuBarDiv {
         height: 120px;
     }
 }
 
-@media screen and (max-width: 387px) {
-    .menuBarDiv {
-        height: 150px;
-    }
-}
-
 @media screen and (max-width: 298px) {
     .menuBarDiv {
-        height: 180px;
+        height: 150px;
     }
 }
 
@@ -89,6 +83,7 @@ i {
 
 .left {
     float: left;
+    text-align: center;
 }
 
 .right {
