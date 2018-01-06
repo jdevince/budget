@@ -1,5 +1,8 @@
+<div class="siteDescriptionDiv" *ngIf="!isLoggedIn">
+    <h1>An annual budget is an important part of personal finance.<br><br>This budget calculator allows you to stay in control of your finances <u>without the complicated math</u>.</h1>
+</div>
 <div class="notLoggedInWarningDiv" *ngIf="!isLoggedIn">
-    <h1>You are not logged in. If you'd like to save, please login or sign up.</h1>
+    <h2>You are not logged in. If you'd like to save, please login or sign up.</h2>
 </div>
 <div class="budget container" myMatchHeight="card">
     <input-section type="Incomes" class="incomes card col-lg-4 col-md-6 col-xs-12"></input-section>
