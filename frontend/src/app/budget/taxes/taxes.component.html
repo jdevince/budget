@@ -2,11 +2,7 @@
     <h1>Taxes</h1>
     <table class="table">
         <tr>
-            <td>Income after pre-tax:</td>
-            <td colspan="2">{{IncomeMinusPreTax | customCurrency}}</td>
-        </tr>
-        <tr>
-            <td>Filing status: <i class="fa fa-question-circle" (click)="showFilingStatusHelpInfo()"></i></td>
+            <td>Filing Status: <i class="fa fa-question-circle" (click)="showFilingStatusHelpInfo()"></i></td>
             <td colspan="2">
                 <select [(ngModel)]="FilingStatus">
                     <option *ngFor="let status of FilingStatusOptions" [value]="FilingStatusOptions.indexOf(status)">{{status}}</option>
@@ -22,7 +18,7 @@
             </td>
         </tr>
         <tr>
-            <td>Tax year:</td>
+            <td>Tax Year:</td>
             <td colspan="2">
                 <select [(ngModel)]="TaxYear">
                     <option *ngFor="let taxYear of this.TaxYears" [ngValue]="taxYear">{{taxYear}}</option>
@@ -38,7 +34,7 @@
             </td>
         </tr>
         <tr>
-            <td colspan="3">
+            <td colspan="3" class="dark-bottom-border">
                 <tabs class="tabs">
                     <tab tabTitle="Federal">
                         <table class="table">
@@ -138,15 +134,23 @@
             </td>
         </tr>
         <tr>
-            <td>Federal:</td>
+            <td>Federal Taxable Income:</td>
+            <td colspan="2">{{FederalTaxableIncome | customCurrency}}</td>
+        </tr>
+        <tr>
+            <td class="dark-bottom-border">State Taxable Income:</td>
+            <td colspan="2" class="dark-bottom-border">{{StateTaxableIncome | customCurrency}}</td>
+        </tr>
+        <tr>
+            <td>Federal Tax:</td>
             <td colspan="2">{{FederalTax | customCurrency}}</td>
         </tr>
         <tr>
-            <td>FICA:</td>
+            <td>FICA Tax:</td>
             <td colspan="2">{{FICATax | customCurrency}}</td>
         </tr>
         <tr>
-            <td>State:</td>
+            <td>State Tax:</td>
             <td colspan="2">{{StateTax | customCurrency}}</td>
         </tr>
         <tr *ngFor="let row of AdditionalTaxes" class="form-group">
@@ -163,11 +167,10 @@
             </td>
         </tr>
         <tr *ngIf="AdditionalTaxes.length === 0">
-            <td colspan="2">
-                <button type="button" class="btn btn-default" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, AdditionalTaxes[AdditionalTaxes.length-1])"><i class="fa fa-plus"></i>Add a tax</button>
+            <td colspan="2" class="dark-bottom-border">
+                <button type="button" class="btn btn-default" (click)="insertLabelAndCurrencyRow(AdditionalTaxes, AdditionalTaxes[AdditionalTaxes.length-1])"><i class="fa fa-plus"></i>Add a Tax</button>
             </td>
         </tr>
-        
         <tr>
             <td>Total:</td>
             <td colspan="2">{{TaxesSum | customCurrency}}</td>

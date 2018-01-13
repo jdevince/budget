@@ -82,8 +82,8 @@ export class TaxesComponent {
 
     public AdditionalTaxes: LabelAndCurrencyRow[] = [];
 
-    public get IncomeMinusPreTax(): number {
-        return this.budgetService.getIncomeMinusPreTax();
+    public get IncomeMinusNoTaxAndPreTax(): number {
+        return this.budgetService.getIncomeMinusNoTaxAndPreTax();
     }
 
     public get States(): string[] {
@@ -98,12 +98,12 @@ export class TaxesComponent {
         return this.getTaxableIncome(TaxType.Federal);
     }
 
-    public get StateTax(): number {
-        return this.getTax(TaxType.State);
-    }
-
     public get FederalTax(): number {
         return this.getTax(TaxType.Federal);
+    }
+
+    public get StateTax(): number {
+        return this.getTax(TaxType.State);
     }
 
     public get FICATax(): number {
@@ -247,7 +247,7 @@ export class TaxesComponent {
         }
 
         //Initially set at sum of Incomes minus pre-tax expenses/savings
-        let taxableIncome: number = this.IncomeMinusPreTax;
+        let taxableIncome: number = this.IncomeMinusNoTaxAndPreTax;
 
         //Subtract deductions
         let deductionsSum = 0;

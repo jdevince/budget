@@ -5,12 +5,12 @@ export class InputSectionRow {
     private _currencyPipe: CustomCurrencyPipe;
 
     label: string;
-    preTax: boolean;
+    checkbox: boolean;
 
-    constructor(label: string, monthly: number, preTax: boolean = null) {
+    constructor(label: string, monthly: number, checkbox: boolean) {
         this.label = label;
         this._monthly = monthly;
-        this.preTax = preTax;
+        this.checkbox = checkbox;
 
         this._currencyPipe = new CustomCurrencyPipe();
     }

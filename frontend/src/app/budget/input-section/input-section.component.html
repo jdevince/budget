@@ -5,7 +5,7 @@
             <th>Label</th>
             <th>Monthly</th>
             <th>Annually</th>
-            <th *ngIf="showPreTaxCheckbox" class="pre-tax-header">Pre Tax</th>
+            <th class="checkbox-header">{{getCheckboxLabel()}}</th>
             <th></th>
         </tr>
         <tr *ngFor="let row of rows" class="form-group">
@@ -18,8 +18,8 @@
             <td>
                 <input type="text" (blur)="row.annually=$event.target.value" class="form-control" value={{row.annually}} customCurrencyFormatter />
             </td>
-            <td *ngIf="showPreTaxCheckbox" class="center">
-                <input type="checkbox" [(ngModel)]="row.preTax" />
+            <td class="center">
+                <input type="checkbox" [(ngModel)]="row.checkbox" />
             </td>
             <td class="add-remove-td">
                 <a class="btn no-padding" (click)="deleteRow(row)"><i class="fa fa-times"></i></a>   
@@ -27,10 +27,9 @@
             </td>
         </tr>
         <tr *ngIf="rows.length===0">
-            <td colspan="4">
+            <td colspan="5">
                 <button type="button" class="btn btn-default" (click)="insertRow()"><i class="fa fa-plus"></i>Add</button>
             </td>
-            <td *ngIf="showPreTaxCheckbox"></td>
         </tr>
         <tr>
             <td>
@@ -42,7 +41,7 @@
             <td>
                 <p class="total">{{ getAnnuallyTotal() | currency : 'USD' : true : '1.2-2' }}</p>
             </td>
-            <td *ngIf="showPreTaxCheckbox"></td> 
+            <td></td> 
             <td></td>
         </tr>
     </table>

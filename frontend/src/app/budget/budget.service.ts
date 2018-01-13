@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Headers, Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import { TaxType, DeductionOrCredit, PreOrPostTax } from './budget.enums';
+import { TaxType, DeductionOrCredit, CheckboxValues } from './budget.enums';
 import { InputSectionComponent } from './input-section/input-section.component';
 import { InputSectionRow } from './input-section/input-section-row.model';
 import { TaxesComponent } from './taxes/taxes.component';
@@ -114,13 +114,12 @@ export class BudgetService {
     }
 
     //Get functions
-    getIncomeMinusPreTax(): number {
-        return this.getInputSectionAnnualTotal("Incomes") - this.getInputSectionAnnualTotal("Expenses", PreOrPostTax.PreTaxOnly) - this.getInputSectionAnnualTotal("Savings", PreOrPostTax.PreTaxOnly)
+    getIncomeMinusNoTaxAndPreTax(): number {
+        return this.getInputSectionAnnualTotal("Incomes",CheckboxValues.UncheckedOnly) - this.getInputSectionAnnualTotal("Expenses", CheckboxValues.CheckedOnly) - this.getInputSectionAnnualTotal("Savings", CheckboxValues.CheckedOnly);
     }
 
-    getInputSectionAnnualTotal(inputSectionType: string, preOrPostTax = PreOrPostTax.EitherPreOrPostTax): number {
-        ///Returns the sum of annual amounts for the given type and pre/post tax status
-        ///If getPreTax === false, returns only non-preTax. If getPreTax === true, retuns only preTax.
+    getInputSectionAnnualTotal(inputSectionType: string, checkboxValues: CheckboxValues = CheckboxValues.BothCheckedAndUnchecked): number {
+        ///Returns the sum of annual amounts for the given type and checkbox (NoTax/PreTax) status
 
         if (this.InputSections === undefined) {
             return 0;
@@ -131,9 +130,9 @@ export class BudgetService {
         for (let inputSection of this.InputSections) {
             if (inputSection.type === inputSectionType) {
                 for (let row of inputSection.rows) {
-                    if ((preOrPostTax === PreOrPostTax.EitherPreOrPostTax)
-                        || (preOrPostTax === PreOrPostTax.PreTaxOnly && row.preTax === true)
-                        || (preOrPostTax === PreOrPostTax.PostTaxOnly && row.preTax === false)) {
+                    if ((checkboxValues === CheckboxValues.BothCheckedAndUnchecked)
+                        || (checkboxValues === CheckboxValues.CheckedOnly && row.checkbox === true)
+                        || (checkboxValues === CheckboxValues.UncheckedOnly && row.checkbox === false)) {
                         total += row.getAnnuallyNumber();
                     }
                 }
@@ -144,26 +143,23 @@ export class BudgetService {
     }
 
     getAfterTaxes(): number {
-        return this.getIncomeMinusPreTax() - this.TaxesComponent.TaxesSum;
-    }
-
-    getAfterSavings(): number {
-        return this.getAfterTaxes() - this.getInputSectionAnnualTotal("Savings", PreOrPostTax.PostTaxOnly);
+        return this.getInputSectionAnnualTotal("Incomes") - this.TaxesComponent.TaxesSum;
     }
 
     getAfterExpenses(): number {
-        return this.getAfterSavings() - this.getInputSectionAnnualTotal("Expenses", PreOrPostTax.PostTaxOnly);
+        return this.getAfterTaxes() - this.getInputSectionAnnualTotal("Expenses");
+    }
+
+    getAfterSavings(): number {
+        return this.getAfterExpenses() - this.getInputSectionAnnualTotal("Savings");
     }
 
     getTotalSavings(): number {
-        return this.getInputSectionAnnualTotal("Savings") + this.getAfterExpenses();
+        return this.getInputSectionAnnualTotal("Savings") + this.getAfterSavings();
     }
 
     getIncomeSubjectToFICA(): number {
-        //Returns sum of all rows in Incomes section. 
-        //Future enhancement: Only add "Earned Income" (i.e. salary, but not dividends)
-
-        return this.getInputSectionAnnualTotal("Incomes");
+        return this.getInputSectionAnnualTotal("Incomes", CheckboxValues.UncheckedOnly);
     }
 
     //Miscellaneous functions

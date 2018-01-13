@@ -9,8 +9,8 @@ export enum DeductionOrCredit {
     Credit
 }
 
-export enum PreOrPostTax {
-    PreTaxOnly,
-    PostTaxOnly,
-    EitherPreOrPostTax
+export enum CheckboxValues {
+    CheckedOnly,
+    UncheckedOnly,
+    BothCheckedAndUnchecked
 }

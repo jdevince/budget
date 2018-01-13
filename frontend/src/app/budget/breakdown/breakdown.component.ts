@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { BudgetService } from './../budget.service';
-import { PreOrPostTax } from './../budget.enums';
 import { CustomCurrencyPipe } from './../custom-currency.pipe';
 
 @Component({
@@ -18,23 +17,19 @@ export class BreakdownComponent {
         return this.budgetService.getInputSectionAnnualTotal("Incomes");
     }
 
-    public get AfterPreTax(): number {
-        return this.budgetService.getIncomeMinusPreTax();
-    }
-
     public get AfterTaxes(): number {
         return this.budgetService.getAfterTaxes();
-    }
-
-    public get AfterSavings(): number {
-        return this.budgetService.getAfterSavings();
     }
 
     public get AfterExpenses(): number {
         return this.budgetService.getAfterExpenses();
     }
 
+    public get AfterSavings(): number {
+        return this.budgetService.getAfterSavings();
+    }
+
     public get AdditionalSavings(): number {
-        return this.AfterExpenses;
+        return this.AfterSavings;
     }
 }

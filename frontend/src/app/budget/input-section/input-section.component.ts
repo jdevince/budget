@@ -11,15 +11,9 @@ import { BudgetService } from './../budget.service';
 })
 
 export class InputSectionComponent {
-    showPreTaxCheckbox: boolean = false;
     rows: InputSectionRow[] = [];
 
     @Input() type: string;
-
-    @Input()
-    set enablePreTaxCheckbox(enablePreTaxCheckbox: string) {
-        this.showPreTaxCheckbox = (enablePreTaxCheckbox === "true");
-    }
 
     constructor(private budgetService: BudgetService) { }
 
@@ -29,8 +23,7 @@ export class InputSectionComponent {
 
     insertRow(row: InputSectionRow): void {
         let index: number = this.rows.indexOf(row);
-        let preTaxDefault: boolean = this.showPreTaxCheckbox ? false : null;
-        let newRow = new InputSectionRow(null, 0, preTaxDefault);
+        let newRow = new InputSectionRow(null, 0, false);
 
         if (index === this.rows.length - 1) {
             //Selected row is last row. Add new row to end.
@@ -45,6 +38,18 @@ export class InputSectionComponent {
     deleteRow(row: InputSectionRow): void {
         let index = this.rows.indexOf(row);
         this.rows.splice(index, 1);
+    }
+
+    getCheckboxLabel(): string {
+        let label: string;
+        if (this.type === "Incomes") {
+            label = "No Tax";
+        }
+        else {
+            //Expenses + Savings
+            label = "Pre Tax";
+        }
+        return label;
     }
 
     getMonthlyTotal(): number {
@@ -72,7 +77,8 @@ export class InputSectionComponent {
             row["RowNum"] = rowNum;
             row["Label"] = this.rows[rowNum].label;
             row["Monthly"] = this.rows[rowNum].getMonthlyNumber();
-            row["PreTax"] = this.rows[rowNum].preTax;
+            row["PreTax"] = this.rows[rowNum].checkbox;
+
             data.push(row);
         }
 

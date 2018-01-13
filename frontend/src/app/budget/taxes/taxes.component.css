@@ -60,6 +60,14 @@ input {
     border-top: none;
 }
 
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    vertical-align: middle;
+}
+
 .tabs .table .title {
     text-align: center;
+}
+
+.dark-bottom-border {
+    border-bottom: 1px solid gray;
 }

@@ -78,9 +78,13 @@ export class BudgetServerAPIService {
         data.forEach((element: any) => {
             let label = element.label;
             let monthly = element.monthly;
-            let preTax = element.preTax
+            let noTaxOrPreTax = element.preTax
+            
+            if (noTaxOrPreTax !== true) {
+                noTaxOrPreTax = false;
+            }
 
-            let row = new InputSectionRow(label, monthly, preTax)
+            let row = new InputSectionRow(label, monthly, noTaxOrPreTax)
             rows.push(row);
         });
         return rows;
