@@ -23,6 +23,7 @@ namespace BudgetBackend.Models
         public string Label { get; set; }
         public double Monthly { get; set; }
         public bool? PreTax { get; set; }
+        public bool? IncomeNotTaxed { get; set; }
 
         public bool Equals(BudgetInputRow other)
         {
@@ -30,7 +31,8 @@ namespace BudgetBackend.Models
                 || this.RowNum != other.RowNum
                 || this.Label != other.Label
                 || this.Monthly != other.Monthly
-                || this.PreTax != other.PreTax)
+                || this.PreTax != other.PreTax
+                || this.IncomeNotTaxed != other.IncomeNotTaxed)
             {
                 return false;
             }
@@ -61,12 +63,14 @@ namespace BudgetBackend.Models
                     rows[0].RowNum = 0;
                     rows[0].Label = "Primary Job";
                     rows[0].Monthly = 3000;
+                    rows[0].IncomeNotTaxed = false;
 
                     //Default second row
                     rows[1].Type = type;
                     rows[1].RowNum = 1;
                     rows[1].Label = "Secondary Job";
                     rows[1].Monthly = 1000;
+                    rows[1].IncomeNotTaxed = false;
 
                     break;
 

@@ -218,6 +218,11 @@ namespace BudgetBackend.Models
                         dbRow.PreTax = clientRow.PreTax;
                     }
 
+                    if (dbRow.IncomeNotTaxed != clientRow.IncomeNotTaxed)
+                    {
+                        dbRow.IncomeNotTaxed = clientRow.IncomeNotTaxed;
+                    }
+
                     if (dbRow.RowNum != clientRow.RowNum)
                     {
                         dbRow.RowNum = clientRow.RowNum;
