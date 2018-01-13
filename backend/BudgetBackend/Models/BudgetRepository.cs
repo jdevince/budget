@@ -213,9 +213,9 @@ namespace BudgetBackend.Models
                         dbRow.Monthly = clientRow.Monthly;
                     }
 
-                    if (dbRow.NoTaxPreTaxCheckbox != clientRow.NoTaxPreTaxCheckbox)
+                    if (dbRow.PreTax != clientRow.PreTax)
                     {
-                        dbRow.NoTaxPreTaxCheckbox = clientRow.NoTaxPreTaxCheckbox;
+                        dbRow.PreTax = clientRow.PreTax;
                     }
 
                     if (dbRow.RowNum != clientRow.RowNum)
