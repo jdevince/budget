@@ -22,8 +22,8 @@ namespace BudgetBackend.Models
 
         public string Label { get; set; }
         public double Monthly { get; set; }
-        public bool? PreTax { get; set; }
-        public bool? IncomeNotTaxed { get; set; }
+        [Column("PreTax")] //Not changing DB column name because SQLite can't do it easily
+        public bool NoTaxPreTaxCheckbox { get; set; }
 
         public bool Equals(BudgetInputRow other)
         {
@@ -31,8 +31,7 @@ namespace BudgetBackend.Models
                 || this.RowNum != other.RowNum
                 || this.Label != other.Label
                 || this.Monthly != other.Monthly
-                || this.PreTax != other.PreTax
-                || this.IncomeNotTaxed != other.IncomeNotTaxed)
+                || this.NoTaxPreTaxCheckbox != other.NoTaxPreTaxCheckbox)
             {
                 return false;
             }
@@ -61,16 +60,16 @@ namespace BudgetBackend.Models
                     //Default first row
                     rows[0].Type = type;
                     rows[0].RowNum = 0;
-                    rows[0].Label = "Primary Job";
+                    rows[0].Label = "Salary";
                     rows[0].Monthly = 3000;
-                    rows[0].IncomeNotTaxed = false;
+                    rows[0].NoTaxPreTaxCheckbox = false;
 
                     //Default second row
                     rows[1].Type = type;
                     rows[1].RowNum = 1;
-                    rows[1].Label = "Secondary Job";
+                    rows[1].Label = "Employeer 401k match";
                     rows[1].Monthly = 1000;
-                    rows[1].IncomeNotTaxed = false;
+                    rows[1].NoTaxPreTaxCheckbox = true;
 
                     break;
 
@@ -80,14 +79,14 @@ namespace BudgetBackend.Models
                     rows[0].RowNum = 0;
                     rows[0].Label = "Groceries";
                     rows[0].Monthly = 200;
-                    rows[0].PreTax = false;
+                    rows[0].NoTaxPreTaxCheckbox = false;
 
                     //Default second row
                     rows[1].Type = type;
                     rows[1].RowNum = 1;
                     rows[1].Label = "Health Insurance";
                     rows[1].Monthly = 100;
-                    rows[1].PreTax = true;
+                    rows[1].NoTaxPreTaxCheckbox = true;
                     break;
 
                 case BudgetInputTypes.Savings:
@@ -96,14 +95,14 @@ namespace BudgetBackend.Models
                     rows[0].RowNum = 0;
                     rows[0].Label = "401K";
                     rows[0].Monthly = 500;
-                    rows[0].PreTax = true;
+                    rows[0].NoTaxPreTaxCheckbox = true;
 
                     //Default second row
                     rows[1].Type = type;
                     rows[1].RowNum = 1;
                     rows[1].Label = "House downpayment";
                     rows[1].Monthly = 500;
-                    rows[1].PreTax = false;
+                    rows[1].NoTaxPreTaxCheckbox = false;
                     break;
             }
 

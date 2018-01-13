@@ -1,1 +1,0 @@
-ALTER TABLE BudgetInputs ADD IncomeNotTaxed INTEGER
