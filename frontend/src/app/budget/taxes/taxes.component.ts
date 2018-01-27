@@ -23,6 +23,7 @@ export class TaxesComponent {
     ];
 
     public readonly TaxYears: number[] = [
+        2018,
         2017, 
         2016, 
         2015
@@ -33,7 +34,7 @@ export class TaxesComponent {
         if (!this._federalTaxBrackets) {
             this._federalTaxBrackets = {};
         }
-
+        
         if (!this._federalTaxBrackets.hasOwnProperty(this.TaxYear)) {
 
             this._federalTaxBrackets[this.TaxYear] = "Loading"; //Set this so multiple loading attempts won't fire if one is unsuccessful

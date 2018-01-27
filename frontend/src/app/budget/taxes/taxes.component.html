@@ -2,6 +2,14 @@
     <h1>Taxes</h1>
     <table class="table">
         <tr>
+            <td>Tax Year:</td>
+            <td colspan="2">
+                <select [(ngModel)]="TaxYear">
+                    <option *ngFor="let taxYear of this.TaxYears" [ngValue]="taxYear">{{taxYear}}</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
             <td>Filing Status: <i class="fa fa-question-circle" (click)="showFilingStatusHelpInfo()"></i></td>
             <td colspan="2">
                 <select [(ngModel)]="FilingStatus">
@@ -9,20 +17,12 @@
                 </select>
             </td>
         </tr>
-        <tr>
+        <tr *ngIf="TaxYear<=2017">
             <td>
                 Exemptions: <i class="fa fa-question-circle" (click)="showExemptionsHelpInfo()"></i>
             </td>
             <td colspan="2">
                 <input type="number" [(ngModel)]="Exemptions" min="1" max="30" step="1" />
-            </td>
-        </tr>
-        <tr>
-            <td>Tax Year:</td>
-            <td colspan="2">
-                <select [(ngModel)]="TaxYear">
-                    <option *ngFor="let taxYear of this.TaxYears" [ngValue]="taxYear">{{taxYear}}</option>
-                </select>
             </td>
         </tr>
         <tr>

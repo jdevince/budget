@@ -28,7 +28,7 @@ namespace BudgetBackend.Models
 
             taxInfo.FilingStatus = 0;
             taxInfo.Exemptions = 1;
-            taxInfo.TaxYear = 2017;
+            taxInfo.TaxYear = 2018;
             taxInfo.State = 0;
             taxInfo.DeductionsAndCredits = new List<DeductionOrCreditRow>();
             taxInfo.AdditionalTaxes = new List<AdditionalTaxRow>();
