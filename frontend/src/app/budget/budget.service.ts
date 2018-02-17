@@ -44,34 +44,74 @@ export class BudgetService {
 
     loadInputSection(inputSection: InputSectionComponent): void {
         
-        this.budgetServerAPIService.loadInputSection(inputSection.type, this.userService.getAccessToken())
+        if (this.userService.isLoggedIn()) {
+            this.budgetServerAPIService.loadInputSection(inputSection.type, this.userService.getAccessToken())
             .subscribe(
             rows => {
                 inputSection.rows = rows;
+
+                //Cache database data so we can know when there is new unsaved data
                 this._JSONDataInDatabase = this.getJSONDataToSave();
             },
             error => console.log(<any>error)
             );
+        }
+        else {
+            inputSection.rows = new Array<InputSectionRow>();
+
+            //If you update the defaults, also update in BudgetInputRow.cs
+            switch (inputSection.type) {
+                case "Incomes": {
+                    inputSection.rows.push(new InputSectionRow("Salary", 4000, false));
+                    inputSection.rows.push(new InputSectionRow("401k match", 100, true));
+                    break;
+                }
+                case "Expenses": {
+                    inputSection.rows.push(new InputSectionRow("Groceries", 200, false));
+                    inputSection.rows.push(new InputSectionRow("Health insurance", 100, true));
+                    break;
+                }
+                case "Savings": {
+                    inputSection.rows.push(new InputSectionRow("401k", 500, true));
+                    inputSection.rows.push(new InputSectionRow("House downpayment", 500, false));
+                    break;
+                }
+            }
+        }
     }
 
     loadTaxes(taxesComponent: TaxesComponent): void {
-        this.budgetServerAPIService.loadTaxes(this.userService.getAccessToken())
-            .subscribe(
-            loadedData => {
-                taxesComponent.FilingStatus = loadedData.FilingStatus;
-                taxesComponent.Exemptions = loadedData.Exemptions;
-                taxesComponent.TaxYear = loadedData.TaxYear;
-                taxesComponent.State = loadedData.State;
-                taxesComponent.FederalDeductions = loadedData.FederalDeductions;
-                taxesComponent.FederalCredits = loadedData.FederalCredits;
-                taxesComponent.StateDeductions = loadedData.StateDeductions;
-                taxesComponent.StateCredits = loadedData.StateCredits;
-                taxesComponent.AdditionalTaxes = loadedData.AdditionalTaxes;
+        if (this.userService.isLoggedIn()) {
+            this.budgetServerAPIService.loadTaxes(this.userService.getAccessToken())
+                .subscribe(
+                loadedData => {
+                    taxesComponent.FilingStatus = loadedData.FilingStatus;
+                    taxesComponent.Exemptions = loadedData.Exemptions;
+                    taxesComponent.TaxYear = loadedData.TaxYear;
+                    taxesComponent.State = loadedData.State;
+                    taxesComponent.FederalDeductions = loadedData.FederalDeductions;
+                    taxesComponent.FederalCredits = loadedData.FederalCredits;
+                    taxesComponent.StateDeductions = loadedData.StateDeductions;
+                    taxesComponent.StateCredits = loadedData.StateCredits;
+                    taxesComponent.AdditionalTaxes = loadedData.AdditionalTaxes;
 
-                this._JSONDataInDatabase = this.getJSONDataToSave();
-            },
-            error => console.log(<any>error)
-            );
+                    //Cache database data so we can know when there is new unsaved data
+                    this._JSONDataInDatabase = this.getJSONDataToSave();
+                },
+                error => console.log(<any>error)
+                );
+        }
+        else {
+            taxesComponent.FilingStatus = 0;
+            taxesComponent.Exemptions = 1;
+            taxesComponent.TaxYear = 2018;
+            taxesComponent.State = 0;
+            taxesComponent.FederalDeductions = new Array<LabelAndCurrencyRow>();
+            taxesComponent.FederalCredits = new Array<LabelAndCurrencyRow>();
+            taxesComponent.StateDeductions = new Array<LabelAndCurrencyRow>();
+            taxesComponent.StateCredits = new Array<LabelAndCurrencyRow>();
+            taxesComponent.AdditionalTaxes = new Array<LabelAndCurrencyRow>();
+        }
     }
 
     loadFederalTaxBrackets(federalTaxBrackets: any, year: number): void {      

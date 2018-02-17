@@ -53,6 +53,7 @@ namespace BudgetBackend.Models
         {
             List<BudgetInputRow> rows = new List<BudgetInputRow>() { new BudgetInputRow(), new BudgetInputRow() };
 
+            //If you update the defaults, also update in budget.service.ts
             switch (type)
             {
                 case BudgetInputTypes.Incomes:
@@ -66,7 +67,7 @@ namespace BudgetBackend.Models
                     //Default second row
                     rows[1].Type = type;
                     rows[1].RowNum = 1;
-                    rows[1].Label = "Employeer 401k match";
+                    rows[1].Label = "401k match";
                     rows[1].Monthly = 100;
                     rows[1].PreTax = true;
 
@@ -83,7 +84,7 @@ namespace BudgetBackend.Models
                     //Default second row
                     rows[1].Type = type;
                     rows[1].RowNum = 1;
-                    rows[1].Label = "Health Insurance";
+                    rows[1].Label = "Health insurance";
                     rows[1].Monthly = 100;
                     rows[1].PreTax = true;
                     break;

@@ -26,6 +26,7 @@ namespace BudgetBackend.Models
         {
             TaxInfo taxInfo = new TaxInfo();
 
+            //If you update the defaults, also update in budget.service.ts
             taxInfo.FilingStatus = 0;
             taxInfo.Exemptions = 1;
             taxInfo.TaxYear = 2018;
