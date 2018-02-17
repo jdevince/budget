@@ -77,6 +77,8 @@ export class BudgetService {
                     break;
                 }
             }
+
+            //this._JSONDataInDatabase only needs to be loaded once, so it's loaded in loadTaxes
         }
     }
 
@@ -111,6 +113,9 @@ export class BudgetService {
             taxesComponent.StateDeductions = new Array<LabelAndCurrencyRow>();
             taxesComponent.StateCredits = new Array<LabelAndCurrencyRow>();
             taxesComponent.AdditionalTaxes = new Array<LabelAndCurrencyRow>();
+
+            //Cache database data so we can know when there is new unsaved data. Load directly from string because references to input sections may not be set up yet.
+            this._JSONDataInDatabase = '{"BudgetInputRows":[{"Type":"Incomes","RowNum":"0","Label":"Salary","Monthly":4000,"PreTax":false},{"Type":"Incomes","RowNum":"1","Label":"401k match","Monthly":100,"PreTax":true},{"Type":"Expenses","RowNum":"0","Label":"Groceries","Monthly":200,"PreTax":false},{"Type":"Expenses","RowNum":"1","Label":"Health insurance","Monthly":100,"PreTax":true},{"Type":"Savings","RowNum":"0","Label":"401k","Monthly":500,"PreTax":true},{"Type":"Savings","RowNum":"1","Label":"House downpayment","Monthly":500,"PreTax":false}],"TaxInfo":{"FilingStatus":0,"Exemptions":1,"TaxYear":2018,"State":0,"DeductionsAndCredits":[],"AdditionalTaxes":[]}}';
         }
     }
 
